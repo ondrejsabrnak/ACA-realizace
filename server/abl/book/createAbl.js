@@ -54,7 +54,7 @@ async function createAbl(req, res) {
     res.json(book);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: e.message });
+    res.status(500).json({ message: error.message });
   }
 }
 
