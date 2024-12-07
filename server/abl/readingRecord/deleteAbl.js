@@ -31,7 +31,6 @@ async function deleteAbl(req, res) {
 
     // Get the reading record from persistent storage
     const readingRecord = readingRecordDao.get(reqParams.id);
-    const book = bookDao.get(readingRecord.bookId);
 
     // Check that the reading record exists
     if (!readingRecord) {
@@ -41,6 +40,9 @@ async function deleteAbl(req, res) {
       });
       return;
     }
+
+    // Get the book from persistent storage
+    const book = bookDao.get(readingRecord.bookId);
 
     // Check that the book exists
     if (!book) {
