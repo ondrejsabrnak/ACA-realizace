@@ -15,7 +15,17 @@ function create(readingRecord) {
 
 // Method to get a reading record from a file
 function get(readingRecordId) {
-  // TODO: Implement this method
+  try {
+    const filePath = path.join(
+      readingRecordFolderPath,
+      `${readingRecordId}.json`
+    );
+    const fileData = fs.readFileSync(filePath, "utf8");
+    return JSON.parse(fileData);
+  } catch (error) {
+    if (error.code === "ENOENT") return null;
+    throw { code: "failedToReadReadingRecord", message: error.message };
+  }
 }
 
 // Method to update a reading record in a file

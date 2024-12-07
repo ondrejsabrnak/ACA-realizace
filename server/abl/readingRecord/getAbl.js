@@ -13,7 +13,36 @@ const schema = {
 };
 
 async function getAbl(req, res) {
-  // TODO: Implement the getAbl function
+  try {
+    // Get request parameters
+    const reqParams = req.query?.id ? req.query : req.body;
+
+    // Validate request parameters
+    const valid = ajv.validate(schema, reqParams);
+    if (!valid) {
+      res.status(400).json({
+        code: "dtoInIsNotValid",
+        message: "dtoIn is not valid",
+        validationError: ajv.errors,
+      });
+      return;
+    }
+
+    // Get the reading record from persistent storage
+    const readingRecord = readingRecordDao.get(reqParams.id);
+    if (!readingRecord) {
+      res.status(404).json({
+        code: "readingRecordNotFound",
+        message: `Reading record ${reqParams.id} not found`,
+      });
+      return;
+    }
+
+    // Return the reading record
+    res.json(readingRecord);
+  } catch (e) {
+    res.status(500).json({ message: e.message });
+  }
 }
 
 module.exports = getAbl;
