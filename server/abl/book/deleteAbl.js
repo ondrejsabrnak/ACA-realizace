@@ -4,7 +4,12 @@ const ajv = new Ajv();
 const bookDao = require("../../dao/book-dao");
 
 const schema = {
-  // TODO: Define the schema
+  type: "object",
+  properties: {
+    id: { type: "string", minLength: 32, maxLength: 32 },
+  },
+  required: ["id"],
+  additionalProperties: false,
 };
 
 async function deleteAbl(req, res) {
