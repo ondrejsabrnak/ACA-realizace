@@ -7,11 +7,11 @@ import readingRecordController from "./controllers/readingRecord.js";
 const app = express();
 const port = 8000;
 
-app.use(express.json()); // podpora pro application/json
-app.use(express.urlencoded({ extended: true })); // podpora pro application/x-www-form-urlencoded
+app.use(express.json()); // support for application/json
+app.use(express.urlencoded({ extended: true })); // support for application/x-www-form-urlencoded
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("The Reader's Diary");
 });
 
 app.use("/book", bookController);
