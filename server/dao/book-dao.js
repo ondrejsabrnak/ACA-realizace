@@ -8,6 +8,8 @@ const bookFolderPath = path.join(__dirname, "storage", "bookList");
 function create(book) {
   try {
     book.id = crypto.randomBytes(16).toString("hex");
+    book.pagesRead = 0; // New books have 0 pages read
+    book.finished = false; // New books are not finished
     const filePath = path.join(bookFolderPath, `${book.id}.json`);
     const fileData = JSON.stringify(book);
     fs.writeFileSync(filePath, fileData, "utf8");
@@ -50,6 +52,30 @@ function update(book) {
   }
 }
 
+// Method to update the pages read of a book in a file
+function updatePagesRead(bookId, pagesRead) {
+  const book = get(bookId);
+  if (!book) return null;
+
+  book.pagesRead = pagesRead;
+  const filePath = path.join(bookFolderPath, `${bookId}.json`);
+  const fileData = JSON.stringify(book);
+  fs.writeFileSync(filePath, fileData, "utf8");
+  return book;
+}
+
+// Method to update the finished status of a book in a file
+function updateFinished(bookId, finished) {
+  const book = get(bookId);
+  if (!book) return null;
+
+  book.finished = finished;
+  const filePath = path.join(bookFolderPath, `${bookId}.json`);
+  const fileData = JSON.stringify(book);
+  fs.writeFileSync(filePath, fileData, "utf8");
+  return book;
+}
+
 // Method to remove a book from a file
 function remove(bookId) {
   try {
@@ -78,4 +104,13 @@ function list() {
   }
 }
 
-module.exports = { create, get, getByIsbn, update, remove, list };
+module.exports = {
+  create,
+  get,
+  getByIsbn,
+  update,
+  updatePagesRead,
+  updateFinished,
+  remove,
+  list,
+};
