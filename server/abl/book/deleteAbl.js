@@ -7,8 +7,8 @@ const schema = {
   // TODO: Define the schema
 };
 
-async function deleteAbl(req, res) {
+const deleteAbl = async (req, res) => {
   // TODO: Implement the deleteAbl function
-}
+};
 
 export default deleteAbl;
