@@ -13,7 +13,36 @@ const schema = {
 };
 
 async function getAbl(req, res) {
-  // TODO: Implement the getAbl function
+  try {
+    // Get request parameters
+    const reqParams = req.query?.id ? req.query : req.body;
+
+    // Validate request parameters
+    const valid = ajv.validate(schema, reqParams);
+    if (!valid) {
+      res.status(400).json({
+        code: "dtoInIsNotValid",
+        book: "dtoIn is not valid",
+        validationError: ajv.errors,
+      });
+      return;
+    }
+
+    // Get the book from persistent storage
+    const book = bookDao.get(reqParams.id);
+    if (!book) {
+      res.status(404).json({
+        code: "bookNotFound",
+        book: `Book with id ${reqParams.id} not found.`,
+      });
+      return;
+    }
+
+    // Return the book
+    res.json(book);
+  } catch (e) {
+    res.status(500).json({ book: e.book });
+  }
 }
 
 module.exports = getAbl;

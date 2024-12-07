@@ -19,7 +19,14 @@ function create(book) {
 
 // Method to get a book from a file
 function get(bookId) {
-  // TODO: Implement this method
+  try {
+    const filePath = path.join(bookFolderPath, `${bookId}.json`);
+    const fileData = fs.readFileSync(filePath, "utf8");
+    return JSON.parse(fileData);
+  } catch (error) {
+    if (error.code === "ENOENT") return null;
+    throw { code: "failedToReadBook", book: error.book };
+  }
 }
 
 function getByIsbn(isbn) {
