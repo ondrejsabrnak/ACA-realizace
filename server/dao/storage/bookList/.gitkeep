@@ -1,2 +1,0 @@
-* This file is a workaround for git's inability to track empty directories.
-* It ensures that the storage directory is always present in the repository.
