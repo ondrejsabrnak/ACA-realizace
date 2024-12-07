@@ -38,6 +38,22 @@ function remove(readingRecordId) {
   }
 }
 
+// Method to remove all reading records by bookId from a file
+function removeByBookId(bookId) {
+  try {
+    const readingRecords = listByBookId(bookId);
+    readingRecords.forEach((readingRecord) => {
+      remove(readingRecord.id);
+    });
+    return {};
+  } catch (error) {
+    throw {
+      code: "failedToRemoveReadingRecordsByBookId",
+      message: error.message,
+    };
+  }
+}
+
 // Method to list all reading records from a file
 function list() {
   // TODO: Implement this method
