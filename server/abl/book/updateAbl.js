@@ -20,7 +20,52 @@ const schema = {
 };
 
 async function updateAbl(req, res) {
-  // TODO: Implement the updateAbl function
+  try {
+    let book = req.body;
+
+    // Validate input
+    const valid = ajv.validate(schema, book);
+    if (!valid) {
+      res.status(400).json({
+        code: "dtoInIsNotValid",
+        book: "dtoIn is not valid",
+        validationError: ajv.errors,
+      });
+      return;
+    }
+
+    // Check if a book with the same ISBN already exists
+    if (bookDao.getByIsbn(book.isbn)) {
+      res.status(400).json({
+        code: "isbnAlreadyExists",
+        message: "A book with the same ISBN already exists",
+      });
+      return;
+    }
+
+    // Update book in persistent storage
+    let updatedbook;
+    try {
+      updatedbook = bookDao.update(book);
+    } catch (e) {
+      res.status(400).json({
+        ...e,
+      });
+      return;
+    }
+    if (!updatedbook) {
+      res.status(404).json({
+        code: "bookNotFound",
+        book: `Book with id ${book.id} not found`,
+      });
+      return;
+    }
+
+    // return properly filled dtoOut
+    res.json(updatedbook);
+  } catch (e) {
+    res.status(500).json({ book: e.book });
+  }
 }
 
 module.exports = updateAbl;

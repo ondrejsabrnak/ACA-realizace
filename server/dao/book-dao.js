@@ -36,7 +36,18 @@ function getByIsbn(isbn) {
 
 // Method to update a book in a file
 function update(book) {
-  // TODO: Implement this method
+  try {
+    const currentBook = get(book.id);
+    if (!currentBook) return null;
+
+    const newBook = { ...currentBook, ...book };
+    const filePath = path.join(bookFolderPath, `${book.id}.json`);
+    const fileData = JSON.stringify(newBook);
+    fs.writeFileSync(filePath, fileData, "utf8");
+    return newBook;
+  } catch (error) {
+    throw { code: "failedToUpdateBook", book: error.book };
+  }
 }
 
 // Method to remove a book from a file
