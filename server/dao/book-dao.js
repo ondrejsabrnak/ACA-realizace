@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 
-const categoryFolderPath = path.join(__dirname, "storage", "bookList");
+const bookFolderPath = path.join(__dirname, "storage", "bookList");
 
 // Method to create a book in a file
 function create(book) {
@@ -17,7 +17,7 @@ function get(bookId) {
 
 function getByIsbn(isbn) {
   const bookList = list();
-  return bookList.find(book => book.isbn === isbn);
+  return bookList.find((book) => book.isbn === isbn);
 }
 
 // Method to update a book in a file
@@ -32,7 +32,19 @@ function remove(bookId) {
 
 // Method to list all books from a file
 function list() {
-  // TODO: Implement this method
+  try {
+    const files = fs.readdirSync(bookFolderPath);
+    const bookList = files.map((file) => {
+      const fileData = fs.readFileSync(
+        path.join(bookFolderPath, file),
+        "utf8"
+      );
+      return JSON.parse(fileData);
+    });
+    return bookList;
+  } catch (error) {
+    throw { code: "failedToListBooks", book: error.book };
+  }
 }
 
 module.exports = { create, get, update, remove, list };
