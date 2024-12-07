@@ -52,7 +52,16 @@ function update(book) {
 
 // Method to remove a book from a file
 function remove(bookId) {
-  // TODO: Implement this method
+  try {
+    const filePath = path.join(bookFolderPath, `${bookId}.json`);
+    fs.unlinkSync(filePath);
+    return {};
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      return {};
+    }
+    throw { code: "failedToRemoveBook", book: error.book };
+  }
 }
 
 // Method to list all books from a file

@@ -56,7 +56,20 @@ function removeByBookId(bookId) {
 
 // Method to list all reading records from a file
 function list() {
-  // TODO: Implement this method
+  try {
+    const files = fs.readdirSync(readingRecordFolderPath);
+    const readingRecordList = files.map((file) => {
+      const fileData = fs.readFileSync(
+        path.join(readingRecordFolderPath, file),
+        "utf8"
+      );
+      return JSON.parse(fileData);
+    });
+    readingRecordList.sort((a, b) => new Date(a.date) - new Date(b.date));
+    return readingRecordList;
+  } catch (error) {
+    throw { code: "failedToListReadingRecords", message: error.message };
+  }
 }
 
 // Method to list all reading records by bookId from a file
@@ -67,4 +80,12 @@ function listByBookId(bookId) {
   );
 }
 
-module.exports = { create, get, update, remove, list, listByBookId };
+module.exports = {
+  create,
+  get,
+  update,
+  remove,
+  removeByBookId,
+  list,
+  listByBookId,
+};
