@@ -1,7 +1,7 @@
 const Ajv = require("ajv");
 const ajv = new Ajv();
 
-// TODO: import DAO
+const readingRecordDao = require("../../dao/readingRecord-dao");
 
 const schema = {
   // TODO: Define the schema
