@@ -13,7 +13,10 @@ const schema = {
       type: "string",
       pattern: "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$",
     }, // hh:mm format
-    date: { type: "string", format: "date" },
+    date: {
+      type: "string",
+      pattern: "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\\d{4}$",
+    },
     note: { type: "string", maxLength: 500 },
   },
   required: ["bookId", "readPages", "readingTime", "date"],
