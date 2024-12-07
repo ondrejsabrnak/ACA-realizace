@@ -43,4 +43,12 @@ function list() {
   // TODO: Implement this method
 }
 
-module.exports = { create, get, update, remove, list };
+// Method to list all reading records by bookId from a file
+function listByBookId(bookId) {
+  const readingRecordList = list();
+  return readingRecordList.filter(
+    (readingRecord) => readingRecord.bookId === bookId
+  );
+}
+
+module.exports = { create, get, update, remove, list, listByBookId };
