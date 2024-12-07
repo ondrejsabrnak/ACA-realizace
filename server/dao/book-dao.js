@@ -6,8 +6,15 @@ const bookFolderPath = path.join(__dirname, "storage", "bookList");
 
 // Method to create a book in a file
 function create(book) {
-  console.log("book create:\n", book);
-  return book;
+  try {
+    book.id = crypto.randomBytes(16).toString("hex");
+    const filePath = path.join(bookFolderPath, `${book.id}.json`);
+    const fileData = JSON.stringify(book);
+    fs.writeFileSync(filePath, fileData, "utf8");
+    return book;
+  } catch (error) {
+    throw { code: "failedToCreateBook", book: error.book };
+  }
 }
 
 // Method to get a book from a file
@@ -35,10 +42,7 @@ function list() {
   try {
     const files = fs.readdirSync(bookFolderPath);
     const bookList = files.map((file) => {
-      const fileData = fs.readFileSync(
-        path.join(bookFolderPath, file),
-        "utf8"
-      );
+      const fileData = fs.readFileSync(path.join(bookFolderPath, file), "utf8");
       return JSON.parse(fileData);
     });
     return bookList;
@@ -47,4 +51,4 @@ function list() {
   }
 }
 
-module.exports = { create, get, update, remove, list };
+module.exports = { create, get, getByIsbn, update, remove, list };
