@@ -7,8 +7,8 @@ const schema = {
   // TODO: Define the schema
 };
 
-const getAbl = async (req, res) => {
+async function getAbl(req, res) {
   // TODO: Implement the getAbl function
-};
+}
 
 export default getAbl;
