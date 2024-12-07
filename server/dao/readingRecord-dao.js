@@ -10,7 +10,18 @@ const readingRecordFolderPath = path.join(
 
 // Method to create a reading record in a file
 function create(readingRecord) {
-  // TODO: Implement this method
+  try {
+    readingRecord.id = crypto.randomBytes(16).toString("hex");
+    const filePath = path.join(
+      readingRecordFolderPath,
+      `${readingRecord.id}.json`
+    );
+    const fileData = JSON.stringify(readingRecord);
+    fs.writeFileSync(filePath, fileData, "utf8");
+    return readingRecord;
+  } catch (error) {
+    throw { code: "failedToCreateReadingRecord", message: error.message };
+  }
 }
 
 // Method to get a reading record from a file
