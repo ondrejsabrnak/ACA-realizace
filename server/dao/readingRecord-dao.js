@@ -1,31 +1,32 @@
-import fs from "fs";
-import { join } from "path";
-import crypto from "crypto";
+const fs = require("fs");
+const path = require("path");
+const crypto = require("crypto");
 
-const categoryFolderPath = join(__dirname, "storage", "bookList");
+const categoryFolderPath = path.join(__dirname, "storage", "readingRecordList");
 
-// Method to create a book in a file
-const create = (book) => {
+// Method to create a reading record in a file
+function create(readingRecord) {
   // TODO: Implement this method
-};
+}
 
-// Method to get a book from a file
-const get = (bookId) => {
+// Method to get a reading record from a file
+function get(readingRecordId) {
   // TODO: Implement this method
-};
+}
 
-// Method to update a book in a file
-const update = (book) => {
+// Method to update a reading record in a file
+function update(readingRecord) {
   // TODO: Implement this method
-};
-// Method to remove a book from a file
-const remove = (bookId) => {
-  // TODO: Implement this method
-};
+}
 
-// Method to list all books from a file
-const list = () => {
+// Method to remove a reading record from a file
+function remove(readingRecordId) {
   // TODO: Implement this method
-};
+}
 
-export default { create, get, update, remove, list };
+// Method to list all reading records from a file
+function list() {
+  // TODO: Implement this method
+}
+
+module.exports = { create, get, update, remove, list };

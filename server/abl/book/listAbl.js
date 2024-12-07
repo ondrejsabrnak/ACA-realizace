@@ -1,4 +1,4 @@
-import Ajv from "ajv";
+const Ajv = require("ajv");
 const ajv = new Ajv();
 
 // TODO: import DAO
@@ -11,4 +11,4 @@ async function listAbl(req, res) {
   // TODO: Implement the listAbl function
 }
 
-export default listAbl;
+module.exports = listAbl;

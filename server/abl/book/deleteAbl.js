@@ -1,4 +1,4 @@
-import Ajv from "ajv";
+const Ajv = require("ajv");
 const ajv = new Ajv();
 
 // TODO: import DAO
@@ -11,4 +11,4 @@ async function deleteAbl(req, res) {
   // TODO: Implement the deleteAbl function
 }
 
-export default deleteAbl;
+module.exports = deleteAbl;

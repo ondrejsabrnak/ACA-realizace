@@ -1,11 +1,11 @@
-// Imports the express server and the controllers
-import express from "express";
-import bookController from "./controllers/book.js";
-import readingRecordController from "./controllers/readingRecord.js";
-
 // Initiate the express server
+const express = require("express");
 const app = express();
 const port = 8000;
+
+// Init the controllers
+const bookController = require("./controllers/book");
+const readingRecordController = require("./controllers/readingRecord");
 
 app.use(express.json()); // support for application/json
 app.use(express.urlencoded({ extended: true })); // support for application/x-www-form-urlencoded

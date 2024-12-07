@@ -1,6 +1,16 @@
-import { Router } from "express";
-const router = Router();
+const express = require("express");
+const router = express.Router();
 
-// Define routes here
+const GetAbl = require("../abl/book/getAbl");
+const ListAbl = require("../abl/book/listAbl");
+const CreateAbl = require("../abl/book/createAbl");
+const UpdateAbl = require("../abl/book/updateAbl");
+const DeleteAbl = require("../abl/book/deleteAbl");
 
-export default router;
+router.get("/get", GetAbl);
+router.get("/list", ListAbl);
+router.post("/create", CreateAbl);
+router.post("/update", UpdateAbl);
+router.post("/delete", DeleteAbl);
+
+module.exports = router;
