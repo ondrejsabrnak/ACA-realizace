@@ -1,24 +1,17 @@
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
+const FileStorageService = require("../services/storage/FileStorageService");
 
-const readingRecordFolderPath = path.join(
-  __dirname,
-  "storage",
-  "readingRecordList"
+const storage = new FileStorageService(
+  path.join(__dirname, "storage", "readingRecordList")
 );
 
 // Method to create a reading record in a file
 function create(readingRecord) {
   try {
     readingRecord.id = crypto.randomBytes(16).toString("hex");
-    const filePath = path.join(
-      readingRecordFolderPath,
-      `${readingRecord.id}.json`
-    );
-    const fileData = JSON.stringify(readingRecord);
-    fs.writeFileSync(filePath, fileData, "utf8");
-    return readingRecord;
+    return storage.create(readingRecord.id, readingRecord);
   } catch (error) {
     throw { code: "failedToCreateReadingRecord", message: error.message };
   }
@@ -26,67 +19,44 @@ function create(readingRecord) {
 
 // Method to get a reading record from a file
 function get(readingRecordId) {
-  try {
-    const filePath = path.join(
-      readingRecordFolderPath,
-      `${readingRecordId}.json`
-    );
-    const fileData = fs.readFileSync(filePath, "utf8");
-    return JSON.parse(fileData);
-  } catch (error) {
-    if (error.code === "ENOENT") return null;
-    throw { code: "failedToReadReadingRecord", message: error.message };
-  }
+  return storage.get(readingRecordId);
 }
 
 // Method to update a reading record in a file
 function update(readingRecord) {
-  // TODO: Implement this method
+  return storage.update(readingRecord.id, readingRecord);
 }
 
 // Method to remove a reading record from a file
 function remove(readingRecordId) {
-  try {
-    const filePath = path.join(
-      readingRecordFolderPath,
-      `${readingRecordId}.json`
-    );
-    fs.unlinkSync(filePath);
-    return {};
-  } catch (error) {
-    if (error.code === "ENOENT") return {};
-    throw { code: "failedToRemoveReadingRecord", message: error.message };
-  }
+  return storage.remove(readingRecordId);
 }
 
 // Method to remove all reading records by bookId from a file
 function removeByBookId(bookId) {
   try {
-    const readingRecords = listByBookId(bookId);
-    readingRecords.forEach((readingRecord) => {
-      remove(readingRecord.id);
-    });
+    const records = list();
+    records
+      .filter((record) => record.bookId === bookId)
+      .forEach((record) => remove(record.id));
     return {};
   } catch (error) {
-    throw {
-      code: "failedToRemoveReadingRecordsByBookId",
-      message: error.message,
-    };
+    throw { code: "failedToRemoveReadingRecords", message: error.message };
   }
 }
 
 // Method to list all reading records from a file
 function list() {
   try {
-    const files = fs.readdirSync(readingRecordFolderPath);
-    const readingRecordList = files.map((file) => {
-      const fileData = fs.readFileSync(
-        path.join(readingRecordFolderPath, file),
-        "utf8"
-      );
-      return JSON.parse(fileData);
+    const readingRecordList = storage.list();
+    readingRecordList.sort((a, b) => {
+      // Convert date strings (DD/MM/YYYY) to Date objects for comparison
+      const [dayA, monthA, yearA] = a.date.split("/");
+      const [dayB, monthB, yearB] = b.date.split("/");
+      const dateA = new Date(yearA, monthA - 1, dayA);
+      const dateB = new Date(yearB, monthB - 1, dayB);
+      return dateB - dateA; // Descending order (newest first)
     });
-    readingRecordList.sort((a, b) => new Date(a.date) - new Date(b.date));
     return readingRecordList;
   } catch (error) {
     throw { code: "failedToListReadingRecords", message: error.message };
@@ -95,10 +65,8 @@ function list() {
 
 // Method to list all reading records by bookId from a file
 function listByBookId(bookId) {
-  const readingRecordList = list();
-  return readingRecordList.filter(
-    (readingRecord) => readingRecord.bookId === bookId
-  );
+  const records = list();
+  return records.filter((record) => record.bookId === bookId);
 }
 
 module.exports = {
