@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
-const FileStorageService = require("../services/storage/FileStorageService");
+const FileStorageService = require("../services/FileStorageService");
 
 const storage = new FileStorageService(
   path.join(__dirname, "storage", "readingRecordList")
