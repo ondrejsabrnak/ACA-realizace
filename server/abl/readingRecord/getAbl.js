@@ -1,5 +1,3 @@
-const Ajv = require("ajv");
-const ajv = new Ajv();
 const ValidationService = require("../../services/ValidationService");
 const readingRecordDao = require("../../dao/readingRecord-dao");
 
