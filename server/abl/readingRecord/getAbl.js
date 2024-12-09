@@ -18,13 +18,9 @@ async function getAbl(req, res) {
     const reqParams = req.query?.id ? req.query : req.body;
 
     // Validate request parameters
-    const valid = ajv.validate(schema, reqParams);
-    if (!valid) {
-      res.status(400).json({
-        code: "dtoInIsNotValid",
-        message: "dtoIn is not valid",
-        validationError: ajv.errors,
-      });
+    const validation = validationService.validate(schema, reqParams);
+    if (!validation.valid) {
+      res.status(400).json(validation.errors);
       return;
     }
 

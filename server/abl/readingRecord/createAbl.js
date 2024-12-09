@@ -28,13 +28,9 @@ async function createAbl(req, res) {
     let readingRecord = req.body;
 
     // Validate the input
-    const valid = ajv.validate(schema, readingRecord);
-    if (!valid) {
-      res.status(400).json({
-        code: "dtoInIsNotValid",
-        message: "dtoIn is not valid",
-        validationError: ajv.errors,
-      });
+    const validation = validationService.validate(schema, readingRecord);
+    if (!validation.valid) {
+      res.status(400).json(validation.errors);
       return;
     }
 
@@ -66,9 +62,8 @@ async function createAbl(req, res) {
 
     // Return the reading record
     res.json(readingRecord);
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ message: e.message });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 }
 

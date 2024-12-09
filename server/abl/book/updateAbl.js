@@ -1,6 +1,8 @@
 const Ajv = require("ajv");
 const ajv = new Ajv();
 
+const validationService = new ValidationService();
+
 const bookDao = require("../../dao/book-dao");
 
 const schema = {
@@ -24,23 +26,22 @@ async function updateAbl(req, res) {
     let book = req.body;
 
     // Validate input
-    const valid = ajv.validate(schema, book);
-    if (!valid) {
-      res.status(400).json({
-        code: "dtoInIsNotValid",
-        book: "dtoIn is not valid",
-        validationError: ajv.errors,
-      });
+    const validation = validationService.validate(schema, book);
+    if (!validation.valid) {
+      res.status(400).json(validation.errors);
       return;
     }
 
     // Check if a book with the same ISBN already exists
-    if (bookDao.getByIsbn(book.isbn)) {
-      res.status(400).json({
-        code: "isbnAlreadyExists",
-        message: "A book with the same ISBN already exists",
-      });
-      return;
+    if (book.isbn) {
+      const existingBook = bookDao.getByIsbn(book.isbn);
+      if (existingBook && existingBook.id !== book.id) {
+        res.status(400).json({
+          code: "isbnAlreadyExists",
+          message: "A book with the same ISBN already exists",
+        });
+        return;
+      }
     }
 
     // Update book in persistent storage
@@ -63,8 +64,8 @@ async function updateAbl(req, res) {
 
     // return properly filled dtoOut
     res.json(updatedbook);
-  } catch (e) {
-    res.status(500).json({ book: e.book });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 }
 

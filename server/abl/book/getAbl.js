@@ -1,6 +1,8 @@
 const Ajv = require("ajv");
 const ajv = new Ajv();
 
+const validationService = new ValidationService();
+
 const bookDao = require("../../dao/book-dao");
 
 const schema = {
@@ -18,13 +20,9 @@ async function getAbl(req, res) {
     const reqParams = req.query?.id ? req.query : req.body;
 
     // Validate request parameters
-    const valid = ajv.validate(schema, reqParams);
-    if (!valid) {
-      res.status(400).json({
-        code: "dtoInIsNotValid",
-        book: "dtoIn is not valid",
-        validationError: ajv.errors,
-      });
+    const validation = validationService.validate(schema, reqParams);
+    if (!validation.valid) {
+      res.status(400).json(validation.errors);
       return;
     }
 
@@ -40,8 +38,8 @@ async function getAbl(req, res) {
 
     // Return the book
     res.json(book);
-  } catch (e) {
-    res.status(500).json({ book: e.book });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 }
 

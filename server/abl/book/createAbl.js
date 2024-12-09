@@ -1,6 +1,8 @@
 const Ajv = require("ajv");
 const ajv = new Ajv();
 
+const validationService = new ValidationService();
+
 const bookDao = require("../../dao/book-dao");
 
 const schema = {
@@ -22,18 +24,12 @@ async function createAbl(req, res) {
   try {
     let book = req.body;
 
-    // Validate the input
-    const valid = ajv.validate(schema, book);
-    if (!valid) {
-      res.status(400).json({
-        code: "dtoInIsNotValid",
-        message: "The input data is not valid",
-        validationErrors: ajv.errors,
-      });
+    const validation = validationService.validate(schema, book);
+    if (!validation.valid) {
+      res.status(400).json(validation.errors);
       return;
     }
 
-    // Check if a book with the same ISBN already exists
     if (bookDao.getByIsbn(book.isbn)) {
       res.status(400).json({
         code: "isbnAlreadyExists",
@@ -42,15 +38,7 @@ async function createAbl(req, res) {
       return;
     }
 
-    // Store the book to persistent storage
-    try {
-      book = bookDao.create(book);
-    } catch (e) {
-      res.status(500).json(...e);
-      return;
-    }
-
-    // Return the created book
+    book = bookDao.create(book);
     res.json(book);
   } catch (error) {
     console.error(error);

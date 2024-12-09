@@ -7,8 +7,8 @@ async function listAbl(req, res) {
   try {
     const bookList = bookDao.list();
     res.json(bookList);
-  } catch (e) {
-    res.status(500).json({ book: e.book });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 }
 
