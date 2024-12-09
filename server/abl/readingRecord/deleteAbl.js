@@ -1,8 +1,10 @@
 const Ajv = require("ajv");
 const ajv = new Ajv();
-
+const ValidationService = require("../../services/ValidationService");
 const readingRecordDao = require("../../dao/readingRecord-dao");
 const bookDao = require("../../dao/book-dao");
+
+const validationService = new ValidationService();
 
 const schema = {
   type: "object",
