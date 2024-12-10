@@ -94,7 +94,11 @@ async function createAbl(req, res) {
 
     // 5. Storage Operations
     readingRecord = readingRecordDao.create(readingRecord);
-    bookDao.updatePagesRead(book.id, book.pagesRead + readingRecord.readPages);
+    bookDao.update({
+      ...book,
+      pagesRead: book.pagesRead + readingRecord.readPages,
+      finished: book.pagesRead + readingRecord.readPages >= book.numberOfPages
+    });
 
     // 6. Response
     res.json(readingRecord);
