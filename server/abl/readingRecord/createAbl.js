@@ -64,6 +64,15 @@ async function createAbl(req, res) {
       return ErrorHandlingService.handleValidationError(res, validation.errors);
     }
 
+    // 2.1 Date Validation
+    if (!validationService.isValidPastDate(readingRecord.date)) {
+      return ErrorHandlingService.handleBusinessError(
+        res,
+        "invalidDate",
+        "Reading date cannot be in the future"
+      );
+    }
+
     // 3. Entity Existence Checks
     const book = bookDao.get(readingRecord.bookId);
     if (!book) {
@@ -85,12 +94,7 @@ async function createAbl(req, res) {
 
     // 5. Storage Operations
     readingRecord = readingRecordDao.create(readingRecord);
-    const newPagesRead = book.pagesRead + readingRecord.readPages;
-    bookDao.update({
-      ...book,
-      pagesRead: newPagesRead,
-      finished: newPagesRead >= book.numberOfPages
-    });
+    bookDao.updatePagesRead(book.id, book.pagesRead + readingRecord.readPages);
 
     // 6. Response
     res.json(readingRecord);

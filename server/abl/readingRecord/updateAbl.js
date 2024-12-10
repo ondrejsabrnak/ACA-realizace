@@ -64,6 +64,15 @@ async function updateAbl(req, res) {
       return ErrorHandlingService.handleValidationError(res, validation.errors);
     }
 
+    // 2.1 Date Validation
+    if (!validationService.isValidPastDate(readingRecord.date)) {
+      return ErrorHandlingService.handleBusinessError(
+        res,
+        "invalidDate",
+        "Reading date cannot be in the future"
+      );
+    }
+
     // 3. Entity Existence Checks
     const existingRecord = readingRecordDao.get(readingRecord.id);
     if (!existingRecord) {
@@ -85,10 +94,15 @@ async function updateAbl(req, res) {
 
     // 4. Business Logic - Page Count Validation & Update
     if (readingRecord.readPages) {
-      const totalPagesWithoutThisRecord = book.pagesRead - existingRecord.readPages;
-      const newPagesRead = totalPagesWithoutThisRecord + readingRecord.readPages;
+      const totalPagesWithoutThisRecord =
+        book.pagesRead - existingRecord.readPages;
+      const newPagesRead =
+        totalPagesWithoutThisRecord + readingRecord.readPages;
 
-      if (readingRecord.readPages > book.numberOfPages - totalPagesWithoutThisRecord) {
+      if (
+        readingRecord.readPages >
+        book.numberOfPages - totalPagesWithoutThisRecord
+      ) {
         return ErrorHandlingService.handleBusinessError(
           res,
           "readPagesExceedsLeftPages",
@@ -100,7 +114,7 @@ async function updateAbl(req, res) {
       bookDao.update({
         ...book,
         pagesRead: newPagesRead,
-        finished: newPagesRead >= book.numberOfPages
+        finished: newPagesRead >= book.numberOfPages,
       });
     }
 
