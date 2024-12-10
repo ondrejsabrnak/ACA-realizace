@@ -4,7 +4,7 @@
  */
 
 const ValidationService = require("../../services/ValidationService");
-const ErrorHandlingService = require("../../services/ErrorHandlingService");
+const ResponseHandlingService = require("../../services/ResponseHandlingService");
 const readingRecordDao = require("../../dao/readingRecord-dao");
 const bookDao = require("../../dao/book-dao");
 
@@ -61,13 +61,16 @@ async function createAbl(req, res) {
     // 2. Input Validation
     const validation = validationService.validate(schema, readingRecord);
     if (!validation.valid) {
-      return ErrorHandlingService.handleValidationError(res, validation.errors);
+      return ResponseHandlingService.handleValidationError(
+        res,
+        validation.errors
+      );
     }
 
     // 3. Entity Existence Checks
     const book = bookDao.get(readingRecord.bookId);
     if (!book) {
-      return ErrorHandlingService.handleNotFound(
+      return ResponseHandlingService.handleNotFound(
         res,
         "Book",
         readingRecord.bookId
@@ -76,7 +79,7 @@ async function createAbl(req, res) {
 
     // 4. Business Logic - Page Count Validation
     if (readingRecord.readPages > book.numberOfPages - book.pagesRead) {
-      return ErrorHandlingService.handleBusinessError(
+      return ResponseHandlingService.handleBusinessError(
         res,
         "readPagesExceedsLeftPages",
         "Read pages exceed the number of left pages in the book"
@@ -92,9 +95,9 @@ async function createAbl(req, res) {
     });
 
     // 6. Response
-    res.json(readingRecord);
+    return ResponseHandlingService.handleSuccess(res, readingRecord, 201);
   } catch (error) {
-    return ErrorHandlingService.handleServerError(res, error);
+    return ResponseHandlingService.handleServerError(res, error);
   }
 }
 

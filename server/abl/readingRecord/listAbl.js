@@ -3,7 +3,7 @@
  * Handles retrieval of all reading records in the system
  */
 
-const ErrorHandlingService = require("../../services/ErrorHandlingService");
+const ResponseHandlingService = require("../../services/ResponseHandlingService");
 const readingRecordDao = require("../../dao/readingRecord-dao");
 
 /**
@@ -18,9 +18,12 @@ async function listAbl(req, res) {
     const readingRecordList = readingRecordDao.list();
 
     // 2. Response
-    res.json(readingRecordList);
+    return ResponseHandlingService.handleSuccess(res, {
+      items: readingRecordList,
+      total: readingRecordList.length,
+    });
   } catch (error) {
-    return ErrorHandlingService.handleServerError(res, error);
+    return ResponseHandlingService.handleServerError(res, error);
   }
 }
 

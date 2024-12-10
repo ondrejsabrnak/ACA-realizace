@@ -3,7 +3,7 @@
  * Handles retrieval of all books in the system
  */
 
-const ErrorHandlingService = require("../../services/ErrorHandlingService");
+const ResponseHandlingService = require("../../services/ResponseHandlingService");
 const bookDao = require("../../dao/book-dao");
 
 /**
@@ -17,9 +17,12 @@ async function listAbl(req, res) {
     const bookList = bookDao.list();
 
     // 2. Response
-    res.json(bookList);
+    return ResponseHandlingService.handleSuccess(res, {
+      items: bookList,
+      total: bookList.length,
+    });
   } catch (error) {
-    return ErrorHandlingService.handleServerError(res, error);
+    return ResponseHandlingService.handleServerError(res, error);
   }
 }
 

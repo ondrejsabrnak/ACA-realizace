@@ -4,7 +4,7 @@
  */
 
 const ValidationService = require("../../services/ValidationService");
-const ErrorHandlingService = require("../../services/ErrorHandlingService");
+const ResponseHandlingService = require("../../services/ResponseHandlingService");
 const readingRecordDao = require("../../dao/readingRecord-dao");
 const bookDao = require("../../dao/book-dao");
 
@@ -41,13 +41,16 @@ async function deleteAbl(req, res) {
     // 2. Input Validation
     const validation = validationService.validate(schema, reqParams);
     if (!validation.valid) {
-      return ErrorHandlingService.handleValidationError(res, validation.errors);
+      return ResponseHandlingService.handleValidationError(
+        res,
+        validation.errors
+      );
     }
 
     // 3. Entity Existence Checks
     const readingRecord = readingRecordDao.get(reqParams.id);
     if (!readingRecord) {
-      return ErrorHandlingService.handleNotFound(
+      return ResponseHandlingService.handleNotFound(
         res,
         "ReadingRecord",
         reqParams.id
@@ -56,7 +59,7 @@ async function deleteAbl(req, res) {
 
     const book = bookDao.get(readingRecord.bookId);
     if (!book) {
-      return ErrorHandlingService.handleNotFound(
+      return ResponseHandlingService.handleNotFound(
         res,
         "Book",
         readingRecord.bookId
@@ -68,16 +71,18 @@ async function deleteAbl(req, res) {
     bookDao.update({
       ...book,
       pagesRead: newPagesRead,
-      finished: newPagesRead >= book.numberOfPages
+      finished: newPagesRead >= book.numberOfPages,
     });
 
     // 5. Storage Operations
     readingRecordDao.remove(reqParams.id);
 
     // 6. Response
-    res.json({});
+    return ResponseHandlingService.handleSuccess(res, {
+      message: "Reading record deleted successfully",
+    });
   } catch (error) {
-    return ErrorHandlingService.handleServerError(res, error);
+    return ResponseHandlingService.handleServerError(res, error);
   }
 }
 

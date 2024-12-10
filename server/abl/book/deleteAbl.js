@@ -4,7 +4,7 @@
  */
 
 const ValidationService = require("../../services/ValidationService");
-const ErrorHandlingService = require("../../services/ErrorHandlingService");
+const ResponseHandlingService = require("../../services/ResponseHandlingService");
 const bookDao = require("../../dao/book-dao");
 const readingRecordDao = require("../../dao/readingRecord-dao");
 
@@ -41,13 +41,16 @@ async function deleteAbl(req, res) {
     // 2. Input Validation
     const validation = validationService.validate(schema, reqParams);
     if (!validation.valid) {
-      return ErrorHandlingService.handleValidationError(res, validation.errors);
+      return ResponseHandlingService.handleValidationError(
+        res,
+        validation.errors
+      );
     }
 
     // 3. Entity Existence Check
     const book = bookDao.get(reqParams.id);
     if (!book) {
-      return ErrorHandlingService.handleNotFound(res, "Book", reqParams.id);
+      return ResponseHandlingService.handleNotFound(res, "Book", reqParams.id);
     }
 
     // 4. Storage Operations - Cascade Delete
@@ -55,9 +58,11 @@ async function deleteAbl(req, res) {
     bookDao.remove(reqParams.id);
 
     // 5. Response
-    res.json({});
+    return ResponseHandlingService.handleSuccess(res, {
+      message: "Book deleted successfully",
+    });
   } catch (error) {
-    return ErrorHandlingService.handleServerError(res, error);
+    return ResponseHandlingService.handleServerError(res, error);
   }
 }
 

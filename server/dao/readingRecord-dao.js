@@ -3,7 +3,6 @@
  * Handles CRUD operations and data persistence for reading records using file storage
  */
 
-const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 const FileStorageService = require("../services/FileStorageService");

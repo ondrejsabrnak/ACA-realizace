@@ -4,7 +4,7 @@
  */
 
 const ValidationService = require("../../services/ValidationService");
-const ErrorHandlingService = require("../../services/ErrorHandlingService");
+const ResponseHandlingService = require("../../services/ResponseHandlingService");
 const bookDao = require("../../dao/book-dao");
 
 const validationService = new ValidationService();
@@ -40,19 +40,22 @@ async function getAbl(req, res) {
     // 2. Input Validation
     const validation = validationService.validate(schema, reqParams);
     if (!validation.valid) {
-      return ErrorHandlingService.handleValidationError(res, validation.errors);
+      return ResponseHandlingService.handleValidationError(
+        res,
+        validation.errors
+      );
     }
 
     // 3. Storage Operations
     const book = bookDao.get(reqParams.id);
     if (!book) {
-      return ErrorHandlingService.handleNotFound(res, "Book", reqParams.id);
+      return ResponseHandlingService.handleNotFound(res, "Book", reqParams.id);
     }
 
     // 4. Response
-    res.json(book);
+    return ResponseHandlingService.handleSuccess(res, book);
   } catch (error) {
-    return ErrorHandlingService.handleServerError(res, error);
+    return ResponseHandlingService.handleServerError(res, error);
   }
 }
 

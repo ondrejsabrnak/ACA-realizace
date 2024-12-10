@@ -4,7 +4,7 @@
  */
 
 const ValidationService = require("../../services/ValidationService");
-const ErrorHandlingService = require("../../services/ErrorHandlingService");
+const ResponseHandlingService = require("../../services/ResponseHandlingService");
 const bookDao = require("../../dao/book-dao");
 
 const validationService = new ValidationService();
@@ -63,14 +63,17 @@ async function updateAbl(req, res) {
     // 2. Input Validation
     const validation = validationService.validate(schema, book);
     if (!validation.valid) {
-      return ErrorHandlingService.handleValidationError(res, validation.errors);
+      return ResponseHandlingService.handleValidationError(
+        res,
+        validation.errors
+      );
     }
 
     // 3. Business Logic - ISBN Uniqueness Check
     if (book.isbn) {
       const existingBook = bookDao.getByIsbn(book.isbn);
       if (existingBook && existingBook.id !== book.id) {
-        return ErrorHandlingService.handleBusinessError(
+        return ResponseHandlingService.handleBusinessError(
           res,
           "isbnAlreadyExists",
           "A book with the same ISBN already exists"
@@ -81,13 +84,13 @@ async function updateAbl(req, res) {
     // 4. Storage Operations
     let updatedBook = bookDao.update(book);
     if (!updatedBook) {
-      return ErrorHandlingService.handleNotFound(res, "Book", book.id);
+      return ResponseHandlingService.handleNotFound(res, "Book", book.id);
     }
 
     // 5. Response
-    res.json(updatedBook);
+    return ResponseHandlingService.handleSuccess(res, updatedBook);
   } catch (error) {
-    return ErrorHandlingService.handleServerError(res, error);
+    return ResponseHandlingService.handleServerError(res, error);
   }
 }
 
