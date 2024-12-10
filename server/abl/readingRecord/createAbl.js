@@ -35,7 +35,7 @@ const schema = {
     },
     date: {
       type: "string",
-      pattern: "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\\d{4}$",
+      format: "date",
       description: "Date of reading in DD/MM/YYYY format",
     },
     note: {
@@ -64,15 +64,6 @@ async function createAbl(req, res) {
       return ErrorHandlingService.handleValidationError(res, validation.errors);
     }
 
-    // 2.1 Date Validation
-    if (!validationService.isValidPastDate(readingRecord.date)) {
-      return ErrorHandlingService.handleBusinessError(
-        res,
-        "invalidDate",
-        "Reading date cannot be in the future"
-      );
-    }
-
     // 3. Entity Existence Checks
     const book = bookDao.get(readingRecord.bookId);
     if (!book) {
@@ -97,7 +88,7 @@ async function createAbl(req, res) {
     bookDao.update({
       ...book,
       pagesRead: book.pagesRead + readingRecord.readPages,
-      finished: book.pagesRead + readingRecord.readPages >= book.numberOfPages
+      finished: book.pagesRead + readingRecord.readPages >= book.numberOfPages,
     });
 
     // 6. Response

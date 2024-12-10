@@ -5,7 +5,32 @@
  */
 
 const Ajv = require("ajv");
-const ajv = new Ajv({ allErrors: true });
+const addFormats = require("ajv-formats");
+
+const ajv = new Ajv({
+  allErrors: true,
+  messages: true, // Enable custom error messages
+});
+addFormats(ajv);
+
+// Override the default 'date' format with custom validation and error message
+ajv.addFormat("date", {
+  validate: (dateStr) => {
+    if (!dateStr) return false;
+
+    // Check format DD/MM/YYYY
+    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dateStr)) {
+      return false;
+    }
+
+    const [day, month, year] = dateStr.split("/").map(Number);
+    const inputDate = new Date(year, month - 1, day);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return inputDate instanceof Date && !isNaN(inputDate) && inputDate <= today;
+  },
+});
 
 class ValidationService {
   /**
@@ -32,14 +57,12 @@ class ValidationService {
   isValidPastDate(dateStr) {
     if (!dateStr) return false;
 
-    const [day, month, year] = dateStr.split('/').map(Number);
+    const [day, month, year] = dateStr.split("/").map(Number);
     const inputDate = new Date(year, month - 1, day);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    return inputDate instanceof Date &&
-           !isNaN(inputDate) &&
-           inputDate <= today;
+    return inputDate instanceof Date && !isNaN(inputDate) && inputDate <= today;
   }
 
   /**
@@ -68,6 +91,12 @@ class ValidationService {
           return `Field '${field}' must be less than or equal to ${error.params.limit}`;
         case "pattern":
           return `Field '${field}' has invalid format`;
+        case "format":
+          // Use custom error message for date format
+          if (error.params.format === "date") {
+            return `Date must be in DD/MM/YYYY format and cannot be in the future`;
+          }
+          return `Field '${field}' ${error.message}`;
         default:
           return `Field '${field}' ${error.message}`;
       }

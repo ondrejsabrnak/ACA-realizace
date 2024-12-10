@@ -35,7 +35,7 @@ const schema = {
     },
     date: {
       type: "string",
-      pattern: "^\\d{2}/\\d{2}/\\d{4}$",
+      format: "date",
       description: "Date of reading in DD/MM/YYYY format",
     },
     note: {
@@ -62,15 +62,6 @@ async function updateAbl(req, res) {
     const validation = validationService.validate(schema, readingRecord);
     if (!validation.valid) {
       return ErrorHandlingService.handleValidationError(res, validation.errors);
-    }
-
-    // 2.1 Date Validation
-    if (!validationService.isValidPastDate(readingRecord.date)) {
-      return ErrorHandlingService.handleBusinessError(
-        res,
-        "invalidDate",
-        "Reading date cannot be in the future"
-      );
     }
 
     // 3. Entity Existence Checks
