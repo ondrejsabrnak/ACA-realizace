@@ -58,21 +58,24 @@ const schema = {
 async function updateAbl(req, res) {
   try {
     // 1. Input Processing
-    let book = req.body;
+    const bookUpdate = req.body;
 
     // 2. Input Validation
-    const validation = validationService.validate(schema, book);
+    const validation = validationService.validate(schema, bookUpdate);
     if (!validation.valid) {
-      return ResponseHandlingService.handleValidationError(
-        res,
-        validation.errors
-      );
+      return ResponseHandlingService.handleValidationError(res, validation.errors);
     }
 
-    // 3. Business Logic - ISBN Uniqueness Check
-    if (book.isbn) {
-      const existingBook = bookDao.getByIsbn(book.isbn);
-      if (existingBook && existingBook.id !== book.id) {
+    // 3. Get existing book
+    const existingBook = bookDao.get(bookUpdate.id);
+    if (!existingBook) {
+      return ResponseHandlingService.handleNotFound(res, "Book", bookUpdate.id);
+    }
+
+    // 4. Business Logic - ISBN Uniqueness Check
+    if (bookUpdate.isbn) {
+      const bookWithIsbn = bookDao.getByIsbn(bookUpdate.isbn);
+      if (bookWithIsbn && bookWithIsbn.id !== bookUpdate.id) {
         return ResponseHandlingService.handleBusinessError(
           res,
           "isbnAlreadyExists",
@@ -81,13 +84,13 @@ async function updateAbl(req, res) {
       }
     }
 
-    // 4. Storage Operations
-    let updatedBook = bookDao.update(book);
-    if (!updatedBook) {
-      return ResponseHandlingService.handleNotFound(res, "Book", book.id);
-    }
+    // 5. Storage Operations - Merge existing book with updates
+    const updatedBook = bookDao.update({
+      ...existingBook,
+      ...bookUpdate
+    });
 
-    // 5. Response
+    // 6. Response
     return ResponseHandlingService.handleSuccess(res, updatedBook);
   } catch (error) {
     return ResponseHandlingService.handleServerError(res, error);
