@@ -1,4 +1,5 @@
 const ValidationService = require("../../services/ValidationService");
+const ErrorHandlingService = require("../../services/ErrorHandlingService");
 const bookDao = require("../../dao/book-dao");
 
 const validationService = new ValidationService();
@@ -26,44 +27,31 @@ async function updateAbl(req, res) {
     // Validate input
     const validation = validationService.validate(schema, book);
     if (!validation.valid) {
-      res.status(400).json(validation.errors);
-      return;
+      return ErrorHandlingService.handleValidationError(res, validation.errors);
     }
 
     // Check if a book with the same ISBN already exists
     if (book.isbn) {
       const existingBook = bookDao.getByIsbn(book.isbn);
       if (existingBook && existingBook.id !== book.id) {
-        res.status(400).json({
-          code: "isbnAlreadyExists",
-          message: "A book with the same ISBN already exists",
-        });
-        return;
+        return ErrorHandlingService.handleBusinessError(
+          res,
+          'isbnAlreadyExists',
+          'A book with the same ISBN already exists'
+        );
       }
     }
 
     // Update book in persistent storage
-    let updatedbook;
-    try {
-      updatedbook = bookDao.update(book);
-    } catch (e) {
-      res.status(400).json({
-        ...e,
-      });
-      return;
-    }
-    if (!updatedbook) {
-      res.status(404).json({
-        code: "bookNotFound",
-        book: `Book with id ${book.id} not found`,
-      });
-      return;
+    let updatedBook = bookDao.update(book);
+    if (!updatedBook) {
+      return ErrorHandlingService.handleNotFound(res, 'Book', book.id);
     }
 
     // return properly filled dtoOut
-    res.json(updatedbook);
+    res.json(updatedBook);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return ErrorHandlingService.handleServerError(res, error);
   }
 }
 

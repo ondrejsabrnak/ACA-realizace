@@ -1,4 +1,5 @@
 const ValidationService = require("../../services/ValidationService");
+const ErrorHandlingService = require("../../services/ErrorHandlingService");
 const bookDao = require("../../dao/book-dao");
 const readingRecordDao = require("../../dao/readingRecord-dao");
 
@@ -20,8 +21,13 @@ async function deleteAbl(req, res) {
     // Validate input
     const validation = validationService.validate(schema, reqParams);
     if (!validation.valid) {
-      res.status(400).json(validation.errors);
-      return;
+      return ErrorHandlingService.handleValidationError(res, validation.errors);
+    }
+
+    // Check if book exists before attempting to delete
+    const book = bookDao.get(reqParams.id);
+    if (!book) {
+      return ErrorHandlingService.handleNotFound(res, 'Book', reqParams.id);
     }
 
     // Remove reading records associated with the book
@@ -33,7 +39,7 @@ async function deleteAbl(req, res) {
     // Return success
     res.json({});
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return ErrorHandlingService.handleServerError(res, error);
   }
 }
 

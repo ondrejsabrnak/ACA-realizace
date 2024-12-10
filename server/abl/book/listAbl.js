@@ -1,3 +1,4 @@
+const ErrorHandlingService = require("../../services/ErrorHandlingService");
 const bookDao = require("../../dao/book-dao");
 
 async function listAbl(req, res) {
@@ -5,7 +6,7 @@ async function listAbl(req, res) {
     const bookList = bookDao.list();
     res.json(bookList);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return ErrorHandlingService.handleServerError(res, error);
   }
 }
 

@@ -1,4 +1,5 @@
 const ValidationService = require("../../services/ValidationService");
+const ErrorHandlingService = require("../../services/ErrorHandlingService");
 const readingRecordDao = require("../../dao/readingRecord-dao");
 const bookDao = require("../../dao/book-dao");
 
@@ -30,28 +31,23 @@ async function createAbl(req, res) {
     // Validate the input
     const validation = validationService.validate(schema, readingRecord);
     if (!validation.valid) {
-      res.status(400).json(validation.errors);
-      return;
+      return ErrorHandlingService.handleValidationError(res, validation.errors);
     }
 
     const book = bookDao.get(readingRecord.bookId);
 
     // Check if the book exists
-    if (!bookDao.get(readingRecord.bookId)) {
-      res.status(400).json({
-        code: "bookDoesNotExist",
-        message: `Book with id ${readingRecord.bookId} does not exist`,
-      });
-      return;
+    if (!book) {
+      return ErrorHandlingService.handleNotFound(res, 'Book', readingRecord.bookId);
     }
 
     // Check if the read pages exceed the number of left pages in the book
     if (readingRecord.readPages > book.numberOfPages - book.pagesRead) {
-      res.status(400).json({
-        code: "readPagesExceedsLeftPages",
-        message: "Read pages exceed the number of left pages in the book",
-      });
-      return;
+      return ErrorHandlingService.handleBusinessError(
+        res,
+        'readPagesExceedsLeftPages',
+        'Read pages exceed the number of left pages in the book'
+      );
     }
 
     // Create the reading record in persistent storage
@@ -63,7 +59,7 @@ async function createAbl(req, res) {
     // Return the reading record
     res.json(readingRecord);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return ErrorHandlingService.handleServerError(res, error);
   }
 }
 

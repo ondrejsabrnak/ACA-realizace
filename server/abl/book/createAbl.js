@@ -1,4 +1,5 @@
 const ValidationService = require("../../services/ValidationService");
+const ErrorHandlingService = require("../../services/ErrorHandlingService");
 const bookDao = require("../../dao/book-dao");
 
 const validationService = new ValidationService();
@@ -24,23 +25,21 @@ async function createAbl(req, res) {
 
     const validation = validationService.validate(schema, book);
     if (!validation.valid) {
-      res.status(400).json(validation.errors);
-      return;
+      return ErrorHandlingService.handleValidationError(res, validation.errors);
     }
 
     if (bookDao.getByIsbn(book.isbn)) {
-      res.status(400).json({
-        code: "isbnAlreadyExists",
-        message: "A book with the same ISBN already exists",
-      });
-      return;
+      return ErrorHandlingService.handleBusinessError(
+        res,
+        'isbnAlreadyExists',
+        'A book with the same ISBN already exists'
+      );
     }
 
     book = bookDao.create(book);
     res.json(book);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: error.message });
+    return ErrorHandlingService.handleServerError(res, error);
   }
 }
 

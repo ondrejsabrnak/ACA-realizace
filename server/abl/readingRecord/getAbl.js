@@ -1,4 +1,5 @@
 const ValidationService = require("../../services/ValidationService");
+const ErrorHandlingService = require("../../services/ErrorHandlingService");
 const readingRecordDao = require("../../dao/readingRecord-dao");
 
 const validationService = new ValidationService();
@@ -20,24 +21,19 @@ async function getAbl(req, res) {
     // Validate request parameters
     const validation = validationService.validate(schema, reqParams);
     if (!validation.valid) {
-      res.status(400).json(validation.errors);
-      return;
+      return ErrorHandlingService.handleValidationError(res, validation.errors);
     }
 
     // Get the reading record from persistent storage
     const readingRecord = readingRecordDao.get(reqParams.id);
     if (!readingRecord) {
-      res.status(404).json({
-        code: "readingRecordNotFound",
-        message: `Reading record ${reqParams.id} not found`,
-      });
-      return;
+      return ErrorHandlingService.handleNotFound(res, 'ReadingRecord', reqParams.id);
     }
 
     // Return the reading record
     res.json(readingRecord);
-  } catch (e) {
-    res.status(500).json({ message: e.message });
+  } catch (error) {
+    return ErrorHandlingService.handleServerError(res, error);
   }
 }
 

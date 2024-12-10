@@ -1,4 +1,5 @@
 const ValidationService = require("../../services/ValidationService");
+const ErrorHandlingService = require("../../services/ErrorHandlingService");
 const bookDao = require("../../dao/book-dao");
 
 const validationService = new ValidationService();
@@ -20,24 +21,19 @@ async function getAbl(req, res) {
     // Validate request parameters
     const validation = validationService.validate(schema, reqParams);
     if (!validation.valid) {
-      res.status(400).json(validation.errors);
-      return;
+      return ErrorHandlingService.handleValidationError(res, validation.errors);
     }
 
     // Get the book from persistent storage
     const book = bookDao.get(reqParams.id);
     if (!book) {
-      res.status(404).json({
-        code: "bookNotFound",
-        book: `Book with id ${reqParams.id} not found.`,
-      });
-      return;
+      return ErrorHandlingService.handleNotFound(res, 'Book', reqParams.id);
     }
 
     // Return the book
     res.json(book);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return ErrorHandlingService.handleServerError(res, error);
   }
 }
 

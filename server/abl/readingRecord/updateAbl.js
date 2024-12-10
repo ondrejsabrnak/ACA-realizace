@@ -1,4 +1,5 @@
 const ValidationService = require("../../services/ValidationService");
+const ErrorHandlingService = require("../../services/ErrorHandlingService");
 
 const readingRecordDao = require("../../dao/readingRecord-dao");
 const bookDao = require("../../dao/book-dao");
@@ -28,53 +29,37 @@ async function updateAbl(req, res) {
     // Validate input
     const validation = validationService.validate(schema, readingRecord);
     if (!validation.valid) {
-      res.status(400).json(validation.errors);
-      return;
+      return ErrorHandlingService.handleValidationError(res, validation.errors);
     }
 
     // Get existing reading record
     const existingRecord = readingRecordDao.get(readingRecord.id);
     if (!existingRecord) {
-      res.status(404).json({
-        code: "readingRecordNotFound",
-        message: `Reading record with id ${readingRecord.id} not found`,
-      });
-      return;
+      return ErrorHandlingService.handleNotFound(res, 'ReadingRecord', readingRecord.id);
     }
 
     // Get associated book
     const book = bookDao.get(existingRecord.bookId);
     if (!book) {
-      res.status(400).json({
-        code: "bookDoesNotExist",
-        message: `Book with id ${existingRecord.bookId} does not exist`,
-      });
-      return;
+      return ErrorHandlingService.handleNotFound(res, 'Book', existingRecord.bookId);
     }
 
     // If readPages is being updated, check if it doesn't exceed book's pages
     if (readingRecord.readPages) {
       // Calculate total pages read excluding this record
-      const totalPagesWithoutThisRecord =
-        book.pagesRead - existingRecord.readPages;
+      const totalPagesWithoutThisRecord = book.pagesRead - existingRecord.readPages;
 
       // Check if new readPages wouldn't exceed book's total pages
-      if (
-        readingRecord.readPages >
-        book.numberOfPages - totalPagesWithoutThisRecord
-      ) {
-        res.status(400).json({
-          code: "readPagesExceedsLeftPages",
-          message: "Read pages exceed the number of left pages in the book",
-        });
-        return;
+      if (readingRecord.readPages > book.numberOfPages - totalPagesWithoutThisRecord) {
+        return ErrorHandlingService.handleBusinessError(
+          res,
+          'readPagesExceedsLeftPages',
+          'Read pages exceed the number of left pages in the book'
+        );
       }
 
       // Update book's total pages read
-      bookDao.updatePagesRead(
-        book.id,
-        totalPagesWithoutThisRecord + readingRecord.readPages
-      );
+      bookDao.updatePagesRead(book.id, totalPagesWithoutThisRecord + readingRecord.readPages);
     }
 
     // Update reading record
@@ -85,8 +70,7 @@ async function updateAbl(req, res) {
 
     res.json(updatedRecord);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: error.message });
+    return ErrorHandlingService.handleServerError(res, error);
   }
 }
 

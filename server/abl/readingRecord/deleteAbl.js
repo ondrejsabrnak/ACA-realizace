@@ -1,4 +1,5 @@
 const ValidationService = require("../../services/ValidationService");
+const ErrorHandlingService = require("../../services/ErrorHandlingService");
 const readingRecordDao = require("../../dao/readingRecord-dao");
 const bookDao = require("../../dao/book-dao");
 
@@ -21,8 +22,7 @@ async function deleteAbl(req, res) {
     // Validate input
     const validation = validationService.validate(schema, reqParams);
     if (!validation.valid) {
-      res.status(400).json(validation.errors);
-      return;
+      return ErrorHandlingService.handleValidationError(res, validation.errors);
     }
 
     // Get the reading record from persistent storage
@@ -30,11 +30,7 @@ async function deleteAbl(req, res) {
 
     // Check that the reading record exists
     if (!readingRecord) {
-      res.status(404).json({
-        code: "readingRecordNotFound",
-        message: `Reading record ${reqParams.id} not found`,
-      });
-      return;
+      return ErrorHandlingService.handleNotFound(res, 'ReadingRecord', reqParams.id);
     }
 
     // Get the book from persistent storage
@@ -42,11 +38,7 @@ async function deleteAbl(req, res) {
 
     // Check that the book exists
     if (!book) {
-      res.status(400).json({
-        code: "bookDoesNotExist",
-        message: `Book with id ${readingRecord.bookId} does not exist`,
-      });
-      return;
+      return ErrorHandlingService.handleNotFound(res, 'Book', readingRecord.bookId);
     }
 
     // Update read pages in book to reflect the deletion
@@ -60,8 +52,8 @@ async function deleteAbl(req, res) {
 
     // Return success
     res.json({});
-  } catch (e) {
-    res.status(500).json({ message: e.message });
+  } catch (error) {
+    return ErrorHandlingService.handleServerError(res, error);
   }
 }
 
