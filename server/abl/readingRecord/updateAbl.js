@@ -1,73 +1,116 @@
+/**
+ * Application Business Layer for updating reading records
+ * Handles validation, business logic, and storage operations for reading record updates
+ */
+
 const ValidationService = require("../../services/ValidationService");
 const ErrorHandlingService = require("../../services/ErrorHandlingService");
-
 const readingRecordDao = require("../../dao/readingRecord-dao");
 const bookDao = require("../../dao/book-dao");
 
 const validationService = new ValidationService();
 
+/**
+ * Validation schema for reading record updates
+ * @const {Object} schema
+ */
 const schema = {
   type: "object",
   properties: {
-    id: { type: "string", minLength: 32, maxLength: 32 },
-    readPages: { type: "integer", minLength: 1 },
+    id: {
+      type: "string",
+      minLength: 32,
+      maxLength: 32,
+      description: "Unique identifier of the reading record",
+    },
+    readPages: {
+      type: "integer",
+      minimum: 1,
+      description: "Number of pages read in this session",
+    },
     readingTime: {
       type: "string",
       pattern: "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$",
-    }, // hh:mm format
-    date: { type: "string", pattern: "^\\d{2}/\\d{2}/\\d{4}$" }, // dd/mm/yyyy format
-    note: { type: "string", maxLength: 500 },
+      description: "Time spent reading in HH:mm format (24-hour)",
+    },
+    date: {
+      type: "string",
+      pattern: "^\\d{2}/\\d{2}/\\d{4}$",
+      description: "Date of reading in DD/MM/YYYY format",
+    },
+    note: {
+      type: "string",
+      maxLength: 500,
+      description: "Optional notes about the reading session",
+    },
   },
   required: ["id"],
   additionalProperties: false,
 };
 
+/**
+ * Updates an existing reading record and manages associated book's read pages
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 async function updateAbl(req, res) {
   try {
+    // 1. Input Processing
     const readingRecord = req.body;
 
-    // Validate input
+    // 2. Input Validation
     const validation = validationService.validate(schema, readingRecord);
     if (!validation.valid) {
       return ErrorHandlingService.handleValidationError(res, validation.errors);
     }
 
-    // Get existing reading record
+    // 3. Entity Existence Checks
     const existingRecord = readingRecordDao.get(readingRecord.id);
     if (!existingRecord) {
-      return ErrorHandlingService.handleNotFound(res, 'ReadingRecord', readingRecord.id);
+      return ErrorHandlingService.handleNotFound(
+        res,
+        "ReadingRecord",
+        readingRecord.id
+      );
     }
 
-    // Get associated book
     const book = bookDao.get(existingRecord.bookId);
     if (!book) {
-      return ErrorHandlingService.handleNotFound(res, 'Book', existingRecord.bookId);
+      return ErrorHandlingService.handleNotFound(
+        res,
+        "Book",
+        existingRecord.bookId
+      );
     }
 
-    // If readPages is being updated, check if it doesn't exceed book's pages
+    // 4. Business Logic - Page Count Validation & Update
     if (readingRecord.readPages) {
-      // Calculate total pages read excluding this record
       const totalPagesWithoutThisRecord = book.pagesRead - existingRecord.readPages;
+      const newPagesRead = totalPagesWithoutThisRecord + readingRecord.readPages;
 
-      // Check if new readPages wouldn't exceed book's total pages
       if (readingRecord.readPages > book.numberOfPages - totalPagesWithoutThisRecord) {
         return ErrorHandlingService.handleBusinessError(
           res,
-          'readPagesExceedsLeftPages',
-          'Read pages exceed the number of left pages in the book'
+          "readPagesExceedsLeftPages",
+          "Read pages exceed the number of left pages in the book"
         );
       }
 
-      // Update book's total pages read
-      bookDao.updatePagesRead(book.id, totalPagesWithoutThisRecord + readingRecord.readPages);
+      // Update book with new pages read and finished status
+      bookDao.update({
+        ...book,
+        pagesRead: newPagesRead,
+        finished: newPagesRead >= book.numberOfPages
+      });
     }
 
-    // Update reading record
+    // 5. Storage Operations
     const updatedRecord = readingRecordDao.update({
       ...existingRecord,
       ...readingRecord,
     });
 
+    // 6. Response
     res.json(updatedRecord);
   } catch (error) {
     return ErrorHandlingService.handleServerError(res, error);

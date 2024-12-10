@@ -1,3 +1,8 @@
+/**
+ * Application Business Layer for creating reading records
+ * Handles validation, business logic, and storage operations for new reading records
+ */
+
 const ValidationService = require("../../services/ValidationService");
 const ErrorHandlingService = require("../../services/ErrorHandlingService");
 const readingRecordDao = require("../../dao/readingRecord-dao");
@@ -5,58 +10,89 @@ const bookDao = require("../../dao/book-dao");
 
 const validationService = new ValidationService();
 
+/**
+ * Validation schema for creating reading records
+ * @const {Object} schema
+ */
 const schema = {
   type: "object",
   properties: {
-    bookId: { type: "string", minLength: 32, maxLength: 32 },
-    readPages: { type: "integer", minimum: 1 },
+    bookId: {
+      type: "string",
+      minLength: 32,
+      maxLength: 32,
+      description: "ID of the book being read",
+    },
+    readPages: {
+      type: "integer",
+      minimum: 1,
+      description: "Number of pages read in this session",
+    },
     readingTime: {
       type: "string",
       pattern: "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$",
-    }, // hh:mm format
+      description: "Time spent reading in HH:mm format (24-hour)",
+    },
     date: {
       type: "string",
       pattern: "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\\d{4}$",
+      description: "Date of reading in DD/MM/YYYY format",
     },
-    note: { type: "string", maxLength: 500 },
+    note: {
+      type: "string",
+      maxLength: 500,
+      description: "Optional notes about the reading session",
+    },
   },
   required: ["bookId", "readPages", "readingTime", "date"],
   additionalProperties: false,
 };
 
+/**
+ * Creates a new reading record and updates associated book's read pages
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 async function createAbl(req, res) {
   try {
+    // 1. Input Processing
     let readingRecord = req.body;
 
-    // Validate the input
+    // 2. Input Validation
     const validation = validationService.validate(schema, readingRecord);
     if (!validation.valid) {
       return ErrorHandlingService.handleValidationError(res, validation.errors);
     }
 
+    // 3. Entity Existence Checks
     const book = bookDao.get(readingRecord.bookId);
-
-    // Check if the book exists
     if (!book) {
-      return ErrorHandlingService.handleNotFound(res, 'Book', readingRecord.bookId);
-    }
-
-    // Check if the read pages exceed the number of left pages in the book
-    if (readingRecord.readPages > book.numberOfPages - book.pagesRead) {
-      return ErrorHandlingService.handleBusinessError(
+      return ErrorHandlingService.handleNotFound(
         res,
-        'readPagesExceedsLeftPages',
-        'Read pages exceed the number of left pages in the book'
+        "Book",
+        readingRecord.bookId
       );
     }
 
-    // Create the reading record in persistent storage
+    // 4. Business Logic - Page Count Validation
+    if (readingRecord.readPages > book.numberOfPages - book.pagesRead) {
+      return ErrorHandlingService.handleBusinessError(
+        res,
+        "readPagesExceedsLeftPages",
+        "Read pages exceed the number of left pages in the book"
+      );
+    }
+
+    // 5. Storage Operations
     readingRecord = readingRecordDao.create(readingRecord);
+    const newPagesRead = book.pagesRead + readingRecord.readPages;
+    bookDao.update({
+      ...book,
+      pagesRead: newPagesRead,
+      finished: newPagesRead >= book.numberOfPages
+    });
 
-    // Update the book's pagesRead
-    bookDao.updatePagesRead(book.id, book.pagesRead + readingRecord.readPages);
-
-    // Return the reading record
+    // 6. Response
     res.json(readingRecord);
   } catch (error) {
     return ErrorHandlingService.handleServerError(res, error);

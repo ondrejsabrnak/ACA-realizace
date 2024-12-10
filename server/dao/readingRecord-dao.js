@@ -1,3 +1,8 @@
+/**
+ * Data Access Object for Reading Records
+ * Handles CRUD operations and data persistence for reading records using file storage
+ */
+
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
@@ -7,66 +12,62 @@ const storage = new FileStorageService(
   path.join(__dirname, "storage", "readingRecordList")
 );
 
-// Method to create a reading record in a file
+/**
+ * Creates a new reading record
+ * @param {Object} readingRecord - Reading record data without ID
+ * @returns {Object} Created reading record with generated ID
+ */
 function create(readingRecord) {
-  try {
-    readingRecord.id = crypto.randomBytes(16).toString("hex");
-    return storage.create(readingRecord.id, readingRecord);
-  } catch (error) {
-    throw { code: "failedToCreateReadingRecord", message: error.message };
-  }
+  readingRecord.id = crypto.randomBytes(16).toString("hex");
+  return storage.create(readingRecord.id, readingRecord);
 }
 
-// Method to get a reading record from a file
+/**
+ * Retrieves a reading record by ID
+ * @param {string} readingRecordId - ID of the reading record to retrieve
+ * @returns {Object|null} Reading record if found, null otherwise
+ */
 function get(readingRecordId) {
   return storage.get(readingRecordId);
 }
 
-// Method to update a reading record in a file
+/**
+ * Updates an existing reading record
+ * @param {Object} readingRecord - Reading record data with ID
+ * @returns {Object} Updated reading record
+ */
 function update(readingRecord) {
   return storage.update(readingRecord.id, readingRecord);
 }
 
-// Method to remove a reading record from a file
+/**
+ * Removes a reading record by ID
+ * @param {string} readingRecordId - ID of the reading record to remove
+ * @returns {Object} Empty object on success
+ */
 function remove(readingRecordId) {
   return storage.remove(readingRecordId);
 }
 
-// Method to remove all reading records by bookId from a file
-function removeByBookId(bookId) {
-  try {
-    const records = list();
-    records
-      .filter((record) => record.bookId === bookId)
-      .forEach((record) => remove(record.id));
-    return {};
-  } catch (error) {
-    throw { code: "failedToRemoveReadingRecords", message: error.message };
-  }
-}
-
-// Method to list all reading records from a file
+/**
+ * Lists all reading records
+ * @returns {Array<Object>} Array of all reading records
+ */
 function list() {
-  try {
-    const readingRecordList = storage.list();
-    readingRecordList.sort((a, b) => {
-      // Convert date strings (DD/MM/YYYY) to Date objects for comparison
-      const [dayA, monthA, yearA] = a.date.split("/");
-      const [dayB, monthB, yearB] = b.date.split("/");
-      const dateA = new Date(yearA, monthA - 1, dayA);
-      const dateB = new Date(yearB, monthB - 1, dayB);
-      return dateB - dateA; // Descending order (newest first)
-    });
-    return readingRecordList;
-  } catch (error) {
-    throw { code: "failedToListReadingRecords", message: error.message };
-  }
+  return storage.list();
 }
 
-// Method to list all reading records by bookId from a file
-function listByBookId(bookId) {
+/**
+ * Removes all reading records for a specific book
+ * @param {string} bookId - ID of the book whose records should be removed
+ * @returns {Object} Empty object on success
+ */
+function removeByBookId(bookId) {
   const records = list();
-  return records.filter((record) => record.bookId === bookId);
+  records
+    .filter((record) => record.bookId === bookId)
+    .forEach((record) => remove(record.id));
+  return {};
 }
 
 module.exports = {
@@ -76,5 +77,4 @@ module.exports = {
   remove,
   removeByBookId,
   list,
-  listByBookId,
 };

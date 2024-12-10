@@ -1,3 +1,8 @@
+/**
+ * Application Business Layer for deleting reading records
+ * Handles validation, business logic, and storage operations for reading record deletion
+ */
+
 const ValidationService = require("../../services/ValidationService");
 const ErrorHandlingService = require("../../services/ErrorHandlingService");
 const readingRecordDao = require("../../dao/readingRecord-dao");
@@ -5,52 +10,71 @@ const bookDao = require("../../dao/book-dao");
 
 const validationService = new ValidationService();
 
+/**
+ * Validation schema for reading record deletion
+ * @const {Object} schema
+ */
 const schema = {
   type: "object",
   properties: {
-    id: { type: "string", minLength: 32, maxLength: 32 },
+    id: {
+      type: "string",
+      minLength: 32,
+      maxLength: 32,
+      description: "Unique identifier of the reading record to delete",
+    },
   },
   required: ["id"],
   additionalProperties: false,
 };
 
+/**
+ * Deletes a reading record and updates associated book's read pages
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 async function deleteAbl(req, res) {
   try {
-    // Get request parameters
+    // 1. Input Processing
     const reqParams = req.body;
 
-    // Validate input
+    // 2. Input Validation
     const validation = validationService.validate(schema, reqParams);
     if (!validation.valid) {
       return ErrorHandlingService.handleValidationError(res, validation.errors);
     }
 
-    // Get the reading record from persistent storage
+    // 3. Entity Existence Checks
     const readingRecord = readingRecordDao.get(reqParams.id);
-
-    // Check that the reading record exists
     if (!readingRecord) {
-      return ErrorHandlingService.handleNotFound(res, 'ReadingRecord', reqParams.id);
+      return ErrorHandlingService.handleNotFound(
+        res,
+        "ReadingRecord",
+        reqParams.id
+      );
     }
 
-    // Get the book from persistent storage
     const book = bookDao.get(readingRecord.bookId);
-
-    // Check that the book exists
     if (!book) {
-      return ErrorHandlingService.handleNotFound(res, 'Book', readingRecord.bookId);
+      return ErrorHandlingService.handleNotFound(
+        res,
+        "Book",
+        readingRecord.bookId
+      );
     }
 
-    // Update read pages in book to reflect the deletion
-    bookDao.updatePagesRead(
-      readingRecord.bookId,
-      book.pagesRead - readingRecord.readPages
-    );
+    // 4. Business Logic - Update Book Pages
+    const newPagesRead = book.pagesRead - readingRecord.readPages;
+    bookDao.update({
+      ...book,
+      pagesRead: newPagesRead,
+      finished: newPagesRead >= book.numberOfPages
+    });
 
-    // Remove readingRecord from persistent storage
+    // 5. Storage Operations
     readingRecordDao.remove(reqParams.id);
 
-    // Return success
+    // 6. Response
     res.json({});
   } catch (error) {
     return ErrorHandlingService.handleServerError(res, error);
