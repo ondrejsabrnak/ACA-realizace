@@ -2,6 +2,7 @@ import React from "react";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import NavbarComponent from "./components/navbar/navbar";
+import FooterComponent from "./components/footer/footer";
 
 const App = () => (
   <div className="min-vh-100 d-flex flex-column">
@@ -15,6 +16,9 @@ const App = () => (
         </Container>
       </Container>
     </main>
+    <footer className="bg-body-tertiary py-3 mt-auto">
+      <FooterComponent />
+    </footer>
   </div>
 );
 
