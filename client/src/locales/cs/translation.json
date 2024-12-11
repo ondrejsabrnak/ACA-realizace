@@ -1,0 +1,10 @@
+{
+  "app_name": "Čtenářův deník",
+  "app_description": "Místo pro zaznamenávání vašeho čtenářského postupu.",
+  "app_footer": "Ondřej Šabrňák | 2024 Čtenářův deník.",
+  "nav": {
+    "home": "Hlavní stránka",
+    "books": "Knihy",
+    "about": "O aplikaci"
+  }
+}

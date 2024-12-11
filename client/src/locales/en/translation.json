@@ -1,0 +1,10 @@
+{
+  "app_name": "The Reader's Diary",
+  "app_description": "A place to keep track of your reading journey.",
+  "app_footer": "Ondřej Šabrňák | 2024 The Reader's Diary.",
+  "nav": {
+    "home": "Home",
+    "books": "Books",
+    "about": "About"
+  }
+}
