@@ -4,7 +4,8 @@
   "nav": {
     "home": "Hlavní stránka",
     "books": "Knihy",
-    "about": "O aplikaci"
+    "about": "O aplikaci",
+    "language": "Vybrat jazyk"
   },
   "footer": {
     "copyright": "Ondřej Šabrňák | Čtenářův deník",

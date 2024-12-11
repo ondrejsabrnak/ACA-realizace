@@ -4,7 +4,8 @@
   "nav": {
     "home": "Home",
     "books": "Books",
-    "about": "About"
+    "about": "About",
+    "language": "Select Language"
   },
   "footer": {
     "copyright": "Ondřej Šabrňák | The Reader's Diary",
