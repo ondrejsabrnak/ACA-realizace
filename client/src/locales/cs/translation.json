@@ -14,6 +14,9 @@
   "books": {
     "finished": "Dočtené knihy",
     "unfinished": "Rozečtené knihy",
-    "pages_read": "přečtených stran"
+    "pages_read": "přečtených stran",
+    "search_label": "Vyhledat knihu",
+    "search_placeholder": "Zadejte název nebo autora knihy...",
+    "add_book": "Přidat knihu"
   }
 }
