@@ -10,5 +10,10 @@
   "footer": {
     "copyright": "Ondřej Šabrňák | Čtenářův deník",
     "version": "Verze 1.0.0"
+  },
+  "books": {
+    "finished": "Dočtené knihy",
+    "unfinished": "Rozečtené knihy",
+    "pages_read": "přečtených stran"
   }
 }

@@ -10,5 +10,10 @@
   "footer": {
     "copyright": "Ondřej Šabrňák | The Reader's Diary",
     "version": "Version 1.0.0"
+  },
+  "books": {
+    "finished": "Finished Books",
+    "unfinished": "Currently Reading",
+    "pages_read": "pages read"
   }
 }
