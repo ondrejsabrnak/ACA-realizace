@@ -19,10 +19,17 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: 'en',
+    fallbackLng: 'cs',
+    detection: {
+      order: ['navigator'],
+      lookupFromPathIndex: 0,
+      checkWhitelist: true
+    },
+    load: 'languageOnly',
+    whitelist: ['cs', 'en'],
     interpolation: {
       escapeValue: false
     }
   });
 
-export default i18n; 
+export default i18n;
