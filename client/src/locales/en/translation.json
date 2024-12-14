@@ -17,6 +17,20 @@
     "pages_read": "pages read",
     "search_label": "Search books",
     "search_placeholder": "Enter book title or author...",
-    "add_book": "Add Book"
+    "add_book": "Add Book",
+    "mark_finished": "Mark as finished",
+    "mark_unfinished": "Mark as unfinished",
+    "confirm_status_change": "Change Book Status",
+    "confirm_mark_finished": "Do you want to mark \"{{title}}\" as finished?",
+    "confirm_mark_unfinished": "Are you sure you want to mark \"{{title}}\" as unfinished?",
+    "warning_lose_data": "Warning: This will remove the book's rating and review.",
+    "rating": "Rating",
+    "rating_required": "Please rate the book",
+    "review": "Review (optional)",
+    "review_placeholder": "Write your thoughts about the book..."
+  },
+  "common": {
+    "cancel": "Cancel",
+    "confirm": "Confirm"
   }
 }

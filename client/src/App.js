@@ -4,10 +4,21 @@ import NavbarComponent from "./components/navbar/Navbar";
 import FooterComponent from "./components/footer/Footer";
 import BookList from "./components/book/BookList";
 import BookSearch from "./components/book/BookSearch";
-import { books } from "./data/mockBooks";
+import { books as initialBooks } from "./data/mockBooks";
 
 const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [books, setBooks] = useState(initialBooks);
+
+  const toggleBookFinished = (bookId) => {
+    setBooks(prevBooks =>
+      prevBooks.map(book =>
+        book.id === bookId
+          ? { ...book, finished: !book.finished, pagesRead: !book.finished ? book.numberOfPages : book.pagesRead }
+          : book
+      )
+    );
+  };
 
   const filteredBooks = books.filter((book) => {
     const query = searchQuery.toLowerCase();
@@ -28,8 +39,16 @@ const App = () => {
       <main className="flex-grow-1">
         <Container className="py-4">
           <BookSearch onSearch={setSearchQuery} />
-          <BookList type="unfinished" books={unfinishedBooks} />
-          <BookList type="finished" books={finishedBooks} />
+          <BookList
+            type="unfinished"
+            books={unfinishedBooks}
+            onToggleFinished={toggleBookFinished}
+          />
+          <BookList
+            type="finished"
+            books={finishedBooks}
+            onToggleFinished={toggleBookFinished}
+          />
         </Container>
       </main>
       <footer className="bg-body-tertiary py-3 mt-auto">

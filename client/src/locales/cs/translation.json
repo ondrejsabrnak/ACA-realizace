@@ -17,6 +17,20 @@
     "pages_read": "přečtených stran",
     "search_label": "Vyhledat knihu",
     "search_placeholder": "Zadejte název nebo autora knihy...",
-    "add_book": "Přidat knihu"
+    "add_book": "Přidat knihu",
+    "mark_finished": "Označit jako dočtené",
+    "mark_unfinished": "Označit jako rozečtené",
+    "confirm_status_change": "Změna stavu knihy",
+    "confirm_mark_finished": "Chcete označit knihu \"{{title}}\" jako dočtenou?",
+    "confirm_mark_unfinished": "Opravdu chcete označit knihu \"{{title}}\" jako rozečtenou?",
+    "warning_lose_data": "Upozornění: Tímto ztratíte hodnocení a recenzi knihy.",
+    "rating": "Hodnocení",
+    "rating_required": "Prosím ohodnoťte knihu",
+    "review": "Recenze (volitelné)",
+    "review_placeholder": "Napište svůj názor na knihu..."
+  },
+  "common": {
+    "cancel": "Zrušit",
+    "confirm": "Potvrdit"
   }
 }

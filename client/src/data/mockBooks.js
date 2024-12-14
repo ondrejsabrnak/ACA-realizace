@@ -16,6 +16,8 @@ export const books = [
     id: "8c627b526a5945f089f8d342b3c11888",
     pagesRead: 310,
     finished: true,
+    rating: 4,
+    review: "Super kniha!",
   },
   {
     title: "Pán prstenů: Společenstvo prstenu",
