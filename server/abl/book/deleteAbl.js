@@ -34,33 +34,71 @@ const schema = {
  * @param {Object} res - Express response object
  */
 async function deleteAbl(req, res) {
+  let originalBook = null;
+  let originalRecords = [];
+  let deletedRecords = [];
+  let bookDeleted = false;
+
   try {
-    // 1. Input Processing
     const reqParams = req.body;
 
-    // 2. Input Validation
+    // Input Validation
     const validation = validationService.validate(schema, reqParams);
     if (!validation.valid) {
-      return ResponseHandlingService.handleValidationError(
-        res,
-        validation.errors
-      );
+      return ResponseHandlingService.handleValidationError(res, validation.errors);
     }
 
-    // 3. Entity Existence Check
-    const book = bookDao.get(reqParams.id);
-    if (!book) {
-      return ResponseHandlingService.handleNotFound(res, "Book", reqParams.id);
+    // Get and validate book
+    originalBook = bookDao.get(reqParams.id);
+    if (!originalBook) {
+      return ResponseHandlingService.handleNotFound(res, 'Book', reqParams.id);
     }
 
-    // 4. Storage Operations - Cascade Delete
-    readingRecordDao.removeByBookId(reqParams.id);
-    bookDao.remove(reqParams.id);
+    // Get all associated reading records for potential rollback
+    originalRecords = readingRecordDao.list()
+      .filter(record => record.bookId === reqParams.id);
 
-    // 5. Response
-    return ResponseHandlingService.handleSuccess(res, {
-      message: "Book deleted successfully",
-    });
+    try {
+      // Start atomic operation
+
+      // 1. Delete all associated reading records
+      for (const record of originalRecords) {
+        readingRecordDao.remove(record.id);
+        deletedRecords.push(record);
+      }
+
+      // 2. Delete the book
+      bookDao.remove(reqParams.id);
+      bookDeleted = true;
+
+      // If we got here, both operations succeeded
+      return ResponseHandlingService.handleSuccess(res, {
+        message: 'Book and associated reading records deleted successfully',
+        deletedRecords: deletedRecords.length
+      });
+    } catch (error) {
+      // If any operation failed, try to rollback
+      try {
+        if (bookDeleted) {
+          // Rollback book deletion
+          bookDao.create({
+            ...originalBook,
+            id: originalBook.id // Preserve original ID
+          });
+        }
+
+        // Rollback reading records deletion
+        for (const record of deletedRecords) {
+          readingRecordDao.create({
+            ...record,
+            id: record.id // Preserve original ID
+          });
+        }
+      } catch (rollbackError) {
+        console.error('Rollback failed:', rollbackError);
+      }
+      throw error;
+    }
   } catch (error) {
     return ResponseHandlingService.handleServerError(res, error);
   }

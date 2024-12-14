@@ -54,11 +54,13 @@ const schema = {
  * @param {Object} res - Express response object
  */
 async function updateAbl(req, res) {
+  let originalBook = null;
+  let originalRecord = null;
+
   try {
-    // 1. Input Processing
     const readingRecord = req.body;
 
-    // 2. Input Validation
+    // Input Validation
     const validation = validationService.validate(schema, readingRecord);
     if (!validation.valid) {
       return ResponseHandlingService.handleValidationError(
@@ -67,9 +69,9 @@ async function updateAbl(req, res) {
       );
     }
 
-    // 3. Entity Existence Checks
-    const existingRecord = readingRecordDao.get(readingRecord.id);
-    if (!existingRecord) {
+    // Get and validate existing record
+    originalRecord = readingRecordDao.get(readingRecord.id);
+    if (!originalRecord) {
       return ResponseHandlingService.handleNotFound(
         res,
         "ReadingRecord",
@@ -77,25 +79,27 @@ async function updateAbl(req, res) {
       );
     }
 
-    const book = bookDao.get(existingRecord.bookId);
-    if (!book) {
+    // Get and validate associated book
+    originalBook = bookDao.get(originalRecord.bookId);
+    if (!originalBook) {
       return ResponseHandlingService.handleNotFound(
         res,
         "Book",
-        existingRecord.bookId
+        originalRecord.bookId
       );
     }
 
-    // 4. Business Logic - Page Count Validation & Update
+    // If updating pages, validate and prepare updates
     if (readingRecord.readPages) {
       const totalPagesWithoutThisRecord =
-        book.pagesRead - existingRecord.readPages;
+        originalBook.pagesRead - originalRecord.readPages;
       const newPagesRead =
         totalPagesWithoutThisRecord + readingRecord.readPages;
 
+      // Validate page count
       if (
         readingRecord.readPages >
-        book.numberOfPages - totalPagesWithoutThisRecord
+        originalBook.numberOfPages - totalPagesWithoutThisRecord
       ) {
         return ResponseHandlingService.handleBusinessError(
           res,
@@ -104,22 +108,48 @@ async function updateAbl(req, res) {
         );
       }
 
-      // Update book with new pages read and finished status
-      bookDao.update({
-        ...book,
-        pagesRead: newPagesRead,
-        finished: newPagesRead >= book.numberOfPages,
+      try {
+        // Start atomic operation
+
+        // 1. Update reading record first
+        const updatedRecord = readingRecordDao.update({
+          ...originalRecord,
+          ...readingRecord,
+        });
+
+        // 2. Update book's pages and status
+        const updatedBook = bookDao.update({
+          ...originalBook,
+          pagesRead: newPagesRead,
+          finished: newPagesRead >= originalBook.numberOfPages,
+        });
+
+        // If we got here, both operations succeeded
+        return ResponseHandlingService.handleSuccess(res, updatedRecord);
+      } catch (error) {
+        // If any operation failed, try to rollback
+        try {
+          if (updatedRecord) {
+            // Rollback reading record update
+            readingRecordDao.update(originalRecord);
+          }
+          if (updatedBook) {
+            // Rollback book update
+            bookDao.update(originalBook);
+          }
+        } catch (rollbackError) {
+          console.error("Rollback failed:", rollbackError);
+        }
+        throw error;
+      }
+    } else {
+      // If not updating pages, just update the reading record
+      const updatedRecord = readingRecordDao.update({
+        ...originalRecord,
+        ...readingRecord,
       });
+      return ResponseHandlingService.handleSuccess(res, updatedRecord);
     }
-
-    // 5. Storage Operations
-    const updatedRecord = readingRecordDao.update({
-      ...existingRecord,
-      ...readingRecord,
-    });
-
-    // 6. Response
-    return ResponseHandlingService.handleSuccess(res, updatedRecord);
   } catch (error) {
     return ResponseHandlingService.handleServerError(res, error);
   }

@@ -54,11 +54,13 @@ const schema = {
  * @param {Object} res - Express response object
  */
 async function createAbl(req, res) {
-  try {
-    // 1. Input Processing
-    let readingRecord = req.body;
+  let createdRecord = null;
+  let originalBook = null;
 
-    // 2. Input Validation
+  try {
+    const readingRecord = req.body;
+
+    // Input Validation
     const validation = validationService.validate(schema, readingRecord);
     if (!validation.valid) {
       return ResponseHandlingService.handleValidationError(
@@ -67,9 +69,9 @@ async function createAbl(req, res) {
       );
     }
 
-    // 3. Entity Existence Checks
-    const book = bookDao.get(readingRecord.bookId);
-    if (!book) {
+    // Get and validate book
+    originalBook = bookDao.get(readingRecord.bookId);
+    if (!originalBook) {
       return ResponseHandlingService.handleNotFound(
         res,
         "Book",
@@ -77,8 +79,11 @@ async function createAbl(req, res) {
       );
     }
 
-    // 4. Business Logic - Page Count Validation
-    if (readingRecord.readPages > book.numberOfPages - book.pagesRead) {
+    // Validate page count
+    if (
+      readingRecord.readPages >
+      originalBook.numberOfPages - originalBook.pagesRead
+    ) {
       return ResponseHandlingService.handleBusinessError(
         res,
         "readPagesExceedsLeftPages",
@@ -86,16 +91,42 @@ async function createAbl(req, res) {
       );
     }
 
-    // 5. Storage Operations
-    readingRecord = readingRecordDao.create(readingRecord);
-    bookDao.update({
-      ...book,
-      pagesRead: book.pagesRead + readingRecord.readPages,
-      finished: book.pagesRead + readingRecord.readPages >= book.numberOfPages,
-    });
+    try {
+      // Start atomic operation
 
-    // 6. Response
-    return ResponseHandlingService.handleSuccess(res, readingRecord, 201);
+      // 1. Create reading record
+      createdRecord = readingRecordDao.create(readingRecord);
+
+      // 2. Update book's pages and status
+      const newPagesRead = originalBook.pagesRead + readingRecord.readPages;
+      const updatedBook = bookDao.update({
+        ...originalBook,
+        pagesRead: newPagesRead,
+        finished: newPagesRead >= originalBook.numberOfPages,
+      });
+
+      // If we got here, both operations succeeded
+      return ResponseHandlingService.handleSuccess(
+        res,
+        createdRecord,
+        "Reading record created successfully"
+      );
+    } catch (error) {
+      // If any operation failed, try to rollback
+      try {
+        if (createdRecord) {
+          // Rollback reading record creation
+          readingRecordDao.remove(createdRecord.id);
+        }
+        if (updatedBook) {
+          // Rollback book update
+          bookDao.update(originalBook);
+        }
+      } catch (rollbackError) {
+        console.error("Rollback failed:", rollbackError);
+      }
+      throw error;
+    }
   } catch (error) {
     return ResponseHandlingService.handleServerError(res, error);
   }

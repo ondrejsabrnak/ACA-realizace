@@ -34,11 +34,15 @@ const schema = {
  * @param {Object} res - Express response object
  */
 async function deleteAbl(req, res) {
+  let originalBook = null;
+  let originalRecord = null;
+  let deletedRecord = false;
+  let updatedBook = null;
+
   try {
-    // 1. Input Processing
     const reqParams = req.body;
 
-    // 2. Input Validation
+    // Input Validation
     const validation = validationService.validate(schema, reqParams);
     if (!validation.valid) {
       return ResponseHandlingService.handleValidationError(
@@ -47,9 +51,9 @@ async function deleteAbl(req, res) {
       );
     }
 
-    // 3. Entity Existence Checks
-    const readingRecord = readingRecordDao.get(reqParams.id);
-    if (!readingRecord) {
+    // Get and validate reading record
+    originalRecord = readingRecordDao.get(reqParams.id);
+    if (!originalRecord) {
       return ResponseHandlingService.handleNotFound(
         res,
         "ReadingRecord",
@@ -57,30 +61,54 @@ async function deleteAbl(req, res) {
       );
     }
 
-    const book = bookDao.get(readingRecord.bookId);
-    if (!book) {
+    // Get and validate book
+    originalBook = bookDao.get(originalRecord.bookId);
+    if (!originalBook) {
       return ResponseHandlingService.handleNotFound(
         res,
         "Book",
-        readingRecord.bookId
+        originalRecord.bookId
       );
     }
 
-    // 4. Business Logic - Update Book Pages
-    const newPagesRead = book.pagesRead - readingRecord.readPages;
-    bookDao.update({
-      ...book,
-      pagesRead: newPagesRead,
-      finished: newPagesRead >= book.numberOfPages,
-    });
+    try {
+      // Start atomic operation
 
-    // 5. Storage Operations
-    readingRecordDao.remove(reqParams.id);
+      // 1. Update book's pages and status
+      const newPagesRead = originalBook.pagesRead - originalRecord.readPages;
+      updatedBook = bookDao.update({
+        ...originalBook,
+        pagesRead: newPagesRead,
+        finished: newPagesRead >= originalBook.numberOfPages,
+      });
 
-    // 6. Response
-    return ResponseHandlingService.handleSuccess(res, {
-      message: "Reading record deleted successfully",
-    });
+      // 2. Delete reading record
+      readingRecordDao.remove(reqParams.id);
+      deletedRecord = true;
+
+      // If we got here, both operations succeeded
+      return ResponseHandlingService.handleSuccess(res, {
+        message: "Reading record deleted successfully",
+      });
+    } catch (error) {
+      // If any operation failed, try to rollback
+      try {
+        if (updatedBook) {
+          // Rollback book update
+          bookDao.update(originalBook);
+        }
+        if (deletedRecord) {
+          // Rollback reading record deletion by recreating it
+          readingRecordDao.create({
+            ...originalRecord,
+            id: originalRecord.id, // Preserve original ID
+          });
+        }
+      } catch (rollbackError) {
+        console.error("Rollback failed:", rollbackError);
+      }
+      throw error;
+    }
   } catch (error) {
     return ResponseHandlingService.handleServerError(res, error);
   }
