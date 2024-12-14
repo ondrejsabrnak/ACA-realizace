@@ -1,18 +1,23 @@
 {
   "name": "ctenaruvdenik-server",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "type": "commonjs",
   "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "Backend server pro aplikaci Čtenářův deník",
   "dependencies": {
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "cors": "^2.8.5",
     "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
   }
 }
