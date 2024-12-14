@@ -30,8 +30,8 @@ const schema = {
     },
     readingTime: {
       type: "string",
-      pattern: "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$",
-      description: "Time spent reading in HH:mm format (24-hour)",
+      format: "readingTime",
+      description: "Time spent reading in HH:mm format (24-hour, max 24 hours)",
     },
     date: {
       type: "string",

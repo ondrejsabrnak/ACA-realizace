@@ -29,14 +29,14 @@ const schema = {
       description: "Author of the book",
     },
     numberOfPages: {
-      type: "number",
+      type: "integer",
       minimum: 1,
       maximum: 10000,
       description: "Total number of pages in the book",
     },
     isbn: {
       type: "string",
-      pattern: "^(?:\\d[-]?){9}[\\d|X]$|^(?:\\d[-]?){13}$",
+      format: "isbn",
       description: "ISBN-10 or ISBN-13 of the book (optional)",
     },
   },
