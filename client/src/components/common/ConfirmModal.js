@@ -15,10 +15,10 @@ const ConfirmModal = ({
 
   return (
     <Modal show={show} onHide={onHide} centered>
-      <Modal.Header closeButton className="border-0 pb-0">
+      <Modal.Header closeButton className="border-bottom">
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body className="pt-2">
+      <Modal.Body className="py-3">
         {children}
       </Modal.Body>
       <Modal.Footer className="border-0">
