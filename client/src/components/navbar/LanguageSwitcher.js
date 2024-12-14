@@ -10,21 +10,20 @@ const LanguageSwitcher = () => {
     i18n.changeLanguage(lng);
   };
 
-  const currentLanguage = languages.find(
-    (lang) => lang.code === i18n.language
-  ) || languages[0];
+  // Get base language code without region (e.g., "en" from "en-GB")
+  const currentLanguage = i18n.language.split("-")[0];
 
   return (
     <Dropdown>
       <Dropdown.Toggle variant="outline-secondary" size="sm">
-        {currentLanguage.code.toUpperCase()}
+        {currentLanguage.toUpperCase()}
       </Dropdown.Toggle>
       <Dropdown.Menu className="dropdown-menu-end">
         {languages.map(({ code, name }) => (
           <Dropdown.Item
             key={code}
             onClick={() => changeLanguage(code)}
-            active={i18n.language === code}
+            active={currentLanguage === code}
             className="d-flex justify-content-between align-items-center px-3"
           >
             {name} <span className="text-muted">{code.toUpperCase()}</span>
