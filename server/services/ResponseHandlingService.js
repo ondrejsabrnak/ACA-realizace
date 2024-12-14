@@ -9,11 +9,12 @@ class ResponseHandlingService {
    * Handles successful responses
    * @param {Object} res - Express response object
    * @param {*} data - Response data
-   * @param {number} [status=200] - HTTP status code
+   * @param {string} [message] - Optional success message
    */
-  static handleSuccess(res, data, status = 200) {
-    return res.status(status).json({
+  static handleSuccess(res, data, message = "Operation successful") {
+    return res.status(200).json({
       status: "success",
+      message,
       data
     });
   }

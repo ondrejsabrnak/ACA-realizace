@@ -1,0 +1,12 @@
+{
+  "ignore": [
+    "storage/*",
+    "*.json",
+    "!package.json",
+    "!nodemon.json"
+  ],
+  "watch": [
+    "*.js",
+    "**/*.js"
+  ]
+}

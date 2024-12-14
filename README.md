@@ -88,7 +88,8 @@ POST /readingRecord/create
 {
     "bookId": "78ca114886e227dd06cf4f6838d2a5e4",
     "readPages": 50,
-    "date": "2024-01-14",
+    "readingTime": "01:30",
+    "date": "14/01/2024",
     "note": "Zajímavá první kapitola"
 }
 ```

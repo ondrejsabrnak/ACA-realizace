@@ -11,7 +11,7 @@ const bookDao = require("../../dao/book-dao");
 const validationService = new ValidationService();
 
 /**
- * Validation schema for creating reading records
+ * Validation schema for reading record creation
  * @const {Object} schema
  */
 const schema = {
@@ -21,7 +21,7 @@ const schema = {
       type: "string",
       minLength: 32,
       maxLength: 32,
-      description: "ID of the book being read",
+      description: "ID of the book this record belongs to",
     },
     readPages: {
       type: "integer",
@@ -56,6 +56,7 @@ const schema = {
 async function createAbl(req, res) {
   let createdRecord = null;
   let originalBook = null;
+  let updatedBook = null;
 
   try {
     const readingRecord = req.body;
@@ -63,27 +64,17 @@ async function createAbl(req, res) {
     // Input Validation
     const validation = validationService.validate(schema, readingRecord);
     if (!validation.valid) {
-      return ResponseHandlingService.handleValidationError(
-        res,
-        validation.errors
-      );
+      return ResponseHandlingService.handleValidationError(res, validation.errors);
     }
 
     // Get and validate book
     originalBook = bookDao.get(readingRecord.bookId);
     if (!originalBook) {
-      return ResponseHandlingService.handleNotFound(
-        res,
-        "Book",
-        readingRecord.bookId
-      );
+      return ResponseHandlingService.handleNotFound(res, "Book", readingRecord.bookId);
     }
 
     // Validate page count
-    if (
-      readingRecord.readPages >
-      originalBook.numberOfPages - originalBook.pagesRead
-    ) {
+    if (readingRecord.readPages > originalBook.numberOfPages - originalBook.pagesRead) {
       return ResponseHandlingService.handleBusinessError(
         res,
         "readPagesExceedsLeftPages",
@@ -99,18 +90,15 @@ async function createAbl(req, res) {
 
       // 2. Update book's pages and status
       const newPagesRead = originalBook.pagesRead + readingRecord.readPages;
-      const updatedBook = bookDao.update({
+      updatedBook = bookDao.update({
         ...originalBook,
         pagesRead: newPagesRead,
         finished: newPagesRead >= originalBook.numberOfPages,
       });
 
       // If we got here, both operations succeeded
-      return ResponseHandlingService.handleSuccess(
-        res,
-        createdRecord,
-        "Reading record created successfully"
-      );
+      return ResponseHandlingService.handleSuccess(res, createdRecord);
+
     } catch (error) {
       // If any operation failed, try to rollback
       try {

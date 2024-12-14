@@ -45,6 +45,15 @@ const schema = {
       pattern: "^(?:\\d[-]?){9}[\\d|X]$|^(?:\\d[-]?){13}$",
       description: "ISBN-10 or ISBN-13 of the book",
     },
+    pagesRead: {
+      type: "number",
+      minimum: 0,
+      description: "Number of pages already read",
+    },
+    finished: {
+      type: "boolean",
+      description: "Whether the book has been finished",
+    }
   },
   required: ["id"],
   additionalProperties: false,
@@ -84,13 +93,24 @@ async function updateAbl(req, res) {
       }
     }
 
-    // 5. Storage Operations - Merge existing book with updates
+    // 5. Business Logic - Pages Read Validation
+    if (bookUpdate.pagesRead !== undefined) {
+      if (bookUpdate.pagesRead > (bookUpdate.numberOfPages || existingBook.numberOfPages)) {
+        return ResponseHandlingService.handleBusinessError(
+          res,
+          "pagesReadExceedsTotal",
+          "Pages read cannot exceed total number of pages"
+        );
+      }
+    }
+
+    // 6. Storage Operations - Merge existing book with updates
     const updatedBook = bookDao.update({
       ...existingBook,
       ...bookUpdate
     });
 
-    // 6. Response
+    // 7. Response
     return ResponseHandlingService.handleSuccess(res, updatedBook);
   } catch (error) {
     return ResponseHandlingService.handleServerError(res, error);
