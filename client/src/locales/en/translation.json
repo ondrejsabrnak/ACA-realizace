@@ -27,7 +27,20 @@
     "rating": "Rating",
     "rating_required": "Please rate the book",
     "review": "Review (optional)",
-    "review_placeholder": "Write your thoughts about the book..."
+    "review_placeholder": "Write your thoughts about the book...",
+    "title": "Book Title",
+    "title_placeholder": "Enter book title",
+    "title_required": "Please enter book title",
+    "author": "Author",
+    "author_placeholder": "Enter author's name",
+    "author_required": "Please enter author's name",
+    "number_of_pages": "Number of Pages",
+    "pages_placeholder": "Enter number of pages",
+    "pages_required": "Please enter number of pages",
+    "isbn": "ISBN",
+    "isbn_placeholder": "Enter book's ISBN (optional)",
+    "description": "Description",
+    "description_placeholder": "Enter book description or annotation (optional)"
   },
   "common": {
     "cancel": "Cancel",

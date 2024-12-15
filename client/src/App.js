@@ -10,11 +10,20 @@ const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [books, setBooks] = useState(initialBooks);
 
-  const toggleBookFinished = (bookId) => {
+  const handleAddBook = (newBook) => {
+    setBooks(prevBooks => [...prevBooks, newBook]);
+  };
+
+  const toggleBookFinished = (bookId, data) => {
     setBooks(prevBooks =>
       prevBooks.map(book =>
         book.id === bookId
-          ? { ...book, finished: !book.finished, pagesRead: !book.finished ? book.numberOfPages : book.pagesRead }
+          ? {
+              ...book,
+              ...data,
+              finished: !book.finished,
+              pagesRead: !book.finished ? book.numberOfPages : book.pagesRead
+            }
           : book
       )
     );
@@ -34,7 +43,7 @@ const App = () => {
   return (
     <div className="min-vh-100 d-flex flex-column">
       <header>
-        <NavbarComponent />
+        <NavbarComponent onAddBook={handleAddBook} />
       </header>
       <main className="flex-grow-1">
         <Container className="py-4">

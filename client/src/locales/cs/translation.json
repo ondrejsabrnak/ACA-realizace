@@ -27,7 +27,20 @@
     "rating": "Hodnocení",
     "rating_required": "Prosím ohodnoťte knihu",
     "review": "Recenze (volitelné)",
-    "review_placeholder": "Napište svůj názor na knihu..."
+    "review_placeholder": "Napište svůj názor na knihu...",
+    "title": "Název knihy",
+    "title_placeholder": "Zadejte název knihy",
+    "title_required": "Zadejte název knihy",
+    "author": "Autor",
+    "author_placeholder": "Zadejte jméno autora",
+    "author_required": "Zadejte jméno autora",
+    "number_of_pages": "Počet stran",
+    "pages_placeholder": "Zadejte počet stran",
+    "pages_required": "Zadejte počet stran",
+    "isbn": "ISBN",
+    "isbn_placeholder": "Zadejte ISBN knihy (volitelné)",
+    "description": "Popis",
+    "description_placeholder": "Zadejte popis nebo anotaci knihy (volitelné)"
   },
   "common": {
     "cancel": "Zrušit",
