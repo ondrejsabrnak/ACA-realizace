@@ -58,9 +58,7 @@ async function deleteAbl(req, res) {
     }
 
     // Get all associated reading records for potential rollback
-    originalRecords = readingRecordDao
-      .list()
-      .filter((record) => record.bookId === reqParams.id);
+    originalRecords = readingRecordDao.listByBookId(reqParams.id);
 
     try {
       // Start atomic operation
