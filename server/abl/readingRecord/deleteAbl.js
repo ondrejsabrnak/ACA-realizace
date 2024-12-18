@@ -87,9 +87,14 @@ async function deleteAbl(req, res) {
       deletedRecord = true;
 
       // If we got here, both operations succeeded
-      return ResponseHandlingService.handleSuccess(res, {
-        message: "Reading record deleted successfully",
-      });
+      return ResponseHandlingService.handleSuccess(
+        res,
+        {
+          id: reqParams.id,
+          success: true,
+        },
+        "Reading record and associated book deleted successfully."
+      );
     } catch (error) {
       // If any operation failed, try to rollback
       try {

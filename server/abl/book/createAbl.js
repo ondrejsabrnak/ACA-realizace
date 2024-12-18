@@ -76,7 +76,11 @@ async function createAbl(req, res) {
     book = bookDao.create(book);
 
     // 5. Response
-    return ResponseHandlingService.handleSuccess(res, book, 201);
+    return ResponseHandlingService.handleSuccess(
+      res,
+      book,
+      "Book created successfully"
+    );
   } catch (error) {
     return ResponseHandlingService.handleServerError(res, error);
   }

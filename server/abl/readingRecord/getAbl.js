@@ -57,7 +57,11 @@ async function getAbl(req, res) {
     }
 
     // 4. Response
-    return ResponseHandlingService.handleSuccess(res, readingRecord);
+    return ResponseHandlingService.handleSuccess(
+      res,
+      readingRecord,
+      "Reading record retrieved successfully"
+    );
   } catch (error) {
     return ResponseHandlingService.handleServerError(res, error);
   }

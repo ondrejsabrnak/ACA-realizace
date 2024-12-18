@@ -45,18 +45,22 @@ async function deleteAbl(req, res) {
     // Input Validation
     const validation = validationService.validate(schema, reqParams);
     if (!validation.valid) {
-      return ResponseHandlingService.handleValidationError(res, validation.errors);
+      return ResponseHandlingService.handleValidationError(
+        res,
+        validation.errors
+      );
     }
 
     // Get and validate book
     originalBook = bookDao.get(reqParams.id);
     if (!originalBook) {
-      return ResponseHandlingService.handleNotFound(res, 'Book', reqParams.id);
+      return ResponseHandlingService.handleNotFound(res, "Book", reqParams.id);
     }
 
     // Get all associated reading records for potential rollback
-    originalRecords = readingRecordDao.list()
-      .filter(record => record.bookId === reqParams.id);
+    originalRecords = readingRecordDao
+      .list()
+      .filter((record) => record.bookId === reqParams.id);
 
     try {
       // Start atomic operation
@@ -72,10 +76,14 @@ async function deleteAbl(req, res) {
       bookDeleted = true;
 
       // If we got here, both operations succeeded
-      return ResponseHandlingService.handleSuccess(res, {
-        message: 'Book and associated reading records deleted successfully',
-        deletedRecords: deletedRecords.length
-      });
+      return ResponseHandlingService.handleSuccess(
+        res,
+        {
+          id: reqParams.id,
+          success: true,
+        },
+        "Book deleted successfully"
+      );
     } catch (error) {
       // If any operation failed, try to rollback
       try {
@@ -83,7 +91,7 @@ async function deleteAbl(req, res) {
           // Rollback book deletion
           bookDao.create({
             ...originalBook,
-            id: originalBook.id // Preserve original ID
+            id: originalBook.id, // Preserve original ID
           });
         }
 
@@ -91,11 +99,11 @@ async function deleteAbl(req, res) {
         for (const record of deletedRecords) {
           readingRecordDao.create({
             ...record,
-            id: record.id // Preserve original ID
+            id: record.id, // Preserve original ID
           });
         }
       } catch (rollbackError) {
-        console.error('Rollback failed:', rollbackError);
+        console.error("Rollback failed:", rollbackError);
       }
       throw error;
     }

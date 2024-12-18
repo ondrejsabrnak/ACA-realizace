@@ -18,10 +18,14 @@ async function listAbl(req, res) {
     const readingRecordList = readingRecordDao.list();
 
     // 2. Response
-    return ResponseHandlingService.handleSuccess(res, {
-      items: readingRecordList,
-      total: readingRecordList.length,
-    });
+    return ResponseHandlingService.handleSuccess(
+      res,
+      {
+        items: readingRecordList,
+        total: readingRecordList.length,
+      },
+      "Reading records retrieved successfully"
+    );
   } catch (error) {
     return ResponseHandlingService.handleServerError(res, error);
   }

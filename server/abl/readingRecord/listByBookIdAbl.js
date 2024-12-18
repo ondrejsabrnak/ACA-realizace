@@ -42,13 +42,20 @@ async function listByBookIdAbl(req, res) {
     // Input Validation
     const validation = validationService.validate(schema, reqParams);
     if (!validation.valid) {
-      return ResponseHandlingService.handleValidationError(res, validation.errors);
+      return ResponseHandlingService.handleValidationError(
+        res,
+        validation.errors
+      );
     }
 
     // Verify book exists
     const book = bookDao.get(reqParams.bookId);
     if (!book) {
-      return ResponseHandlingService.handleNotFound(res, "Book", reqParams.bookId);
+      return ResponseHandlingService.handleNotFound(
+        res,
+        "Book",
+        reqParams.bookId
+      );
     }
 
     // Get records for the book
@@ -62,12 +69,16 @@ async function listByBookIdAbl(req, res) {
     });
 
     // Response
-    return ResponseHandlingService.handleSuccess(res, {
-      bookId: reqParams.bookId,
-      bookTitle: book.title,
-      items: records,
-      total: records.length
-    });
+    return ResponseHandlingService.handleSuccess(
+      res,
+      {
+        bookId: reqParams.bookId,
+        bookTitle: book.title,
+        items: records,
+        total: records.length,
+      },
+      "Reading records for book retrieved successfully"
+    );
   } catch (error) {
     return ResponseHandlingService.handleServerError(res, error);
   }

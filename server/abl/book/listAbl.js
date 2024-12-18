@@ -17,10 +17,14 @@ async function listAbl(req, res) {
     const bookList = bookDao.list();
 
     // 2. Response
-    return ResponseHandlingService.handleSuccess(res, {
-      items: bookList,
-      total: bookList.length,
-    });
+    return ResponseHandlingService.handleSuccess(
+      res,
+      {
+        items: bookList,
+        total: bookList.length,
+      },
+      "Books retrieved successfully"
+    );
   } catch (error) {
     return ResponseHandlingService.handleServerError(res, error);
   }

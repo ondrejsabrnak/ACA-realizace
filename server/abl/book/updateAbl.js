@@ -53,7 +53,7 @@ const schema = {
     finished: {
       type: "boolean",
       description: "Whether the book has been finished",
-    }
+    },
   },
   required: ["id"],
   additionalProperties: false,
@@ -72,7 +72,10 @@ async function updateAbl(req, res) {
     // 2. Input Validation
     const validation = validationService.validate(schema, bookUpdate);
     if (!validation.valid) {
-      return ResponseHandlingService.handleValidationError(res, validation.errors);
+      return ResponseHandlingService.handleValidationError(
+        res,
+        validation.errors
+      );
     }
 
     // 3. Get existing book
@@ -95,7 +98,10 @@ async function updateAbl(req, res) {
 
     // 5. Business Logic - Pages Read Validation
     if (bookUpdate.pagesRead !== undefined) {
-      if (bookUpdate.pagesRead > (bookUpdate.numberOfPages || existingBook.numberOfPages)) {
+      if (
+        bookUpdate.pagesRead >
+        (bookUpdate.numberOfPages || existingBook.numberOfPages)
+      ) {
         return ResponseHandlingService.handleBusinessError(
           res,
           "pagesReadExceedsTotal",
@@ -107,11 +113,15 @@ async function updateAbl(req, res) {
     // 6. Storage Operations - Merge existing book with updates
     const updatedBook = bookDao.update({
       ...existingBook,
-      ...bookUpdate
+      ...bookUpdate,
     });
 
     // 7. Response
-    return ResponseHandlingService.handleSuccess(res, updatedBook);
+    return ResponseHandlingService.handleSuccess(
+      res,
+      updatedBook,
+      "Book updated successfully"
+    );
   } catch (error) {
     return ResponseHandlingService.handleServerError(res, error);
   }

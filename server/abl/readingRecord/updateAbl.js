@@ -125,7 +125,11 @@ async function updateAbl(req, res) {
         });
 
         // If we got here, both operations succeeded
-        return ResponseHandlingService.handleSuccess(res, updatedRecord);
+        return ResponseHandlingService.handleSuccess(
+          res,
+          updatedRecord,
+          "Reading record updated successfully"
+        );
       } catch (error) {
         // If any operation failed, try to rollback
         try {
@@ -148,7 +152,11 @@ async function updateAbl(req, res) {
         ...originalRecord,
         ...readingRecord,
       });
-      return ResponseHandlingService.handleSuccess(res, updatedRecord);
+      return ResponseHandlingService.handleSuccess(
+        res,
+        updatedRecord,
+        "Reading record updated successfully"
+      );
     }
   } catch (error) {
     return ResponseHandlingService.handleServerError(res, error);
