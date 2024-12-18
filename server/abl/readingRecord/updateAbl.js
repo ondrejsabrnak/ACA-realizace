@@ -143,8 +143,17 @@ async function updateAbl(req, res) {
           }
         } catch (rollbackError) {
           console.error("Rollback failed:", rollbackError);
+          return ResponseHandlingService.handleBusinessError(
+            res,
+            "rollbackFailed",
+            "Update operation failed and rollback was unsuccessful. Data may be in an inconsistent state."
+          );
         }
-        throw error;
+        return ResponseHandlingService.handleBusinessError(
+          res,
+          "updateOperationFailed",
+          "Update operation failed but was successfully rolled back."
+        );
       }
     } else {
       // If not updating pages, just update the reading record

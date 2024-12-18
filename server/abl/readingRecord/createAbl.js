@@ -125,8 +125,17 @@ async function createAbl(req, res) {
         }
       } catch (rollbackError) {
         console.error("Rollback failed:", rollbackError);
+        return ResponseHandlingService.handleBusinessError(
+          res,
+          "rollbackFailed",
+          "Create operation failed and rollback was unsuccessful. Data may be in an inconsistent state."
+        );
       }
-      throw error;
+      return ResponseHandlingService.handleBusinessError(
+        res,
+        "createOperationFailed",
+        "Create operation failed but was successfully rolled back."
+      );
     }
   } catch (error) {
     return ResponseHandlingService.handleServerError(res, error);
