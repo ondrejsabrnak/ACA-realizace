@@ -101,8 +101,17 @@ async function deleteAbl(req, res) {
         }
       } catch (rollbackError) {
         console.error("Rollback failed:", rollbackError);
+        return ResponseHandlingService.handleBusinessError(
+          res,
+          "rollbackFailed",
+          "Delete operation failed and rollback was unsuccessful. Data may be in an inconsistent state."
+        );
       }
-      throw error;
+      return ResponseHandlingService.handleBusinessError(
+        res,
+        "deleteOperationFailed",
+        "Delete operation failed but was successfully rolled back."
+      );
     }
   } catch (error) {
     return ResponseHandlingService.handleServerError(res, error);
