@@ -57,6 +57,15 @@ function list() {
 }
 
 /**
+ * Lists all reading records for a specific book
+ * @param {string} bookId - ID of the book to get records for
+ * @returns {Array<Object>} Array of reading records for the book
+ */
+function listByBookId(bookId) {
+  return list().filter(record => record.bookId === bookId);
+}
+
+/**
  * Removes all reading records for a specific book
  * @param {string} bookId - ID of the book whose records should be removed
  * @returns {Object} Empty object on success
@@ -76,4 +85,5 @@ module.exports = {
   remove,
   removeByBookId,
   list,
+  listByBookId
 };
