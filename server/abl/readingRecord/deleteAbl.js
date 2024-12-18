@@ -91,9 +91,8 @@ async function deleteAbl(req, res) {
         res,
         {
           id: reqParams.id,
-          success: true,
         },
-        "Reading record and associated book deleted successfully."
+        "Reading record deleted successfully"
       );
     } catch (error) {
       // If any operation failed, try to rollback

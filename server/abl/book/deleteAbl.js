@@ -80,7 +80,6 @@ async function deleteAbl(req, res) {
         res,
         {
           id: reqParams.id,
-          success: true,
         },
         "Book deleted successfully"
       );
