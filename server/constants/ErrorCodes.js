@@ -12,7 +12,8 @@ const ErrorCodes = {
   PAGES_EXCEED_LIMIT: "readPagesExceedsLeftPages",
 
   // Not Found Errors (404)
-  NOT_FOUND: "notFound",
+  BOOK_NOT_FOUND: "bookNotFound",
+  READING_RECORD_NOT_FOUND: "readingRecordNotFound",
 
   // Storage Errors (500)
   STORAGE_CREATE_FAILED: "failedToCreate",

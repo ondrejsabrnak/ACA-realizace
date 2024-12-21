@@ -15,7 +15,7 @@ class ResponseHandlingService {
     return res.status(200).json({
       status: "success",
       message,
-      data
+      data,
     });
   }
 
@@ -30,8 +30,8 @@ class ResponseHandlingService {
       error: {
         code: ErrorCodes.VALIDATION_ERROR,
         message: "Invalid input data",
-        details: errors
-      }
+        details: errors,
+      },
     });
   }
 
@@ -46,8 +46,8 @@ class ResponseHandlingService {
       status: "error",
       error: {
         code,
-        message
-      }
+        message,
+      },
     });
   }
 
@@ -58,12 +58,17 @@ class ResponseHandlingService {
    * @param {string} id - ID of the entity that wasn't found
    */
   static handleNotFound(res, entity, id) {
+    const errorCode =
+      entity === "Book"
+        ? ErrorCodes.BOOK_NOT_FOUND
+        : ErrorCodes.READING_RECORD_NOT_FOUND;
+
     return res.status(404).json({
       status: "error",
       error: {
-        code: ErrorCodes.NOT_FOUND,
-        message: `${entity} with id '${id}' not found`
-      }
+        code: errorCode,
+        message: `${entity} with id '${id}' not found`,
+      },
     });
   }
 
@@ -78,8 +83,8 @@ class ResponseHandlingService {
       status: "error",
       error: {
         code: error.code || ErrorCodes.STORAGE_CREATE_FAILED,
-        message: error.message || "An unexpected error occurred"
-      }
+        message: error.message || "An unexpected error occurred",
+      },
     });
   }
 }
