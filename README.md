@@ -21,7 +21,6 @@ Aplikace slouží jako elektronický čtenářský deník. Uživatelé mohou:
 - Node.js, Express.js
 - Ukládání dat: JSON soubory
 - Validace: AJV
-- CORS pro komunikaci s frontend aplikací
 
 ### Frontend (plánováno)
 
@@ -76,6 +75,7 @@ npm run dev
 - `POST /readingRecord/create` - Vytvoření záznamu (body: data záznamu)
 - `POST /readingRecord/update` - Úprava záznamu (body: data záznamu včetně ID)
 - `POST /readingRecord/delete` - Smazání záznamu (body: `{ "id": "..." }`)
+- `POST /readingRecord/listByBookId` - Seznam záznamů pro konkrétní knihu (body: `{ "bookId": "..." }`)
 
 ### Příklady požadavků
 
