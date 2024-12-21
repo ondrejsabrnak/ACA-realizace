@@ -2,35 +2,49 @@
 
 Semestrální práce pro předmět Architektura cloudových aplikací.
 
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/fpTkAYoz)
-
 ## Autor
+
 Ondřej Šabrňák
 
 ## Popis projektu
+
 Aplikace slouží jako elektronický čtenářský deník. Uživatelé mohou:
+
 - Spravovat seznam knih
 - Zaznamenávat pokrok ve čtení
 - Přidávat poznámky k jednotlivým čtenářským záznamům
 
 ## Technologie
-- Backend: Node.js, Express.js
+
+### Backend
+
+- Node.js, Express.js
 - Ukládání dat: JSON soubory
 - Validace: AJV
 - CORS pro komunikaci s frontend aplikací
 
+### Frontend (plánováno)
+
+- React.js
+- React Bootstrap pro komponenty uživatelského rozhraní
+- React Router pro správu routování
+
 ## Struktura projektu
+
 ```
-├── server/              # Backend aplikace
+├── server/             # Backend aplikace
 │   ├── abl/            # Application Business Logic
 │   ├── controllers/    # Express kontrolery
-│   ├── dao/           # Data Access Objects
-│   ├── services/      # Sdílené služby
-│   └── app.js         # Hlavní soubor aplikace
-└── README.md          # Dokumentace projektu
+│   ├── dao/            # Data Access Objects
+│   ├── services/       # Sdílené služby
+│   └── app.js          # Hlavní soubor aplikace
+└── README.md           # Dokumentace projektu
 ```
 
 ## Instalace a spuštění
+
+### Backend
+
 ```bash
 # Přejít do složky serveru
 cd server
@@ -48,6 +62,7 @@ npm run dev
 ## API Dokumentace
 
 ### Knihy
+
 - `POST /book/list` - Seznam všech knih
 - `POST /book/get` - Detail knihy (body: `{ "id": "..." }`)
 - `POST /book/create` - Vytvoření nové knihy (body: data knihy)
@@ -55,6 +70,7 @@ npm run dev
 - `POST /book/delete` - Smazání knihy (body: `{ "id": "..." }`)
 
 ### Čtenářské záznamy
+
 - `POST /readingRecord/list` - Seznam záznamů
 - `POST /readingRecord/get` - Detail záznamu (body: `{ "id": "..." }`)
 - `POST /readingRecord/create` - Vytvoření záznamu (body: data záznamu)
@@ -64,6 +80,7 @@ npm run dev
 ### Příklady požadavků
 
 #### Získání detailu knihy
+
 ```json
 POST /book/get
 {
@@ -72,6 +89,7 @@ POST /book/get
 ```
 
 #### Vytvoření nové knihy
+
 ```json
 POST /book/create
 {
@@ -83,6 +101,7 @@ POST /book/create
 ```
 
 #### Vytvoření čtenářského záznamu
+
 ```json
 POST /readingRecord/create
 {
@@ -95,8 +114,19 @@ POST /readingRecord/create
 ```
 
 ## Funkce
+
+### Backend
+
 - Správa knih (CRUD operace)
 - Sledování čtenářského pokroku
 - Validace vstupních dat
 - Atomické operace s rollback podporou
 - Standardizované chybové odpovědi
+
+### Frontend (plánováno)
+
+- Responzivní design pro mobilní i desktopová zařízení
+- Přehledné zobrazení seznamu knih
+- Detailní stránky jednotlivých knih
+- Formuláře pro přidávání a úpravu záznamů
+- Intuitivní uživatelské rozhraní
