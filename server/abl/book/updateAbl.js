@@ -56,9 +56,9 @@ const schema = {
     },
     rating: {
       type: "number",
-      minimum: 1,
+      minimum: 0,
       maximum: 5,
-      description: "Book rating (1-5 stars)",
+      description: "Book rating (0-5 stars)",
     },
     review: {
       type: "string",
