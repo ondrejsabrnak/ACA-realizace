@@ -5,13 +5,17 @@ import NavbarBrand from "./NavbarBrand";
 import AddBookButton from "./AddBookButton";
 import LanguageSwitcher from "./LanguageSwitcher";
 
-const NavbarComponent = ({ onAddBook }) => {
+const NavbarComponent = ({ setBooks }) => {
+  const handleAddBook = (newBook) => {
+    setBooks((prevBooks) => [...prevBooks, newBook]);
+  };
+
   return (
     <Navbar className="bg-body-tertiary">
       <Container>
         <NavbarBrand />
         <div className="d-flex align-items-center gap-3">
-          <AddBookButton onAddBook={onAddBook} />
+          <AddBookButton onAddBook={handleAddBook} />
           <LanguageSwitcher />
         </div>
       </Container>
