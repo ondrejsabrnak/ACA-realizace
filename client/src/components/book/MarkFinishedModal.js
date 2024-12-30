@@ -7,21 +7,28 @@ import ConfirmModal from "../common/ConfirmModal";
 const MarkFinishedModal = ({ show, onHide, onConfirm, book }) => {
   const { t } = useTranslation();
   const [rating, setRating] = useState(0);
-  const [review, setReview] = useState("");
-  const [validated, setValidated] = useState(false);
 
-  const handleConfirm = () => {
-    if (rating === 0) {
-      setValidated(true);
-      return;
+  const handleSubmit = async () => {
+    if (rating === 0) return;
+
+    const form = document.getElementById("finishBookForm");
+    const formData = new FormData(form);
+    const values = Object.fromEntries(formData);
+
+    const result = await onConfirm({
+      id: book.id,
+      finished: true,
+      rating: rating,
+      ...(values.review && { review: values.review }),
+    });
+
+    if (result?.ok) {
+      handleClose();
     }
-    onConfirm({ rating, review });
   };
 
   const handleClose = () => {
     setRating(0);
-    setReview("");
-    setValidated(false);
     onHide();
   };
 
@@ -29,31 +36,30 @@ const MarkFinishedModal = ({ show, onHide, onConfirm, book }) => {
     <ConfirmModal
       show={show}
       onHide={handleClose}
-      onConfirm={handleConfirm}
+      onConfirm={handleSubmit}
       title={t("books.confirm_status_change")}
       confirmButtonText={t("books.mark_finished")}
     >
-      <Form noValidate validated={validated}>
+      <Form id="finishBookForm">
         <p className="mb-4">
           {t("books.confirm_mark_finished", { title: book.title })}
         </p>
         <div className="mb-4">
           <p className="fw-bold mb-2">{t("books.rating")}</p>
           <StarRating rating={rating} onRatingChange={setRating} />
-          {validated && rating === 0 && (
+          {rating === 0 && (
             <Form.Control.Feedback type="invalid" className="d-block">
               {t("books.rating_required")}
             </Form.Control.Feedback>
           )}
         </div>
 
-        <Form.Group>
+        <Form.Group className="mb-4">
           <Form.Label className="fw-bold">{t("books.review")}</Form.Label>
           <Form.Control
             as="textarea"
+            name="review"
             rows={3}
-            value={review}
-            onChange={(e) => setReview(e.target.value)}
             placeholder={t("books.review_placeholder")}
           />
         </Form.Group>

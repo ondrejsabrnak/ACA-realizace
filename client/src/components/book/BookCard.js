@@ -12,10 +12,9 @@ const BookCard = ({ book, onToggleFinished }) => {
   const [showFinishedModal, setShowFinishedModal] = useState(false);
   const [showUnfinishedModal, setShowUnfinishedModal] = useState(false);
 
-  const handleStatusChange = (data) => {
-    onToggleFinished(book.id, data);
-    setShowFinishedModal(false);
-    setShowUnfinishedModal(false);
+  const handleStatusChange = async (updatedBook) => {
+    const result = await onToggleFinished(updatedBook);
+    return result;
   };
 
   const renderStars = (rating) => {
