@@ -31,7 +31,10 @@ const BookCard = ({ book, onToggleFinished }) => {
   return (
     <>
       <Col>
-        <Card className={book.finished ? "bg-light" : ""}>
+        <Card
+          className={book.finished ? "bg-light" : ""}
+          style={{ height: "100%" }}
+        >
           <Card.Body className="position-relative">
             <Button
               variant="link"
@@ -56,10 +59,28 @@ const BookCard = ({ book, onToggleFinished }) => {
               ></i>
             </Button>
             <div style={{ paddingRight: "40px" }}>
-              <Card.Subtitle className="mb-1 text-muted text-wrap">
+              <Card.Subtitle
+                className="mb-1 text-muted"
+                style={{
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  display: "block",
+                }}
+              >
                 {book.author}
               </Card.Subtitle>
-              <Card.Title className="mb-2">{book.title}</Card.Title>
+              <Card.Title
+                className="mb-2"
+                style={{
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  display: "block",
+                }}
+              >
+                {book.title}
+              </Card.Title>
             </div>
             {book.finished && (
               <div className="mb-2">{renderStars(book.rating || 0)}</div>
