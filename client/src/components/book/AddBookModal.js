@@ -44,12 +44,16 @@ const AddBookModal = ({ show, onHide, onSubmit }) => {
     >
       <Form id="addBookForm" noValidate validated={validated}>
         <Form.Group className="mb-3">
-          <Form.Label>{t("books.title")}</Form.Label>
+          <Form.Label>
+            {t("books.title")} <span className="text-danger">*</span>
+          </Form.Label>
           <Form.Control
             required
             type="text"
             name="title"
             placeholder={t("books.title_placeholder")}
+            maxLength={100}
+            minLength={1}
           />
           <Form.Control.Feedback type="invalid">
             {t("books.title_required")}
@@ -57,12 +61,16 @@ const AddBookModal = ({ show, onHide, onSubmit }) => {
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>{t("books.author")}</Form.Label>
+          <Form.Label>
+            {t("books.author")} <span className="text-danger">*</span>
+          </Form.Label>
           <Form.Control
             required
             type="text"
             name="author"
             placeholder={t("books.author_placeholder")}
+            maxLength={100}
+            minLength={1}
           />
           <Form.Control.Feedback type="invalid">
             {t("books.author_required")}
@@ -70,13 +78,16 @@ const AddBookModal = ({ show, onHide, onSubmit }) => {
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>{t("books.number_of_pages")}</Form.Label>
+          <Form.Label>
+            {t("books.number_of_pages")} <span className="text-danger">*</span>
+          </Form.Label>
           <Form.Control
             required
             type="number"
             name="numberOfPages"
-            min="1"
             placeholder={t("books.pages_placeholder")}
+            min={1}
+            max={10000}
           />
           <Form.Control.Feedback type="invalid">
             {t("books.pages_required")}
@@ -89,7 +100,11 @@ const AddBookModal = ({ show, onHide, onSubmit }) => {
             type="text"
             name="isbn"
             placeholder={t("books.isbn_placeholder")}
+            pattern="^\d{9}[\dX]$|^\d{13}$"
           />
+          <Form.Control.Feedback type="invalid">
+            {t("books.isbn_invalid")}
+          </Form.Control.Feedback>
         </Form.Group>
       </Form>
     </ConfirmModal>

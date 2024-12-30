@@ -45,7 +45,9 @@ const MarkFinishedModal = ({ show, onHide, onConfirm, book }) => {
           {t("books.confirm_mark_finished", { title: book.title })}
         </p>
         <div className="mb-4">
-          <p className="fw-bold mb-2">{t("books.rating")}</p>
+          <p className="fw-bold mb-2">
+            {t("books.rating")} <span className="text-danger">*</span>
+          </p>
           <StarRating rating={rating} onRatingChange={setRating} />
           {rating === 0 && (
             <Form.Control.Feedback type="invalid" className="d-block">
