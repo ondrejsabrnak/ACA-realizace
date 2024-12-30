@@ -6,47 +6,32 @@ import ConfirmModal from "../common/ConfirmModal";
 const AddBookModal = ({ show, onHide, onSubmit }) => {
   const { t } = useTranslation();
   const [validated, setValidated] = useState(false);
-  const [formData, setFormData] = useState({
-    title: "",
-    author: "",
-    numberOfPages: "",
-    isbn: ""
-  });
 
-  const handleSubmit = () => {
-    if (!formData.title || !formData.author || !formData.numberOfPages) {
+  const handleSubmit = async () => {
+    const form = document.getElementById("addBookForm");
+    if (!form.checkValidity()) {
       setValidated(true);
       return;
     }
 
-    onSubmit({
-      ...formData,
-      id: crypto.randomUUID(),
-      pagesRead: 0,
-      finished: false,
-      numberOfPages: parseInt(formData.numberOfPages, 10)
+    const formData = new FormData(form);
+    const values = Object.fromEntries(formData);
+
+    const result = await onSubmit({
+      title: values.title,
+      author: values.author,
+      numberOfPages: parseInt(values.numberOfPages, 10),
+      isbn: values.isbn || undefined,
     });
 
-    handleClose();
+    if (result?.ok) {
+      handleClose();
+    }
   };
 
   const handleClose = () => {
-    setFormData({
-      title: "",
-      author: "",
-      numberOfPages: "",
-      isbn: ""
-    });
     setValidated(false);
     onHide();
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
   };
 
   return (
@@ -57,15 +42,13 @@ const AddBookModal = ({ show, onHide, onSubmit }) => {
       title={t("books.add_book")}
       confirmButtonText={t("books.add_book")}
     >
-      <Form noValidate validated={validated}>
+      <Form id="addBookForm" noValidate validated={validated}>
         <Form.Group className="mb-3">
           <Form.Label>{t("books.title")}</Form.Label>
           <Form.Control
             required
             type="text"
             name="title"
-            value={formData.title}
-            onChange={handleChange}
             placeholder={t("books.title_placeholder")}
           />
           <Form.Control.Feedback type="invalid">
@@ -79,8 +62,6 @@ const AddBookModal = ({ show, onHide, onSubmit }) => {
             required
             type="text"
             name="author"
-            value={formData.author}
-            onChange={handleChange}
             placeholder={t("books.author_placeholder")}
           />
           <Form.Control.Feedback type="invalid">
@@ -94,8 +75,6 @@ const AddBookModal = ({ show, onHide, onSubmit }) => {
             required
             type="number"
             name="numberOfPages"
-            value={formData.numberOfPages}
-            onChange={handleChange}
             min="1"
             placeholder={t("books.pages_placeholder")}
           />
@@ -109,8 +88,6 @@ const AddBookModal = ({ show, onHide, onSubmit }) => {
           <Form.Control
             type="text"
             name="isbn"
-            value={formData.isbn}
-            onChange={handleChange}
             placeholder={t("books.isbn_placeholder")}
           />
         </Form.Group>
