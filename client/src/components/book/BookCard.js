@@ -56,10 +56,12 @@ const BookCard = ({ book, onToggleFinished }) => {
                 } fs-5`}
               ></i>
             </Button>
-            <Card.Subtitle className="mb-1 text-muted">
-              {book.author}
-            </Card.Subtitle>
-            <Card.Title className="mb-2">{book.title}</Card.Title>
+            <div style={{ paddingRight: "40px" }}>
+              <Card.Subtitle className="mb-1 text-muted text-wrap">
+                {book.author}
+              </Card.Subtitle>
+              <Card.Title className="mb-2">{book.title}</Card.Title>
+            </div>
             {book.finished && (
               <div className="mb-2">{renderStars(book.rating || 0)}</div>
             )}

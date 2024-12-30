@@ -1,9 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import BookList from "../components/book/BookList";
 import BookSearch from "../components/book/BookSearch";
+import { BookListContext } from "../providers/BookListProvider";
+import Alert from "react-bootstrap/Alert";
 
-const BookListPage = ({ books, onToggleFinished }) => {
+const BookListPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const { data, error, state, handlerMap } = useContext(BookListContext);
+
+  if (state === "error" && error) {
+    return (
+      <Alert variant="danger">
+        <Alert.Heading>{error.code}</Alert.Heading>
+        <p>{error.message}</p>
+      </Alert>
+    );
+  }
+
+  if (!data || !data.data) return null;
+
+  const books = data.data.items || [];
 
   const filteredBooks = books.filter((book) => {
     const query = searchQuery.toLowerCase();
@@ -22,12 +38,22 @@ const BookListPage = ({ books, onToggleFinished }) => {
       <BookList
         type="unfinished"
         books={unfinishedBooks}
-        onToggleFinished={onToggleFinished}
+        onToggleFinished={async (book) => {
+          const result = await handlerMap.handleUpdate(book);
+          if (!result.ok && result.error) {
+            alert(`${result.error.code}: ${result.error.message}`);
+          }
+        }}
       />
       <BookList
         type="finished"
         books={finishedBooks}
-        onToggleFinished={onToggleFinished}
+        onToggleFinished={async (book) => {
+          const result = await handlerMap.handleUpdate(book);
+          if (!result.ok && result.error) {
+            alert(`${result.error.code}: ${result.error.message}`);
+          }
+        }}
       />
     </>
   );
