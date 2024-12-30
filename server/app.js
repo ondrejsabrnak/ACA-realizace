@@ -1,7 +1,15 @@
 // Initiate the express server
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const port = 8000;
+
+// Allow requests from the client
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
 
 // Init the controllers
 const bookController = require("./controllers/book");
