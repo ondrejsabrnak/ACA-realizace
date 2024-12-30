@@ -54,6 +54,17 @@ const schema = {
       type: "boolean",
       description: "Whether the book has been finished",
     },
+    rating: {
+      type: "number",
+      minimum: 1,
+      maximum: 5,
+      description: "Book rating (1-5 stars)",
+    },
+    review: {
+      type: "string",
+      maxLength: 1000,
+      description: "Book review text",
+    },
   },
   required: ["id"],
   additionalProperties: false,
