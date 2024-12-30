@@ -1,0 +1,49 @@
+{
+  "app_name": "The Reader's Diary",
+  "app_footer": "",
+  "nav": {
+    "home": "Home",
+    "books": "Books",
+    "about": "About",
+    "language": "Select Language"
+  },
+  "footer": {
+    "copyright": "Ondřej Šabrňák | The Reader's Diary",
+    "version": "Version 1.0.0"
+  },
+  "books": {
+    "finished": "Finished Books",
+    "unfinished": "Currently Reading",
+    "pages_read": "pages read",
+    "search_label": "Search books",
+    "search_placeholder": "Enter book title or author...",
+    "add_book": "Add Book",
+    "mark_finished": "Mark as finished",
+    "mark_unfinished": "Mark as unfinished",
+    "confirm_status_change": "Change Book Status",
+    "confirm_mark_finished": "Do you want to mark \"{{title}}\" as finished?",
+    "confirm_mark_unfinished": "Are you sure you want to mark \"{{title}}\" as unfinished?",
+    "warning_lose_data": "Warning: This will remove the book's rating and review.",
+    "rating": "Rating",
+    "rating_required": "Please rate the book",
+    "review": "Review (optional)",
+    "review_placeholder": "Write your thoughts about the book...",
+    "title": "Book Title",
+    "title_placeholder": "Enter book title",
+    "title_required": "Please enter book title",
+    "author": "Author",
+    "author_placeholder": "Enter author's name",
+    "author_required": "Please enter author's name",
+    "number_of_pages": "Number of Pages",
+    "pages_placeholder": "Enter number of pages",
+    "pages_required": "Please enter number of pages",
+    "isbn": "ISBN",
+    "isbn_placeholder": "Enter book's ISBN (optional)",
+    "description": "Description",
+    "description_placeholder": "Enter book description or annotation (optional)"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  }
+}

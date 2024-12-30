@@ -1,0 +1,49 @@
+{
+  "app_name": "Čtenářův deník",
+  "app_description": "Místo pro zaznamenávání vašeho čtenářského postupu.",
+  "nav": {
+    "home": "Hlavní stránka",
+    "books": "Knihy",
+    "about": "O aplikaci",
+    "language": "Vybrat jazyk"
+  },
+  "footer": {
+    "copyright": "Ondřej Šabrňák | Čtenářův deník",
+    "version": "Verze 1.0.0"
+  },
+  "books": {
+    "finished": "Dočtené knihy",
+    "unfinished": "Rozečtené knihy",
+    "pages_read": "přečtených stran",
+    "search_label": "Vyhledat knihu",
+    "search_placeholder": "Zadejte název nebo autora knihy...",
+    "add_book": "Přidat knihu",
+    "mark_finished": "Označit jako dočtené",
+    "mark_unfinished": "Označit jako rozečtené",
+    "confirm_status_change": "Změna stavu knihy",
+    "confirm_mark_finished": "Chcete označit knihu \"{{title}}\" jako dočtenou?",
+    "confirm_mark_unfinished": "Opravdu chcete označit knihu \"{{title}}\" jako rozečtenou?",
+    "warning_lose_data": "Upozornění: Tímto ztratíte hodnocení a recenzi knihy.",
+    "rating": "Hodnocení",
+    "rating_required": "Prosím ohodnoťte knihu",
+    "review": "Recenze (volitelné)",
+    "review_placeholder": "Napište svůj názor na knihu...",
+    "title": "Název knihy",
+    "title_placeholder": "Zadejte název knihy",
+    "title_required": "Zadejte název knihy",
+    "author": "Autor",
+    "author_placeholder": "Zadejte jméno autora",
+    "author_required": "Zadejte jméno autora",
+    "number_of_pages": "Počet stran",
+    "pages_placeholder": "Zadejte počet stran",
+    "pages_required": "Zadejte počet stran",
+    "isbn": "ISBN",
+    "isbn_placeholder": "Zadejte ISBN knihy (volitelné)",
+    "description": "Popis",
+    "description_placeholder": "Zadejte popis nebo anotaci knihy (volitelné)"
+  },
+  "common": {
+    "cancel": "Zrušit",
+    "confirm": "Potvrdit"
+  }
+}
