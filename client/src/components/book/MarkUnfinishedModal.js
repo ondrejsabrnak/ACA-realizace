@@ -1,27 +1,41 @@
 import React from "react";
-import Alert from "react-bootstrap/Alert";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../common/ConfirmModal";
+import Form from "react-bootstrap/Form";
+import Alert from "react-bootstrap/Alert";
 
 const MarkUnfinishedModal = ({ show, onHide, onConfirm, book }) => {
   const { t } = useTranslation();
 
-  const handleConfirm = () => {
-    onConfirm({ rating: 0, review: "" });
+  const handleSubmit = async () => {
+    const result = await onConfirm({
+      id: book.id,
+      finished: false,
+      rating: 0,
+      review: "",
+    });
+
+    if (result?.ok) {
+      onHide();
+    }
   };
 
   return (
     <ConfirmModal
       show={show}
       onHide={onHide}
-      onConfirm={handleConfirm}
+      onConfirm={handleSubmit}
       title={t("books.confirm_status_change")}
       confirmButtonText={t("books.mark_unfinished")}
     >
-      <p>{t("books.confirm_mark_unfinished", { title: book.title })}</p>
-      <Alert variant="warning" className="mb-0">
-        {t("books.warning_lose_data")}
-      </Alert>
+      <Form id="unfinishBookForm">
+        <p className="mb-4">
+          {t("books.confirm_mark_unfinished", { title: book.title })}
+        </p>
+        <Alert variant="warning" className="mb-0">
+          {t("books.warning_lose_data")}
+        </Alert>
+      </Form>
     </ConfirmModal>
   );
 };
