@@ -64,7 +64,7 @@ async function createAbl(req, res) {
     }
 
     // 3. Business Logic - ISBN Uniqueness Check
-    if (bookDao.getByIsbn(book.isbn)) {
+    if (book.isbn && bookDao.getByIsbn(book.isbn)) {
       return ResponseHandlingService.handleBusinessError(
         res,
         "isbnAlreadyExists",
