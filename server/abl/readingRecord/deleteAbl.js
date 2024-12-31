@@ -79,7 +79,6 @@ async function deleteAbl(req, res) {
       updatedBook = bookDao.update({
         ...originalBook,
         pagesRead: newPagesRead,
-        finished: newPagesRead >= originalBook.numberOfPages,
       });
 
       // 2. Delete reading record

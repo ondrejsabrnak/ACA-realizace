@@ -103,7 +103,6 @@ async function createAbl(req, res) {
       updatedBook = bookDao.update({
         ...originalBook,
         pagesRead: newPagesRead,
-        finished: newPagesRead >= originalBook.numberOfPages,
       });
 
       // If we got here, both operations succeeded
