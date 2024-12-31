@@ -1,6 +1,5 @@
 {
   "app_name": "Čtenářův deník",
-  "app_description": "Místo pro zaznamenávání vašeho čtenářského postupu.",
   "nav": {
     "home": "Hlavní stránka",
     "books": "Knihy",
@@ -10,17 +9,6 @@
   "footer": {
     "copyright": "Ondřej Šabrňák | Čtenářův deník",
     "version": "Verze 1.0.0"
-  },
-  "toast": {
-    "success": "Úspěch",
-    "error": "Chyba",
-    "warning": "Upozornění",
-    "info": "Informace",
-    "book_updated": "Kniha byla úspěšně aktualizována",
-    "book_created": "Kniha byla úspěšně vytvořena",
-    "book_deleted": "Kniha byla úspěšně smazána",
-    "book_marked_finished": "Kniha byla označena jako přečtená",
-    "book_marked_unfinished": "Kniha byla označena jako rozečtená"
   },
   "errors": {
     "connection_error": "Chyba připojení",
@@ -33,11 +21,6 @@
     "readingRecordNotFound": "Záznam o čtení nebyl nalezen",
     "isbnAlreadyExists": "Kniha s tímto ISBN již existuje",
     "readPagesExceedsLeftPages": "Počet přečtených stran nemůže být větší než celkový počet stran",
-    "failedToCreate": "Nepodařilo se vytvořit záznam",
-    "failedToRead": "Nepodařilo se načíst data",
-    "failedToUpdate": "Nepodařilo se aktualizovat záznam",
-    "failedToDelete": "Nepodařilo se smazat záznam",
-    "failedToList": "Nepodařilo se načíst seznam",
     "failedToCreateBook": "Nepodařilo se vytvořit knihu",
     "failedToUpdateBook": "Nepodařilo se aktualizovat knihu",
     "failedToCreateReadingRecord": "Nepodařilo se vytvořit záznam o čtení",
@@ -79,26 +62,37 @@
     "description_placeholder": "Zadejte popis nebo anotaci knihy (volitelné)",
     "book_info": "Informace o knize",
     "reading_records": "Záznamy čtení",
-    "add_reading_record": "Přidat záznam čtení",
-    "no_reading_records": "Zatím žádné záznamy čtení",
-    "date": "Datum",
-    "reading_time": "Doba čtení",
     "reading_progress": "Průběh čtení",
     "status": "Stav",
     "delete_book": "Smazat knihu",
     "confirm_delete": "Smazat knihu?",
     "confirm_delete_message": "Opravdu chcete smazat knihu \"{{title}}\"? Tato akce je nevratná.",
+    "no_reading_records": "Zatím žádné záznamy čtení",
+    "date": "Datum",
+    "reading_time": "Doba čtení",
+    "add_reading_record": "Přidat záznam čtení",
     "read_pages_required": "Zadejte počet přečtených stran",
     "reading_time_required": "Zadejte dobu čtení ve formátu HH:MM",
     "date_required": "Zadejte datum",
-    "note": "Poznámka (volitelné)"
+    "note": "Poznámka (volitelné)",
+    "read_pages_max_exceeded": "Nepřekračujte maximální počet stran ({{max}} stran)",
+    "pages": "stran"
   },
   "common": {
     "cancel": "Zrušit",
     "confirm": "Potvrdit",
     "back": "Zpět",
     "save": "Uložit",
-    "not_specified": "Nezadáno",
-    "actions": "Akce"
+    "actions": "Akce",
+    "loading": "Načítání..."
+  },
+  "toast": {
+    "success": "Úspěch",
+    "error": "Chyba",
+    "book_updated": "Kniha byla úspěšně aktualizována",
+    "book_created": "Kniha byla úspěšně vytvořena",
+    "book_deleted": "Kniha byla úspěšně smazána",
+    "book_marked_finished": "Kniha byla označena jako přečtená",
+    "book_marked_unfinished": "Kniha byla označena jako rozečtená"
   }
 }

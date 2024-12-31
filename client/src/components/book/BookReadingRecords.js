@@ -8,12 +8,17 @@ import Button from "react-bootstrap/Button";
 import { ReadingRecordListContext } from "../../providers/ReadingRecordListProvider";
 import AddReadingRecordModal from "./AddReadingRecordModal";
 
-const BookReadingRecords = ({ bookId }) => {
+const BookReadingRecords = ({ bookId, totalPages = 0 }) => {
   const { t } = useTranslation();
   const { state, data, error, currentBookId, handlerMap } = useContext(
     ReadingRecordListContext
   );
   const [showAddModal, setShowAddModal] = useState(false);
+
+  const currentReadPages = React.useMemo(() => {
+    if (!data?.data?.items) return 0;
+    return data.data.items.reduce((sum, record) => sum + record.readPages, 0);
+  }, [data?.data?.items]);
 
   useEffect(() => {
     // Only fetch if we have a bookId and it's different from the current one
@@ -124,6 +129,8 @@ const BookReadingRecords = ({ bookId }) => {
         show={showAddModal}
         onHide={() => setShowAddModal(false)}
         onConfirm={handleAddConfirm}
+        totalPages={parseInt(totalPages, 10) || 0}
+        currentReadPages={currentReadPages}
       />
     </>
   );

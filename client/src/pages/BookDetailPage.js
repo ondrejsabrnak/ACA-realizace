@@ -214,7 +214,10 @@ const BookDetailPage = () => {
             onShowUnfinishedModal={() => setShowUnfinishedModal(true)}
             onDelete={() => setShowDeleteModal(true)}
           />
-          <BookReadingRecords bookId={book.id} />
+          <BookReadingRecords
+            bookId={book.id}
+            totalPages={book.numberOfPages}
+          />
         </Col>
       </Row>
 
