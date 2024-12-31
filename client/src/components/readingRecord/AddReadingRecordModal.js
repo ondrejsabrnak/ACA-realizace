@@ -45,7 +45,7 @@ const AddReadingRecordModal = ({
 
     if (readPages > maxPagesToRead) {
       setReadPagesError(
-        t("books.read_pages_max_exceeded", { max: maxPagesToRead })
+        t("reading_records.read_pages_max_exceeded", { max: maxPagesToRead })
       );
       setValidated(true);
       return;
@@ -75,7 +75,7 @@ const AddReadingRecordModal = ({
     const value = parseInt(e.target.value, 10);
     if (value > maxPagesToRead) {
       setReadPagesError(
-        t("books.read_pages_max_exceeded", { max: maxPagesToRead })
+        t("reading_records.read_pages_max_exceeded", { max: maxPagesToRead })
       );
     } else {
       setReadPagesError("");
@@ -87,13 +87,14 @@ const AddReadingRecordModal = ({
       show={show}
       onHide={handleClose}
       onConfirm={handleSubmit}
-      title={t("books.add_reading_record")}
+      title={t("reading_records.add")}
       confirmButtonText={t("common.save")}
     >
       <Form id="addReadingRecordForm" noValidate validated={validated}>
         <Form.Group className="mb-3">
           <Form.Label>
-            {t("books.read_pages")} <span className="text-danger">*</span>
+            {t("reading_records.read_pages")}{" "}
+            <span className="text-danger">*</span>
           </Form.Label>
           <Form.Control
             type="number"
@@ -105,16 +106,17 @@ const AddReadingRecordModal = ({
             onChange={handleReadPagesChange}
           />
           <Form.Text className="text-muted">
-            max. {maxPagesToRead} {t("books.pages")}
+            max. {maxPagesToRead} {t("reading_records.pages")}
           </Form.Text>
           <Form.Control.Feedback type="invalid">
-            {readPagesError || t("books.read_pages_required")}
+            {readPagesError || t("reading_records.read_pages_required")}
           </Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group className="mb-3">
           <Form.Label>
-            {t("books.reading_time")} <span className="text-danger">*</span>
+            {t("reading_records.reading_time")}{" "}
+            <span className="text-danger">*</span>
           </Form.Label>
           <InputGroup hasValidation>
             <Form.Control
@@ -125,14 +127,14 @@ const AddReadingRecordModal = ({
               required
             />
             <Form.Control.Feedback type="invalid">
-              {t("books.reading_time_required")}
+              {t("reading_records.reading_time_required")}
             </Form.Control.Feedback>
           </InputGroup>
         </Form.Group>
 
         <Form.Group className="mb-3">
           <Form.Label>
-            {t("books.date")} <span className="text-danger">*</span>
+            {t("reading_records.date")} <span className="text-danger">*</span>
           </Form.Label>
           <Form.Control
             type="date"
@@ -141,12 +143,12 @@ const AddReadingRecordModal = ({
             defaultValue={getTodayDate()}
           />
           <Form.Control.Feedback type="invalid">
-            {t("books.date_required")}
+            {t("reading_records.date_required")}
           </Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>{t("books.note")}</Form.Label>
+          <Form.Label>{t("reading_records.note")}</Form.Label>
           <Form.Control as="textarea" name="note" rows={3} />
         </Form.Group>
       </Form>

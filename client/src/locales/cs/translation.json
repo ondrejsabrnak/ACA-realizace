@@ -30,7 +30,6 @@
     "finished": "Přečteno",
     "unfinished": "Rozečtené",
     "pages_read": "přečtených stran",
-    "read_pages": "Přečtené strany",
     "search_label": "Vyhledat knihu",
     "search_placeholder": "Zadejte název nebo autora knihy...",
     "add_book": "Přidat knihu",
@@ -68,18 +67,22 @@
     "confirm_delete": "Smazat knihu?",
     "confirm_delete_message": "Opravdu chcete smazat knihu \"{{title}}\"? Tato akce je nevratná.",
     "no_reading_records": "Zatím žádné záznamy čtení",
-    "date": "Datum",
+    "info_delete_records": "Poznámka: Tímto budou smazány i všechny související záznamy čtení."
+  },
+  "reading_records": {
+    "add": "Přidat záznam čtení",
+    "edit": "Upravit záznam čtení",
+    "delete": "Smazat záznam čtení",
+    "read_pages": "Přečtené strany",
     "reading_time": "Doba čtení",
-    "add_reading_record": "Přidat záznam čtení",
+    "date": "Datum",
+    "note": "Poznámka",
     "read_pages_required": "Zadejte počet přečtených stran",
     "reading_time_required": "Zadejte dobu čtení ve formátu HH:MM",
     "date_required": "Zadejte datum",
-    "note": "Poznámka",
     "read_pages_max_exceeded": "Nepřekračujte maximální počet stran ({{max}} stran)",
     "pages": "stran",
-    "delete_reading_record": "Smazat záznam čtení",
-    "confirm_delete_reading_record": "Opravdu chcete smazat záznam čtení z {{date}} ({{pages}} stran)?",
-    "info_delete_records": "Poznámka: Tímto budou smazány i všechny související záznamy čtení."
+    "confirm_delete": "Opravdu chcete smazat záznam čtení z {{date}} ({{pages}} stran)?"
   },
   "common": {
     "cancel": "Zrušit",

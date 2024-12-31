@@ -30,7 +30,6 @@
     "finished": "Finished",
     "unfinished": "Currently Reading",
     "pages_read": "pages read",
-    "read_pages": "Pages Read",
     "search_label": "Search books",
     "search_placeholder": "Enter book title or author...",
     "add_book": "Add Book",
@@ -68,18 +67,22 @@
     "confirm_delete": "Delete Book?",
     "confirm_delete_message": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone.",
     "no_reading_records": "No reading records yet",
-    "date": "Date",
+    "info_delete_records": "Note: This will also delete all related reading records."
+  },
+  "reading_records": {
+    "add": "Add Reading Record",
+    "edit": "Edit Reading Record",
+    "delete": "Delete Reading Record",
+    "read_pages": "Pages Read",
     "reading_time": "Reading Time",
-    "add_reading_record": "Add Reading Record",
+    "date": "Date",
+    "note": "Note",
     "read_pages_required": "Please enter number of pages read",
     "reading_time_required": "Please enter reading time in format HH:MM",
     "date_required": "Please enter date",
-    "note": "Note",
     "read_pages_max_exceeded": "Do not exceed the maximum number of pages ({{max}} pages)",
     "pages": "pages",
-    "delete_reading_record": "Delete Reading Record",
-    "confirm_delete_reading_record": "Are you sure you want to delete the reading record from {{date}} ({{pages}} pages)?",
-    "info_delete_records": "Note: This will also delete all related reading records."
+    "confirm_delete": "Are you sure you want to delete the reading record from {{date}} ({{pages}} pages)?"
   },
   "common": {
     "cancel": "Cancel",
