@@ -63,6 +63,9 @@ const FetchHelper = {
     create: async (dtoIn) => {
       return await Call(baseUri, "readingRecord/create", dtoIn, "post");
     },
+    delete: async (dtoIn) => {
+      return await Call(baseUri, "readingRecord/delete", dtoIn, "post");
+    },
   },
 };
 

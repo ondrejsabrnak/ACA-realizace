@@ -52,7 +52,7 @@
     "author": "Autor",
     "author_placeholder": "Zadejte jméno autora",
     "author_required": "Zadejte jméno autora (1-100 znaků)",
-    "total_pages": "Počet stran",
+    "total_pages": "Celkový počet stran",
     "pages_placeholder": "Zadejte počet stran",
     "pages_required": "Zadejte počet stran v rozmezí 1-10000",
     "isbn": "ISBN",
@@ -76,7 +76,10 @@
     "date_required": "Zadejte datum",
     "note": "Poznámka (volitelné)",
     "read_pages_max_exceeded": "Nepřekračujte maximální počet stran ({{max}} stran)",
-    "pages": "stran"
+    "pages": "stran",
+    "delete_reading_record": "Smazat záznam čtení",
+    "confirm_delete_reading_record": "Opravdu chcete smazat záznam čtení z {{date}} ({{pages}} stran)?",
+    "info_delete_records": "Poznámka: Tímto budou smazány i všechny související záznamy čtení."
   },
   "common": {
     "cancel": "Zrušit",
@@ -84,7 +87,9 @@
     "back": "Zpět",
     "save": "Uložit",
     "actions": "Akce",
-    "loading": "Načítání..."
+    "loading": "Načítání...",
+    "delete": "Smazat",
+    "not_specified": "Neuvedeno"
   },
   "toast": {
     "success": "Úspěch",

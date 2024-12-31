@@ -34,6 +34,7 @@ const BookDetailPage = () => {
     review: "",
   });
   const [validated, setValidated] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleStatusChange = async (updatedBook) => {
     try {
@@ -68,6 +69,8 @@ const BookDetailPage = () => {
 
   useEffect(() => {
     const loadBookDetail = async () => {
+      if (isDeleting) return;
+
       try {
         const result = await handlerMap.handleGet({ id });
         if (result.ok) {
@@ -93,7 +96,7 @@ const BookDetailPage = () => {
     };
 
     loadBookDetail();
-  }, [id, navigate, showError, handlerMap]);
+  }, [id, navigate, showError, handlerMap, isDeleting]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -148,15 +151,18 @@ const BookDetailPage = () => {
 
   const handleDelete = async () => {
     try {
+      setIsDeleting(true);
       const result = await handlerMap.handleDelete({ id: book.id });
       if (result.ok) {
         showToast("success", null, "book_deleted");
-        navigate("/");
+        navigate("/", { replace: true });
       } else {
-        showError(result.error);
+        setIsDeleting(false);
+        showError(result.error.code, result.error.message);
       }
     } catch (error) {
-      showError({ code: "unexpectedError", message: error.message });
+      setIsDeleting(false);
+      showError("unexpectedError", error.message);
     }
   };
 
@@ -240,10 +246,16 @@ const BookDetailPage = () => {
         onHide={() => setShowDeleteModal(false)}
         onConfirm={handleDelete}
         title={t("books.confirm_delete")}
-        message={t("books.confirm_delete_message", { title: book?.title })}
         confirmButtonVariant="danger"
         confirmButtonText={t("books.delete_book")}
-      />
+      >
+        <p className="mb-3">
+          {t("books.confirm_delete_message", { title: book?.title })}
+        </p>
+        <div className="alert alert-info mb-0">
+          {t("books.info_delete_records")}
+        </div>
+      </ConfirmModal>
     </>
   );
 };

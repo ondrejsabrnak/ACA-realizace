@@ -7,6 +7,7 @@ import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import { ReadingRecordListContext } from "../../providers/ReadingRecordListProvider";
 import AddReadingRecordModal from "./AddReadingRecordModal";
+import ConfirmModal from "../common/ConfirmModal";
 
 const BookReadingRecords = ({ bookId, totalPages = 0 }) => {
   const { t } = useTranslation();
@@ -14,6 +15,8 @@ const BookReadingRecords = ({ bookId, totalPages = 0 }) => {
     ReadingRecordListContext
   );
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [recordToDelete, setRecordToDelete] = useState(null);
 
   const currentReadPages = React.useMemo(() => {
     if (!data?.data?.items) return 0;
@@ -49,7 +52,27 @@ const BookReadingRecords = ({ bookId, totalPages = 0 }) => {
   };
 
   const handleDeleteRecord = (record) => {
-    // TODO: Implement deleting reading record
+    setRecordToDelete(record);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!recordToDelete) return;
+
+    const result = await handlerMap.handleDelete({
+      bookId,
+      id: recordToDelete.id,
+    });
+
+    if (result.ok) {
+      setShowDeleteModal(false);
+      setRecordToDelete(null);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setShowDeleteModal(false);
+    setRecordToDelete(null);
   };
 
   const renderContent = () => {
@@ -140,6 +163,21 @@ const BookReadingRecords = ({ bookId, totalPages = 0 }) => {
         totalPages={parseInt(totalPages, 10) || 0}
         currentReadPages={currentReadPages}
       />
+
+      <ConfirmModal
+        show={showDeleteModal}
+        onHide={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+        title={t("books.delete_reading_record")}
+        confirmButtonVariant="danger"
+        confirmButtonText={t("common.delete")}
+      >
+        {recordToDelete &&
+          t("books.confirm_delete_reading_record", {
+            date: recordToDelete.date,
+            pages: recordToDelete.readPages,
+          })}
+      </ConfirmModal>
     </>
   );
 };

@@ -52,7 +52,7 @@
     "author": "Author",
     "author_placeholder": "Enter author's name",
     "author_required": "Please enter author's name (1-100 characters)",
-    "total_pages": "Number of Pages",
+    "total_pages": "Total Pages",
     "pages_placeholder": "Enter number of pages",
     "pages_required": "Please enter number of pages between 1-10000",
     "isbn": "ISBN",
@@ -76,7 +76,10 @@
     "date_required": "Please enter date",
     "note": "Note (optional)",
     "read_pages_max_exceeded": "Do not exceed the maximum number of pages ({{max}} pages)",
-    "pages": "pages"
+    "pages": "pages",
+    "delete_reading_record": "Delete Reading Record",
+    "confirm_delete_reading_record": "Are you sure you want to delete the reading record from {{date}} ({{pages}} pages)?",
+    "info_delete_records": "Note: This will also delete all related reading records."
   },
   "common": {
     "cancel": "Cancel",
@@ -84,7 +87,9 @@
     "back": "Back",
     "save": "Save",
     "actions": "Actions",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "delete": "Delete",
+    "not_specified": "Not specified"
   },
   "toast": {
     "success": "Success",

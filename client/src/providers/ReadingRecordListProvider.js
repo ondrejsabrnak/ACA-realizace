@@ -100,11 +100,31 @@ function ReadingRecordListProvider({ children }) {
     [handleListByBookId]
   );
 
+  const handleDelete = useCallback(
+    async (dtoIn) => {
+      try {
+        const result = await FetchHelper.readingRecord.delete(dtoIn);
+        if (result.ok) {
+          // Refresh the list after successful deletion
+          await handleListByBookId({ bookId: dtoIn.bookId });
+        }
+        return result;
+      } catch (error) {
+        return {
+          ok: false,
+          error: { code: "unexpectedError", message: error.message },
+        };
+      }
+    },
+    [handleListByBookId]
+  );
+
   const value = {
     ...readingRecordListDto,
     handlerMap: {
       handleListByBookId,
       handleCreate,
+      handleDelete,
     },
   };
 
