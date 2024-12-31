@@ -161,11 +161,11 @@ const BookInfo = ({
             <Card.Title className="mb-0">{t("books.book_info")}</Card.Title>
             <Button
               variant="link"
-              className="p-0 text-primary"
+              className="p-0 text-muted"
               onClick={onEditToggle}
               title={t("books.edit_book")}
             >
-              <i className="bi bi-pencil fs-5"></i>
+              <i className="bi bi-pencil"></i>
             </Button>
           </div>
           <BookStatusToggle
