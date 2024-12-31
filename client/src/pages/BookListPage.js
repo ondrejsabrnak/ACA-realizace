@@ -2,19 +2,21 @@ import React, { useState, useContext } from "react";
 import BookList from "../components/book/BookList";
 import BookSearch from "../components/book/BookSearch";
 import { BookListContext } from "../providers/BookListProvider";
-import Alert from "react-bootstrap/Alert";
+import { useError } from "../providers/ErrorProvider";
 
 const BookListPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const { data, error, state, handlerMap } = useContext(BookListContext);
+  const { showError } = useError();
 
-  if (state === "error" && error) {
-    return (
-      <Alert variant="danger">
-        <Alert.Heading>{error.code}</Alert.Heading>
-        <p>{error.message}</p>
-      </Alert>
-    );
+  // Default error handling for non-connection errors
+  if (
+    state === "error" &&
+    error &&
+    error.code !== "Failed to fetch" &&
+    !error.message?.includes("net::ERR_CONNECTION_REFUSED")
+  ) {
+    showError(error.code, error.message);
   }
 
   if (!data || !data.data) return null;
@@ -41,7 +43,7 @@ const BookListPage = () => {
         onToggleFinished={async (book) => {
           const result = await handlerMap.handleUpdate(book);
           if (!result.ok && result.error) {
-            alert(`${result.error.code}: ${result.error.message}`);
+            showError(result.error.code, result.error.message);
           }
         }}
       />
@@ -51,7 +53,7 @@ const BookListPage = () => {
         onToggleFinished={async (book) => {
           const result = await handlerMap.handleUpdate(book);
           if (!result.ok && result.error) {
-            alert(`${result.error.code}: ${result.error.message}`);
+            showError(result.error.code, result.error.message);
           }
         }}
       />

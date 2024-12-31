@@ -11,6 +11,27 @@
     "copyright": "Ondřej Šabrňák | Čtenářův deník",
     "version": "Verze 1.0.0"
   },
+  "errors": {
+    "connection_error": "Chyba připojení",
+    "server_unreachable": "Nepodařilo se připojit k serveru.",
+    "check_server": "Zkontrolujte, zda je server spuštěn a běží na správném portu."
+  },
+  "server_errors": {
+    "validationError": "Neplatná data",
+    "bookNotFound": "Kniha nebyla nalezena",
+    "readingRecordNotFound": "Záznam o čtení nebyl nalezen",
+    "isbnAlreadyExists": "Kniha s tímto ISBN již existuje",
+    "readPagesExceedsLeftPages": "Počet přečtených stran nemůže být větší než celkový počet stran",
+    "failedToCreate": "Nepodařilo se vytvořit záznam",
+    "failedToRead": "Nepodařilo se načíst data",
+    "failedToUpdate": "Nepodařilo se aktualizovat záznam",
+    "failedToDelete": "Nepodařilo se smazat záznam",
+    "failedToList": "Nepodařilo se načíst seznam",
+    "failedToCreateBook": "Nepodařilo se vytvořit knihu",
+    "failedToUpdateBook": "Nepodařilo se aktualizovat knihu",
+    "failedToCreateReadingRecord": "Nepodařilo se vytvořit záznam o čtení",
+    "failedToUpdateReadingRecord": "Nepodařilo se aktualizovat záznam o čtení"
+  },
   "books": {
     "finished": "Dočtené knihy",
     "unfinished": "Rozečtené knihy",

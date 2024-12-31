@@ -11,6 +11,27 @@
     "copyright": "Ondřej Šabrňák | The Reader's Diary",
     "version": "Version 1.0.0"
   },
+  "errors": {
+    "connection_error": "Connection Error",
+    "server_unreachable": "Could not connect to the server.",
+    "check_server": "Please check if the server is running and configured to the correct port."
+  },
+  "server_errors": {
+    "validationError": "Invalid Data",
+    "bookNotFound": "Book not found",
+    "readingRecordNotFound": "Reading record not found",
+    "isbnAlreadyExists": "A book with this ISBN already exists",
+    "readPagesExceedsLeftPages": "Read pages cannot exceed total pages",
+    "failedToCreate": "Failed to create record",
+    "failedToRead": "Failed to read data",
+    "failedToUpdate": "Failed to update record",
+    "failedToDelete": "Failed to delete record",
+    "failedToList": "Failed to load list",
+    "failedToCreateBook": "Failed to create book",
+    "failedToUpdateBook": "Failed to update book",
+    "failedToCreateReadingRecord": "Failed to create reading record",
+    "failedToUpdateReadingRecord": "Failed to update reading record"
+  },
   "books": {
     "finished": "Finished Books",
     "unfinished": "Currently Reading",

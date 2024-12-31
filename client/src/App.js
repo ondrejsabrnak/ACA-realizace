@@ -1,21 +1,19 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Layout from "./layout/Layout";
-import BookListPage from "./pages/BookListPage";
+import { BrowserRouter } from "react-router-dom";
 import BookListProvider from "./providers/BookListProvider";
+import { ErrorProvider } from "./providers/ErrorProvider";
+import Router from "./Router";
 
-const App = () => {
+function App() {
   return (
-    <BookListProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<BookListPage />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </BookListProvider>
+    <BrowserRouter>
+      <ErrorProvider>
+        <BookListProvider>
+          <Router />
+        </BookListProvider>
+      </ErrorProvider>
+    </BrowserRouter>
   );
-};
+}
 
 export default App;
