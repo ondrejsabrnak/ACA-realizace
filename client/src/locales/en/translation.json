@@ -36,6 +36,7 @@
     "finished": "Finished",
     "unfinished": "Currently Reading",
     "pages_read": "pages read",
+    "read_pages": "Pages Read",
     "search_label": "Search books",
     "search_placeholder": "Enter book title or author...",
     "add_book": "Add Book",
@@ -57,7 +58,7 @@
     "author": "Author",
     "author_placeholder": "Enter author's name",
     "author_required": "Please enter author's name (1-100 characters)",
-    "number_of_pages": "Number of Pages",
+    "total_pages": "Number of Pages",
     "pages_placeholder": "Enter number of pages",
     "pages_required": "Please enter number of pages between 1-10000",
     "isbn": "ISBN",
@@ -74,8 +75,8 @@
     "confirm_delete_message": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone.",
     "no_reading_records": "No reading records yet",
     "date": "Date",
-    "pages_read": "Pages Read",
-    "reading_time": "Reading Time"
+    "reading_time": "Reading Time",
+    "add_reading_record": "Add Reading Record"
   },
   "common": {
     "cancel": "Cancel",

@@ -63,7 +63,7 @@ const BookInfo = ({
         </dd>
 
         <dt className="col-sm-3 d-flex align-items-center">
-          {t("books.number_of_pages")}
+          {t("books.total_pages")}
         </dt>
         <dd className="col-sm-9">
           {isEditing ? (

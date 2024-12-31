@@ -4,6 +4,7 @@ import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
 import Spinner from "react-bootstrap/Spinner";
 import Alert from "react-bootstrap/Alert";
+import Button from "react-bootstrap/Button";
 import { ReadingRecordListContext } from "../../providers/ReadingRecordListProvider";
 
 const BookReadingRecords = ({ bookId }) => {
@@ -18,6 +19,10 @@ const BookReadingRecords = ({ bookId }) => {
       handlerMap.handleListByBookId({ bookId });
     }
   }, [bookId, currentBookId, handlerMap]);
+
+  const handleAddRecord = () => {
+    // TODO: Implement adding new reading record
+  };
 
   const renderContent = () => {
     if (state === "pending") {
@@ -47,7 +52,7 @@ const BookReadingRecords = ({ bookId }) => {
         <thead>
           <tr>
             <th>{t("books.date")}</th>
-            <th>{t("books.pages_read")}</th>
+            <th>{t("books.read_pages")}</th>
             <th>{t("books.reading_time")}</th>
           </tr>
         </thead>
@@ -67,7 +72,13 @@ const BookReadingRecords = ({ bookId }) => {
   return (
     <Card className="mt-3">
       <Card.Body>
-        <Card.Title>{t("books.reading_records")}</Card.Title>
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <Card.Title className="mb-0">{t("books.reading_records")}</Card.Title>
+          <Button variant="primary" size="sm" onClick={handleAddRecord}>
+            <i className="bi bi-plus-lg me-1"></i>
+            {t("books.add_reading_record")}
+          </Button>
+        </div>
         {renderContent()}
       </Card.Body>
     </Card>
