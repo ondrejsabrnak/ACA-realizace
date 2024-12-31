@@ -8,6 +8,7 @@ import Button from "react-bootstrap/Button";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { ReadingRecordListContext } from "../../providers/ReadingRecordListProvider";
+import { BookListContext } from "../../providers/BookListProvider";
 import AddReadingRecordModal from "./AddReadingRecordModal";
 import ConfirmModal from "../common/ConfirmModal";
 import { useToast } from "../../providers/ToastProvider";
@@ -17,6 +18,7 @@ const BookReadingRecords = ({ bookId, totalPages = 0, onRecordChange }) => {
   const { state, data, error, currentBookId, handlerMap } = useContext(
     ReadingRecordListContext
   );
+  const { handlerMap: bookHandlerMap } = useContext(BookListContext);
   const { showToast, showError } = useToast();
   const [showAddModal, setShowAddModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -49,6 +51,8 @@ const BookReadingRecords = ({ bookId, totalPages = 0, onRecordChange }) => {
       if (onRecordChange) {
         onRecordChange();
       }
+      // Refresh the book list to update progress
+      await bookHandlerMap.handleLoad();
     } else {
       // Error is handled by the provider
     }
@@ -79,6 +83,8 @@ const BookReadingRecords = ({ bookId, totalPages = 0, onRecordChange }) => {
         if (onRecordChange) {
           onRecordChange();
         }
+        // Refresh the book list to update progress
+        await bookHandlerMap.handleLoad();
       } else {
         showError(result.error.code, result.error.message);
       }
