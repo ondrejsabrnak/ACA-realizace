@@ -5,6 +5,8 @@ import Table from "react-bootstrap/Table";
 import Spinner from "react-bootstrap/Spinner";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 import { ReadingRecordListContext } from "../../providers/ReadingRecordListProvider";
 import AddReadingRecordModal from "./AddReadingRecordModal";
 import ConfirmModal from "../common/ConfirmModal";
@@ -120,6 +122,7 @@ const BookReadingRecords = ({ bookId, totalPages = 0, onRecordChange }) => {
             <th>{t("books.date")}</th>
             <th>{t("books.read_pages")}</th>
             <th>{t("books.reading_time")}</th>
+            <th>{t("books.note")}</th>
             <th className="text-end w-1">{t("common.actions")}</th>
           </tr>
         </thead>
@@ -129,6 +132,27 @@ const BookReadingRecords = ({ bookId, totalPages = 0, onRecordChange }) => {
               <td>{record.date}</td>
               <td>{record.readPages}</td>
               <td>{record.readingTime}</td>
+              <td>
+                {record.note ? (
+                  <OverlayTrigger
+                    placement="top"
+                    overlay={
+                      <Tooltip id={`tooltip-${record.id}`}>
+                        {record.note}
+                      </Tooltip>
+                    }
+                  >
+                    <span
+                      className="text-muted text-truncate d-inline-block"
+                      style={{ maxWidth: "200px" }}
+                    >
+                      {record.note}
+                    </span>
+                  </OverlayTrigger>
+                ) : (
+                  <span className="text-muted">-</span>
+                )}
+              </td>
               <td className="text-end">
                 <Button
                   variant="link"

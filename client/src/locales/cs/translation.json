@@ -74,7 +74,7 @@
     "read_pages_required": "Zadejte počet přečtených stran",
     "reading_time_required": "Zadejte dobu čtení ve formátu HH:MM",
     "date_required": "Zadejte datum",
-    "note": "Poznámka (volitelné)",
+    "note": "Poznámka",
     "read_pages_max_exceeded": "Nepřekračujte maximální počet stran ({{max}} stran)",
     "pages": "stran",
     "delete_reading_record": "Smazat záznam čtení",
