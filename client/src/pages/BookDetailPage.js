@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { useError } from "../providers/ErrorProvider";
 import { useToast } from "../providers/ToastProvider";
 import { BookListContext } from "../providers/BookListProvider";
 import FetchHelper from "../helpers/FetchHelper";
@@ -18,8 +17,7 @@ const BookDetailPage = () => {
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
-  const { showError } = useError();
-  const { showToast } = useToast();
+  const { showError, showToast } = useToast();
   const { handlerMap } = useContext(BookListContext);
   const [book, setBook] = useState(null);
   const [readingRecords, setReadingRecords] = useState([]);
@@ -40,34 +38,32 @@ const BookDetailPage = () => {
 
   const handleStatusChange = async (updatedBook) => {
     try {
-      const result = await FetchHelper.book.update({
+      const result = await handlerMap.handleUpdate({
         id: book.id,
         ...updatedBook,
       });
 
       if (result.ok) {
-        setBook(result.data.data);
-        setEditForm({
-          title: result.data.data.title,
-          author: result.data.data.author,
-          numberOfPages: result.data.data.numberOfPages,
-          isbn: result.data.data.isbn || "",
-          rating: result.data.data.rating || 0,
-          review: result.data.data.review || "",
-        });
-        showToast(
-          "success",
-          null,
-          updatedBook.finished
-            ? "book_marked_finished"
-            : "book_marked_unfinished"
-        );
+        const bookResult = await FetchHelper.book.get({ id: book.id });
+        if (bookResult.ok) {
+          setBook(bookResult.data.data);
+          setEditForm({
+            title: bookResult.data.data.title,
+            author: bookResult.data.data.author,
+            numberOfPages: bookResult.data.data.numberOfPages,
+            isbn: bookResult.data.data.isbn || "",
+            rating: bookResult.data.data.rating || 0,
+            review: bookResult.data.data.review || "",
+          });
+        }
         return result;
       } else {
-        showError(result.data.error.code, result.data.error.message);
+        showError(result.error.code, result.error.message);
+        return result;
       }
     } catch (error) {
       showError("failedToUpdateBook", "Failed to update book");
+      return { ok: false, error };
     }
   };
 
@@ -173,6 +169,7 @@ const BookDetailPage = () => {
       finished: true,
     });
     if (result?.ok) {
+      showToast("success", null, "book_marked_finished");
       setShowFinishedModal(false);
     }
   };
@@ -185,6 +182,7 @@ const BookDetailPage = () => {
       review: undefined,
     });
     if (result?.ok) {
+      showToast("success", null, "book_marked_unfinished");
       setShowUnfinishedModal(false);
     }
   };

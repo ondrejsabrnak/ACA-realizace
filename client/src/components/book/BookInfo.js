@@ -177,9 +177,14 @@ const BookInfo = ({
           </div>
           <BookStatusToggle
             finished={book.finished}
-            onStatusChange={() =>
-              book.finished ? onShowUnfinishedModal() : onShowFinishedModal()
-            }
+            onStatusChange={async () => {
+              if (book.finished) {
+                onShowUnfinishedModal();
+              } else {
+                onShowFinishedModal();
+              }
+              return { ok: true };
+            }}
           />
         </div>
         {renderBookInfo()}
