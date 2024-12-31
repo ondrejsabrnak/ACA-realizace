@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../common/ConfirmModal";
+import { useToast } from "../../providers/ToastProvider";
 
 const AddBookModal = ({ show, onHide, onSubmit }) => {
   const { t } = useTranslation();
+  const { showToast } = useToast();
   const [validated, setValidated] = useState(false);
 
   const handleSubmit = async () => {
@@ -25,6 +27,7 @@ const AddBookModal = ({ show, onHide, onSubmit }) => {
     });
 
     if (result?.ok) {
+      showToast("success", null, "book_created");
       handleClose();
     }
   };

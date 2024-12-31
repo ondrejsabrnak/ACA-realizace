@@ -10,6 +10,17 @@ function BookListProvider({ children }) {
     error: null, // { code: string, message: string }
   });
 
+  const sortBooks = (books) => {
+    return [...books].sort((a, b) => {
+      // First sort by status (unfinished first)
+      if (a.status !== b.status) {
+        return a.status === "unfinished" ? -1 : 1;
+      }
+      // Then sort by title
+      return a.title.localeCompare(b.title);
+    });
+  };
+
   async function handleLoad() {
     setBookListDto((current) => {
       return { ...current, state: "pending" };
@@ -20,7 +31,13 @@ function BookListProvider({ children }) {
         return {
           ...current,
           state: "ready",
-          data: result.data,
+          data: {
+            ...result.data,
+            data: {
+              ...result.data.data,
+              items: sortBooks(result.data.data.items),
+            },
+          },
           error: null,
         };
       } else {
@@ -40,7 +57,10 @@ function BookListProvider({ children }) {
     const result = await FetchHelper.book.create(dtoIn);
     setBookListDto((current) => {
       if (result.ok) {
-        const newItems = [...current.data.data.items, result.data.data];
+        const newItems = sortBooks([
+          ...current.data.data.items,
+          result.data.data,
+        ]);
         return {
           ...current,
           state: "ready",
