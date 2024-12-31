@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Card from "react-bootstrap/Card";
-import Spinner from "react-bootstrap/Spinner";
 import Alert from "react-bootstrap/Alert";
-import Button from "react-bootstrap/Button";
 import { ReadingRecordListContext } from "../../providers/ReadingRecordListProvider";
 import { BookListContext } from "../../providers/BookListProvider";
 import ReadingRecordList from "./ReadingRecordList";
-import AddReadingRecordModal from "./AddReadingRecordModal";
-import EditReadingRecordModal from "./EditReadingRecordModal";
+import ReadingRecordModal from "./ReadingRecordModal";
+import ReadingRecordLoading from "./ReadingRecordLoading";
+import ReadingRecordError from "./ReadingRecordError";
+import ReadingRecordHeader from "./ReadingRecordHeader";
 import ConfirmModal from "../common/ConfirmModal";
 import { useToast } from "../../providers/ToastProvider";
 
@@ -19,9 +19,11 @@ const ReadingRecordContainer = ({ bookId, totalPages = 0, onRecordChange }) => {
   );
   const { handlerMap: bookHandlerMap } = useContext(BookListContext);
   const { showToast, showError } = useToast();
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
+
+  // Modal states
+  const [showRecordModal, setShowRecordModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [modalMode, setModalMode] = useState("add");
   const [recordToEdit, setRecordToEdit] = useState(null);
   const [recordToDelete, setRecordToDelete] = useState(null);
 
@@ -31,51 +33,99 @@ const ReadingRecordContainer = ({ bookId, totalPages = 0, onRecordChange }) => {
   }, [data?.data?.items]);
 
   useEffect(() => {
-    // Only fetch if we have a bookId and it's different from the current one
     if (bookId && bookId !== currentBookId) {
       handlerMap.handleListByBookId({ bookId });
     }
   }, [bookId, currentBookId, handlerMap]);
 
-  const handleAddRecord = () => {
-    setShowAddModal(true);
+  const handleModalClose = () => {
+    setShowRecordModal(false);
+    setRecordToEdit(null);
+    setModalMode("add");
   };
 
-  const handleAddConfirm = async (formData) => {
-    const result = await handlerMap.handleCreate({
-      bookId,
-      ...formData,
-    });
-
-    if (result.ok) {
-      setShowAddModal(false);
-      if (onRecordChange) {
-        onRecordChange();
-      }
-      // Refresh the book list to update progress
-      await bookHandlerMap.handleLoad();
-    }
-    // Error is handled by the provider
+  const handleAddRecord = () => {
+    setModalMode("add");
+    setShowRecordModal(true);
   };
 
   const handleEditRecord = (record) => {
     setRecordToEdit(record);
-    setShowEditModal(true);
+    setModalMode("edit");
+    setShowRecordModal(true);
   };
 
-  const handleEditConfirm = async (formData) => {
-    const result = await handlerMap.handleUpdate(formData);
+  const handleRecordSubmit = async (formData) => {
+    try {
+      const handler =
+        modalMode === "add" ? handlerMap.handleCreate : handlerMap.handleUpdate;
+      let payload;
 
-    if (result.ok) {
-      setShowEditModal(false);
-      setRecordToEdit(null);
-      if (onRecordChange) {
-        onRecordChange();
+      console.log("Container - Initial FormData:", formData);
+      console.log("Container - RecordToEdit:", recordToEdit);
+      console.log("Container - BookId:", bookId);
+      console.log("Container - Mode:", modalMode);
+
+      if (modalMode === "add") {
+        payload = {
+          bookId,
+          ...formData,
+        };
+      } else {
+        // For edit mode, we only need the record data without bookId
+        payload = {
+          id: recordToEdit.id,
+          readPages: parseInt(formData.readPages, 10),
+          readingTime: formData.readingTime,
+          date: formData.date,
+          note: formData.note,
+        };
       }
-      // Refresh the book list to update progress
-      await bookHandlerMap.handleLoad();
+
+      console.log("Container - Final Payload:", payload);
+      console.log("Container - Handler:", handler.name);
+
+      const result = await handler(payload);
+      console.log("Container - API Response:", result);
+
+      if (result?.ok) {
+        handleModalClose();
+        showToast(
+          "success",
+          null,
+          modalMode === "add"
+            ? "reading_record_created"
+            : "reading_record_updated"
+        );
+        if (onRecordChange) {
+          onRecordChange();
+        }
+        await bookHandlerMap.handleLoad();
+        // Refresh the reading records list
+        await handlerMap.handleListByBookId({ bookId });
+      } else {
+        console.error("Container - API Error:", result);
+        console.error("Container - Error Details:", {
+          code: result?.error?.code,
+          message: result?.error?.message,
+          fullError: result?.error,
+        });
+        const errorCode = result?.error?.code || "unexpectedError";
+        const errorMessage =
+          result?.error?.message ||
+          (result?.error
+            ? JSON.stringify(result.error)
+            : "An unexpected error occurred");
+        showError(errorCode, errorMessage);
+      }
+    } catch (error) {
+      console.error("Container - Exception:", error);
+      console.error("Container - Exception Stack:", error?.stack);
+      showError(
+        "unexpectedError",
+        error?.message || "An unexpected error occurred"
+      );
     }
-    // Error is handled by the provider
   };
 
   const handleDeleteRecord = (record) => {
@@ -92,20 +142,25 @@ const ReadingRecordContainer = ({ bookId, totalPages = 0, onRecordChange }) => {
         id: recordToDelete.id,
       });
 
-      if (result.ok) {
+      if (result?.ok) {
         showToast("success", null, "reading_record_deleted");
         setShowDeleteModal(false);
         setRecordToDelete(null);
         if (onRecordChange) {
           onRecordChange();
         }
-        // Refresh the book list to update progress
         await bookHandlerMap.handleLoad();
       } else {
-        showError(result.error.code, result.error.message);
+        const errorCode = result?.error?.code || "unexpectedError";
+        const errorMessage =
+          result?.error?.message || t("errors.unexpectedError");
+        showError(errorCode, errorMessage);
       }
     } catch (error) {
-      showError("unexpectedError", error.message);
+      showError(
+        "unexpectedError",
+        error?.message || t("errors.unexpectedError")
+      );
     }
   };
 
@@ -116,21 +171,11 @@ const ReadingRecordContainer = ({ bookId, totalPages = 0, onRecordChange }) => {
 
   const renderContent = () => {
     if (state === "pending") {
-      return (
-        <div className="text-center p-3">
-          <Spinner animation="border" role="status">
-            <span className="visually-hidden">{t("common.loading")}</span>
-          </Spinner>
-        </div>
-      );
+      return <ReadingRecordLoading />;
     }
 
     if (state === "error") {
-      return (
-        <Alert variant="danger">
-          {t(`errors.${error.code}`, { defaultValue: error.message })}
-        </Alert>
-      );
+      return <ReadingRecordError error={error} />;
     }
 
     if (!data?.data?.items?.length) {
@@ -150,37 +195,19 @@ const ReadingRecordContainer = ({ bookId, totalPages = 0, onRecordChange }) => {
     <>
       <Card className="mt-3">
         <Card.Body>
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <Card.Title className="mb-0">
-              {t("books.reading_records")}
-            </Card.Title>
-            <Button variant="primary" size="sm" onClick={handleAddRecord}>
-              <i className="bi bi-plus-lg me-1"></i>
-              {t("reading_records.add")}
-            </Button>
-          </div>
+          <ReadingRecordHeader onAddRecord={handleAddRecord} />
           {renderContent()}
         </Card.Body>
       </Card>
 
-      <AddReadingRecordModal
-        show={showAddModal}
-        onHide={() => setShowAddModal(false)}
-        onConfirm={handleAddConfirm}
-        totalPages={parseInt(totalPages, 10) || 0}
-        currentReadPages={currentReadPages}
-      />
-
-      <EditReadingRecordModal
-        show={showEditModal}
-        onHide={() => {
-          setShowEditModal(false);
-          setRecordToEdit(null);
-        }}
-        onConfirm={handleEditConfirm}
+      <ReadingRecordModal
+        show={showRecordModal}
+        onHide={handleModalClose}
+        onConfirm={handleRecordSubmit}
         totalPages={parseInt(totalPages, 10) || 0}
         currentReadPages={currentReadPages}
         record={recordToEdit}
+        mode={modalMode}
       />
 
       <ConfirmModal

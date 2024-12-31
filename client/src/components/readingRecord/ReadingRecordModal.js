@@ -3,19 +3,40 @@ import { useTranslation } from "react-i18next";
 import ConfirmModal from "../common/ConfirmModal";
 import ReadingRecordForm from "./ReadingRecordForm";
 
-const EditReadingRecordModal = ({
+const ReadingRecordModal = ({
   show,
   onHide,
   onConfirm,
   totalPages,
   currentReadPages,
   record,
+  mode = "add", // "add" or "edit"
 }) => {
   const { t } = useTranslation();
   const [validated, setValidated] = useState(false);
   const [readPagesError, setReadPagesError] = useState("");
+
   const maxPagesToRead =
-    totalPages - (currentReadPages - record?.readPages || 0);
+    mode === "edit"
+      ? totalPages - (currentReadPages - (record?.readPages || 0))
+      : totalPages - currentReadPages;
+
+  const formatDate = (dateString) => {
+    // Always format date as DD/MM/YYYY for API
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  const getTodayDate = () => {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, "0");
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const year = today.getFullYear();
+    return `${year}-${month}-${day}`;
+  };
 
   const formatDateForInput = (dateString) => {
     const [day, month, year] = dateString.split("/");
@@ -23,10 +44,14 @@ const EditReadingRecordModal = ({
   };
 
   const handleSubmit = () => {
-    const form = document.getElementById("editReadingRecordForm");
+    const formId =
+      mode === "add" ? "addReadingRecordForm" : "editReadingRecordForm";
+    const form = document.getElementById(formId);
     const formData = new FormData(form);
     const values = Object.fromEntries(formData);
     const readPages = parseInt(values.readPages, 10);
+
+    console.log("Modal - Raw Form Values:", values);
 
     if (!readPages || readPages < 1) {
       setValidated(true);
@@ -47,13 +72,22 @@ const EditReadingRecordModal = ({
     }
 
     setReadPagesError("");
-    onConfirm({
-      id: record.id,
+    const formattedData = {
       readPages,
       readingTime: values.readingTime,
-      date: values.date.split("-").reverse().join("/"),
+      date: formatDate(values.date),
       note: values.note || undefined,
-    });
+    };
+
+    // For edit mode, include only the record ID
+    if (mode === "edit" && record) {
+      formattedData.id = record.id;
+    }
+
+    console.log("Modal - Record:", record);
+    console.log("Modal - Mode:", mode);
+    console.log("Modal - Formatted Data:", formattedData);
+    onConfirm(formattedData);
   };
 
   const handleClose = () => {
@@ -73,28 +107,37 @@ const EditReadingRecordModal = ({
     }
   };
 
+  const getDefaultValues = () => {
+    if (mode === "add") {
+      return { date: getTodayDate() };
+    }
+    return {
+      readPages: record?.readPages,
+      readingTime: record?.readingTime,
+      date: record ? formatDateForInput(record.date) : "",
+      note: record?.note,
+    };
+  };
+
   return (
     <ConfirmModal
       show={show}
       onHide={handleClose}
       onConfirm={handleSubmit}
-      title={t("reading_records.edit")}
+      title={t(mode === "add" ? "reading_records.add" : "reading_records.edit")}
       confirmButtonText={t("common.save")}
     >
       <ReadingRecordForm
-        formId="editReadingRecordForm"
+        formId={
+          mode === "add" ? "addReadingRecordForm" : "editReadingRecordForm"
+        }
         validated={validated}
         readPagesError={readPagesError}
-        defaultValues={{
-          readPages: record?.readPages,
-          readingTime: record?.readingTime,
-          date: record ? formatDateForInput(record.date) : "",
-          note: record?.note,
-        }}
+        defaultValues={getDefaultValues()}
         onReadPagesChange={handleReadPagesChange}
       />
     </ConfirmModal>
   );
 };
 
-export default EditReadingRecordModal;
+export default ReadingRecordModal;
