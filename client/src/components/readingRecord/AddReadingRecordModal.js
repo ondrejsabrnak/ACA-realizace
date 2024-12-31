@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
 import ConfirmModal from "../common/ConfirmModal";
+import ReadingRecordForm from "./ReadingRecordForm";
 
 const AddReadingRecordModal = ({
   show,
@@ -90,68 +89,13 @@ const AddReadingRecordModal = ({
       title={t("reading_records.add")}
       confirmButtonText={t("common.save")}
     >
-      <Form id="addReadingRecordForm" noValidate validated={validated}>
-        <Form.Group className="mb-3">
-          <Form.Label>
-            {t("reading_records.read_pages")}{" "}
-            <span className="text-danger">*</span>
-          </Form.Label>
-          <Form.Control
-            type="number"
-            name="readPages"
-            min="1"
-            max={maxPagesToRead}
-            required
-            isInvalid={!!readPagesError}
-            onChange={handleReadPagesChange}
-          />
-          <Form.Text className="text-muted">
-            max. {maxPagesToRead} {t("reading_records.pages")}
-          </Form.Text>
-          <Form.Control.Feedback type="invalid">
-            {readPagesError || t("reading_records.read_pages_required")}
-          </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>
-            {t("reading_records.reading_time")}{" "}
-            <span className="text-danger">*</span>
-          </Form.Label>
-          <InputGroup hasValidation>
-            <Form.Control
-              type="text"
-              name="readingTime"
-              pattern="^([0-1][0-9]|2[0-3]):[0-5][0-9]$"
-              placeholder="00:30"
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              {t("reading_records.reading_time_required")}
-            </Form.Control.Feedback>
-          </InputGroup>
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>
-            {t("reading_records.date")} <span className="text-danger">*</span>
-          </Form.Label>
-          <Form.Control
-            type="date"
-            name="date"
-            required
-            defaultValue={getTodayDate()}
-          />
-          <Form.Control.Feedback type="invalid">
-            {t("reading_records.date_required")}
-          </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>{t("reading_records.note")}</Form.Label>
-          <Form.Control as="textarea" name="note" rows={3} />
-        </Form.Group>
-      </Form>
+      <ReadingRecordForm
+        formId="addReadingRecordForm"
+        validated={validated}
+        readPagesError={readPagesError}
+        defaultValues={{ date: getTodayDate() }}
+        onReadPagesChange={handleReadPagesChange}
+      />
     </ConfirmModal>
   );
 };
