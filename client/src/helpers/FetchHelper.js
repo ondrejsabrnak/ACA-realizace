@@ -56,6 +56,11 @@ const FetchHelper = {
       return await Call(baseUri, "book/list", null, "get");
     },
   },
+  readingRecord: {
+    listByBookId: async (dtoIn) => {
+      return await Call(baseUri, "readingRecord/listByBookId", dtoIn, "get");
+    },
+  },
 };
 
 export default FetchHelper;

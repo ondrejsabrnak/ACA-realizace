@@ -20,7 +20,6 @@ const BookDetailPage = () => {
   const { showError, showToast } = useToast();
   const { handlerMap } = useContext(BookListContext);
   const [book, setBook] = useState(null);
-  const [readingRecords, setReadingRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [showFinishedModal, setShowFinishedModal] = useState(false);
@@ -212,7 +211,7 @@ const BookDetailPage = () => {
                 onShowUnfinishedModal={() => setShowUnfinishedModal(true)}
                 onDelete={() => setShowDeleteModal(true)}
               />
-              <BookReadingRecords records={readingRecords} />
+              <BookReadingRecords bookId={book.id} />
             </Col>
           </Row>
 
