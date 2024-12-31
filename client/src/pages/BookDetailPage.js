@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -68,7 +68,7 @@ const BookDetailPage = () => {
     }
   };
 
-  const loadBookDetail = async () => {
+  const loadBookDetail = useCallback(async () => {
     try {
       const result = await handlerMap.handleGet({ id });
       if (result.ok) {
@@ -91,12 +91,12 @@ const BookDetailPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [handlerMap, id, navigate, showError]);
 
   useEffect(() => {
     if (isDeleting) return;
     loadBookDetail();
-  }, [id, navigate, showError, handlerMap, isDeleting]);
+  }, [id, navigate, showError, handlerMap, isDeleting, loadBookDetail]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
