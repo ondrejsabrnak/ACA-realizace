@@ -164,13 +164,35 @@ function BookListProvider({ children }) {
     };
   }
 
+  async function handleGet(dtoIn) {
+    try {
+      const result = await FetchHelper.book.get(dtoIn);
+      return {
+        ok: result.ok,
+        data: result.ok ? result.data.data : undefined,
+        error: result.ok ? undefined : result.data.error,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error: { code: "unexpectedError", message: error.message },
+      };
+    }
+  }
+
   useEffect(() => {
     handleLoad();
   }, [handleLoad]);
 
   const value = {
     ...bookListDto,
-    handlerMap: { handleLoad, handleCreate, handleUpdate, handleDelete },
+    handlerMap: {
+      handleLoad,
+      handleCreate,
+      handleUpdate,
+      handleDelete,
+      handleGet,
+    },
   };
 
   return (

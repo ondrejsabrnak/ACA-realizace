@@ -44,16 +44,16 @@ const BookDetailPage = () => {
       });
 
       if (result.ok) {
-        const bookResult = await FetchHelper.book.get({ id: book.id });
+        const bookResult = await handlerMap.handleGet({ id: book.id });
         if (bookResult.ok) {
-          setBook(bookResult.data.data);
+          setBook(bookResult.data);
           setEditForm({
-            title: bookResult.data.data.title,
-            author: bookResult.data.data.author,
-            numberOfPages: bookResult.data.data.numberOfPages,
-            isbn: bookResult.data.data.isbn || "",
-            rating: bookResult.data.data.rating || 0,
-            review: bookResult.data.data.review || "",
+            title: bookResult.data.title,
+            author: bookResult.data.author,
+            numberOfPages: bookResult.data.numberOfPages,
+            isbn: bookResult.data.isbn || "",
+            rating: bookResult.data.rating || 0,
+            review: bookResult.data.review || "",
           });
         }
         return result;
@@ -70,20 +70,20 @@ const BookDetailPage = () => {
   useEffect(() => {
     const loadBookDetail = async () => {
       try {
-        const result = await FetchHelper.book.get({ id });
+        const result = await handlerMap.handleGet({ id });
         if (result.ok) {
-          setBook(result.data.data);
+          setBook(result.data);
           setEditForm({
-            title: result.data.data.title,
-            author: result.data.data.author,
-            numberOfPages: result.data.data.numberOfPages,
-            isbn: result.data.data.isbn || "",
-            rating: result.data.data.rating || 0,
-            review: result.data.data.review || "",
+            title: result.data.title,
+            author: result.data.author,
+            numberOfPages: result.data.numberOfPages,
+            isbn: result.data.isbn || "",
+            rating: result.data.rating || 0,
+            review: result.data.review || "",
           });
           // TODO: Načíst záznamy o čtení
         } else {
-          showError(result.data.error.code, result.data.error.message);
+          showError(result.error.code, result.error.message);
           navigate("/");
         }
       } catch (error) {
@@ -95,7 +95,7 @@ const BookDetailPage = () => {
     };
 
     loadBookDetail();
-  }, [id, navigate, showError]);
+  }, [id, navigate, showError, handlerMap]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -117,19 +117,18 @@ const BookDetailPage = () => {
         delete updateData.isbn;
       }
 
-      const result = await FetchHelper.book.update(updateData);
+      const result = await handlerMap.handleUpdate(updateData);
 
       if (result.ok) {
-        setBook(result.data.data);
-        setIsEditing(false);
-        setValidated(false);
-        showToast("success", null, "book_updated");
+        const bookResult = await handlerMap.handleGet({ id: book.id });
+        if (bookResult.ok) {
+          setBook(bookResult.data);
+          setIsEditing(false);
+          setValidated(false);
+          showToast("success", null, "book_updated");
+        }
       } else {
-        showError(
-          result.data.error.code,
-          result.data.error.message,
-          result.data.error.details
-        );
+        showError(result.error.code, result.error.message);
       }
     } catch (error) {
       showError("failedToUpdateBook", "Failed to update book");

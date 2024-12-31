@@ -93,7 +93,7 @@ const BookInfo = ({
               value={editForm.isbn}
               onChange={(e) => onEditFormChange({ isbn: e.target.value })}
               placeholder={t("books.isbn_placeholder")}
-              pattern="^\d{9}[\dX]$|^\d{13}$"
+              pattern="^(?:\d[-]?){9}[\d|X]$|^(?:\d[-]?){13}$"
             />
           ) : (
             book.isbn || (
