@@ -95,7 +95,9 @@ const BookInfo = ({
               pattern="^\d{9}[\dX]$|^\d{13}$"
             />
           ) : (
-            book.isbn || <span className="text-muted">Nezadáno</span>
+            book.isbn || (
+              <span className="text-muted">{t("common.not_specified")}</span>
+            )
           )}
         </dd>
 

@@ -85,6 +85,7 @@
     "cancel": "Zrušit",
     "confirm": "Potvrdit",
     "back": "Zpět",
-    "save": "Uložit"
+    "save": "Uložit",
+    "not_specified": "Nezadáno"
   }
 }

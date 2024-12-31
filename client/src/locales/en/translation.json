@@ -74,6 +74,7 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
     "back": "Back",
-    "save": "Save"
+    "save": "Save",
+    "not_specified": "Not specified"
   }
 }
