@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useCallback } from "react";
 import FetchHelper from "../helpers/FetchHelper";
 
 export const BookListContext = createContext();
@@ -21,34 +21,42 @@ function BookListProvider({ children }) {
     });
   };
 
-  async function handleLoad() {
+  const handleLoad = useCallback(async () => {
     setBookListDto((current) => {
       return { ...current, state: "pending" };
     });
-    const result = await FetchHelper.book.list();
-    setBookListDto((current) => {
-      if (result.ok) {
-        return {
-          ...current,
-          state: "ready",
-          data: {
-            ...result.data,
+    try {
+      const result = await FetchHelper.book.list();
+      setBookListDto((current) => {
+        if (result.ok) {
+          return {
+            ...current,
+            state: "ready",
             data: {
-              ...result.data.data,
-              items: sortBooks(result.data.data.items),
+              ...result.data,
+              data: {
+                ...result.data.data,
+                items: sortBooks(result.data.data.items),
+              },
             },
-          },
-          error: null,
-        };
-      } else {
-        return {
-          ...current,
-          state: "error",
-          error: result.data.error,
-        };
-      }
-    });
-  }
+            error: null,
+          };
+        } else {
+          return {
+            ...current,
+            state: "error",
+            error: result.data.error,
+          };
+        }
+      });
+    } catch (error) {
+      setBookListDto((current) => ({
+        ...current,
+        state: "error",
+        error: { code: "unexpectedError", message: error.message },
+      }));
+    }
+  }, []);
 
   async function handleCreate(dtoIn) {
     setBookListDto((current) => {
@@ -156,7 +164,7 @@ function BookListProvider({ children }) {
 
   useEffect(() => {
     handleLoad();
-  }, []);
+  }, [handleLoad]);
 
   const value = {
     ...bookListDto,
