@@ -1,62 +1,12 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import Card from "react-bootstrap/Card";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
 import BookStatusToggle from "./BookStatusToggle";
+import BookProgressBar from "./BookProgressBar";
 import "../../styles/components/book/BookProgress.css";
 
 const BookProgress = ({ book, onShowFinishedModal, onShowUnfinishedModal }) => {
   const { t } = useTranslation();
-  const progress = book.numberOfPages
-    ? Math.round((book.pagesRead / book.numberOfPages) * 100)
-    : 0;
-
-  const getProgressVariant = (progress) => {
-    if (progress === 100) return "success";
-    if (progress >= 75) return "info";
-    if (progress >= 50) return "primary";
-    if (progress >= 25) return "warning";
-    return "secondary";
-  };
-
-  const renderProgressBar = () => {
-    const variant = getProgressVariant(progress);
-    const tooltipContent = (
-      <div className="text-center">
-        <div>
-          {t("books.pages_read_label")}: {book.pagesRead}/{book.numberOfPages}
-        </div>
-        <strong>
-          {progress}% {t("books.finished")}
-        </strong>
-      </div>
-    );
-
-    return (
-      <OverlayTrigger
-        placement="top"
-        overlay={<Tooltip>{tooltipContent}</Tooltip>}
-      >
-        <div className="progress-wrapper">
-          <div className="progress progress-hover">
-            <div
-              className={`progress-bar bg-${variant}`}
-              role="progressbar"
-              style={{ width: `${progress}%` }}
-              aria-valuenow={progress}
-              aria-valuemin="0"
-              aria-valuemax="100"
-            >
-              <span className="progress-label">
-                {progress}% {t("books.finished")}
-              </span>
-            </div>
-          </div>
-        </div>
-      </OverlayTrigger>
-    );
-  };
 
   return (
     <Card className="mb-4">
@@ -98,7 +48,12 @@ const BookProgress = ({ book, onShowFinishedModal, onShowUnfinishedModal }) => {
           </dd>
 
           <dt className="col-sm-3">{t("books.progress")}</dt>
-          <dd className="col-sm-9">{renderProgressBar()}</dd>
+          <dd className="col-sm-9">
+            <BookProgressBar
+              pagesRead={book.pagesRead}
+              numberOfPages={book.numberOfPages}
+            />
+          </dd>
         </dl>
       </Card.Body>
     </Card>

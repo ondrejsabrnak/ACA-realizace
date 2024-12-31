@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
-import ProgressBar from "react-bootstrap/ProgressBar";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import MarkFinishedModal from "./MarkFinishedModal";
 import MarkUnfinishedModal from "./MarkUnfinishedModal";
 import BookStatusToggle from "./BookStatusToggle";
+import BookProgressBar from "./BookProgressBar";
 import "../../styles/components/book/BookCard.css";
 
 const BookCard = ({ book, onToggleFinished }) => {
@@ -87,7 +87,11 @@ const BookCard = ({ book, onToggleFinished }) => {
               </small>
             </Card.Text>
             <div className="mb-2">
-              <ProgressBar now={(book.pagesRead / book.numberOfPages) * 100} />
+              <BookProgressBar
+                pagesRead={book.pagesRead}
+                numberOfPages={book.numberOfPages}
+                showLabel={false}
+              />
             </div>
           </Card.Body>
         </Card>
