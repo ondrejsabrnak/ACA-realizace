@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import MarkFinishedModal from "./MarkFinishedModal";
 import MarkUnfinishedModal from "./MarkUnfinishedModal";
+import BookStatusToggle from "./BookStatusToggle";
 import "../../styles/components/book/BookCard.css";
 
 const BookCard = ({ book, onToggleFinished }) => {
@@ -40,29 +40,20 @@ const BookCard = ({ book, onToggleFinished }) => {
           onClick={() => navigate(`/book/${book.id}`)}
         >
           <Card.Body className="position-relative">
-            <Button
-              variant="link"
-              className={`position-absolute end-0 top-0 p-2 ${
-                book.finished ? "text-success" : "text-muted"
-              }`}
-              onClick={(e) => {
-                e.stopPropagation();
-                book.finished
-                  ? setShowUnfinishedModal(true)
-                  : setShowFinishedModal(true);
-              }}
-              title={
-                book.finished
-                  ? t("books.mark_unfinished")
-                  : t("books.mark_finished")
-              }
+            <div
+              className="position-absolute end-0 top-0 p-2"
+              onClick={(e) => e.stopPropagation()}
             >
-              <i
-                className={`bi ${
-                  book.finished ? "bi-check-circle-fill" : "bi-circle"
-                } fs-5`}
-              ></i>
-            </Button>
+              <BookStatusToggle
+                finished={book.finished}
+                onStatusChange={() =>
+                  book.finished
+                    ? setShowUnfinishedModal(true)
+                    : setShowFinishedModal(true)
+                }
+                showLabel={false}
+              />
+            </div>
             <div style={{ paddingRight: "40px" }}>
               <Card.Subtitle
                 className="mb-1 text-muted"
