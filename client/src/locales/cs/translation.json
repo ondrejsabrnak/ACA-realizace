@@ -62,10 +62,15 @@
     "isbn_placeholder": "Zadejte ISBN knihy (volitelné)",
     "isbn_invalid": "Neplatný formát ISBN (ISBN-10 nebo ISBN-13)",
     "description": "Popis",
-    "description_placeholder": "Zadejte popis nebo anotaci knihy (volitelné)"
+    "description_placeholder": "Zadejte popis nebo anotaci knihy (volitelné)",
+    "book_info": "Informace o knize",
+    "reading_records": "Záznamy čtení",
+    "reading_progress": "Průběh čtení",
+    "status": "Stav"
   },
   "common": {
     "cancel": "Zrušit",
-    "confirm": "Potvrdit"
+    "confirm": "Potvrdit",
+    "back": "Zpět"
   }
 }

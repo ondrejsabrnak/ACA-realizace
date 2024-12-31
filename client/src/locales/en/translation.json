@@ -62,10 +62,15 @@
     "isbn_placeholder": "Enter book's ISBN (optional)",
     "isbn_invalid": "Invalid ISBN format (ISBN-10 or ISBN-13)",
     "description": "Description",
-    "description_placeholder": "Enter book description or annotation (optional)"
+    "description_placeholder": "Enter book description or annotation (optional)",
+    "book_info": "Book Information",
+    "reading_records": "Reading Records",
+    "reading_progress": "Reading Progress",
+    "status": "Status"
   },
   "common": {
     "cancel": "Cancel",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "back": "Back"
   }
 }

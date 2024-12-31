@@ -4,11 +4,14 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import MarkFinishedModal from "./MarkFinishedModal";
 import MarkUnfinishedModal from "./MarkUnfinishedModal";
+import "../../styles/components/book/BookCard.css";
 
 const BookCard = ({ book, onToggleFinished }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [showFinishedModal, setShowFinishedModal] = useState(false);
   const [showUnfinishedModal, setShowUnfinishedModal] = useState(false);
 
@@ -32,8 +35,9 @@ const BookCard = ({ book, onToggleFinished }) => {
     <>
       <Col>
         <Card
-          className={book.finished ? "bg-light" : ""}
+          className={`${book.finished ? "bg-light" : ""} hover-pointer`}
           style={{ height: "100%" }}
+          onClick={() => navigate(`/book/${book.id}`)}
         >
           <Card.Body className="position-relative">
             <Button
@@ -41,11 +45,12 @@ const BookCard = ({ book, onToggleFinished }) => {
               className={`position-absolute end-0 top-0 p-2 ${
                 book.finished ? "text-success" : "text-muted"
               }`}
-              onClick={() =>
+              onClick={(e) => {
+                e.stopPropagation();
                 book.finished
                   ? setShowUnfinishedModal(true)
-                  : setShowFinishedModal(true)
-              }
+                  : setShowFinishedModal(true);
+              }}
               title={
                 book.finished
                   ? t("books.mark_unfinished")

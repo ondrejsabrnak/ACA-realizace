@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState } from "react";
 import Toast from "react-bootstrap/Toast";
 import ToastContainer from "react-bootstrap/ToastContainer";
 import { useTranslation } from "react-i18next";
-import "./styles/ErrorProvider.css";
+import "../styles/providers/ErrorProvider.css";
 
 const ErrorContext = createContext();
 
