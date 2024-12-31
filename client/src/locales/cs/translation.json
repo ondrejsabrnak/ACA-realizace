@@ -67,7 +67,12 @@
     "confirm_delete": "Smazat knihu?",
     "confirm_delete_message": "Opravdu chcete smazat knihu \"{{title}}\"? Tato akce je nevratná.",
     "no_reading_records": "Zatím žádné záznamy čtení",
-    "info_delete_records": "Poznámka: Tímto budou smazány i všechny související záznamy čtení."
+    "info_delete_records": "Poznámka: Tímto budou smazány i všechny související záznamy čtení.",
+    "state": "Stav",
+    "currently_reading": "Právě čtu",
+    "progress": "Průběh",
+    "pages_read_label": "Přečtené strany",
+    "number_of_pages": "Počet stran"
   },
   "reading_records": {
     "add": "Přidat záznam čtení",

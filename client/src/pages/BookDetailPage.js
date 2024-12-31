@@ -12,6 +12,7 @@ import BookInfo from "../components/book/BookInfo";
 import BookReadingRecords from "../components/book/BookReadingRecords";
 import ConfirmModal from "../components/common/ConfirmModal";
 import { useTranslation } from "react-i18next";
+import BookProgress from "../components/book/BookProgress";
 
 const BookDetailPage = () => {
   const { t } = useTranslation();
@@ -165,11 +166,8 @@ const BookDetailPage = () => {
     }
   };
 
-  const handleMarkFinished = async () => {
-    const result = await handleStatusChange({
-      ...book,
-      finished: true,
-    });
+  const handleMarkFinished = async (formData) => {
+    const result = await handleStatusChange(formData);
     if (result?.ok) {
       showToast("success", null, "book_marked_finished");
       setShowFinishedModal(false);
@@ -218,6 +216,11 @@ const BookDetailPage = () => {
             onShowFinishedModal={() => setShowFinishedModal(true)}
             onShowUnfinishedModal={() => setShowUnfinishedModal(true)}
             onDelete={() => setShowDeleteModal(true)}
+          />
+          <BookProgress
+            book={book}
+            onShowFinishedModal={() => setShowFinishedModal(true)}
+            onShowUnfinishedModal={() => setShowUnfinishedModal(true)}
           />
           <BookReadingRecords
             bookId={book.id}

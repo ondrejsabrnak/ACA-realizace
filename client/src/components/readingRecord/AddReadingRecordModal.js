@@ -32,6 +32,11 @@ const AddReadingRecordModal = ({
     return `${year}-${month}-${day}`;
   };
 
+  const formatDateForSubmit = (dateString) => {
+    const [year, month, day] = dateString.split("-");
+    return `${day}/${month}/${year}`;
+  };
+
   const handleSubmit = () => {
     const form = document.getElementById("addReadingRecordForm");
     const formData = new FormData(form);

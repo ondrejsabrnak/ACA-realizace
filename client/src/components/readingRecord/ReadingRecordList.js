@@ -8,6 +8,11 @@ import Tooltip from "react-bootstrap/Tooltip";
 const ReadingRecordList = ({ records, onEdit, onDelete }) => {
   const { t } = useTranslation();
 
+  const formatDate = (dateString) => {
+    const [day, month, year] = dateString.split("/");
+    return `${day}.${month}.${year}`;
+  };
+
   return (
     <Table striped hover responsive>
       <thead>
@@ -22,7 +27,7 @@ const ReadingRecordList = ({ records, onEdit, onDelete }) => {
       <tbody>
         {records.map((record) => (
           <tr key={record.id}>
-            <td>{record.date}</td>
+            <td>{formatDate(record.date)}</td>
             <td>{record.readPages}</td>
             <td>{record.readingTime}</td>
             <td>

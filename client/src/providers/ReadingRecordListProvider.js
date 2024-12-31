@@ -124,12 +124,32 @@ function ReadingRecordListProvider({ children }) {
     [handleListByBookId]
   );
 
+  const handleUpdate = useCallback(
+    async (dtoIn) => {
+      try {
+        const result = await FetchHelper.readingRecord.update(dtoIn);
+        if (result.ok) {
+          // Refresh the list after successful update
+          await handleListByBookId({ bookId: result.data.data.bookId });
+        }
+        return result;
+      } catch (error) {
+        return {
+          ok: false,
+          error: { code: "unexpectedError", message: error.message },
+        };
+      }
+    },
+    [handleListByBookId]
+  );
+
   const value = {
     ...readingRecordListDto,
     handlerMap: {
       handleListByBookId,
       handleCreate,
       handleDelete,
+      handleUpdate,
     },
   };
 

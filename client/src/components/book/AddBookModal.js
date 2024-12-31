@@ -103,7 +103,7 @@ const AddBookModal = ({ show, onHide, onSubmit }) => {
             type="text"
             name="isbn"
             placeholder={t("books.isbn_placeholder")}
-            pattern="^\d{9}[\dX]$|^\d{13}$"
+            pattern="^(?:\d[-]?){9}[\dX]$|^(?:\d[-]?){13}$"
           />
           <Form.Control.Feedback type="invalid">
             {t("books.isbn_invalid")}

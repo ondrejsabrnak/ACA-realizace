@@ -2,7 +2,12 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import { useTranslation } from "react-i18next";
 
-const BookStatusToggle = ({ finished, onStatusChange, compact = false }) => {
+const BookStatusToggle = ({
+  finished,
+  onStatusChange,
+  compact = false,
+  size,
+}) => {
   const { t } = useTranslation();
 
   if (compact) {
@@ -27,6 +32,7 @@ const BookStatusToggle = ({ finished, onStatusChange, compact = false }) => {
       variant={finished ? "outline-success" : "outline-primary"}
       onClick={onStatusChange}
       className="d-flex align-items-center gap-2"
+      size={size}
     >
       <i
         className={`bi ${finished ? "bi-check-circle-fill" : "bi-circle"}`}

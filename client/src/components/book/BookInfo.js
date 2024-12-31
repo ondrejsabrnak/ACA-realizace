@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import BookStatusToggle from "./BookStatusToggle";
 import StarRating from "./StarRating";
 
 const BookInfo = ({
@@ -25,18 +24,15 @@ const BookInfo = ({
     <Form noValidate validated={validated} onSubmit={onSubmit}>
       <dl className="row mb-0">
         <dt className="col-sm-3 d-flex align-items-center">
-          {t("books.title")}
+          {t("books.title")} <span className="text-danger ms-1">*</span>
         </dt>
         <dd className="col-sm-9">
           {isEditing ? (
             <Form.Control
-              required
               type="text"
               value={editForm.title}
               onChange={(e) => onEditFormChange({ title: e.target.value })}
-              placeholder={t("books.title_placeholder")}
-              maxLength={100}
-              minLength={1}
+              required
             />
           ) : (
             book.title
@@ -44,18 +40,15 @@ const BookInfo = ({
         </dd>
 
         <dt className="col-sm-3 d-flex align-items-center">
-          {t("books.author")}
+          {t("books.author")} <span className="text-danger ms-1">*</span>
         </dt>
         <dd className="col-sm-9">
           {isEditing ? (
             <Form.Control
-              required
               type="text"
               value={editForm.author}
               onChange={(e) => onEditFormChange({ author: e.target.value })}
-              placeholder={t("books.author_placeholder")}
-              maxLength={100}
-              minLength={1}
+              required
             />
           ) : (
             book.author
@@ -63,23 +56,21 @@ const BookInfo = ({
         </dd>
 
         <dt className="col-sm-3 d-flex align-items-center">
-          {t("books.total_pages")}
+          {t("books.total_pages")} <span className="text-danger ms-1">*</span>
         </dt>
         <dd className="col-sm-9">
           {isEditing ? (
             <Form.Control
-              required
               type="number"
               value={editForm.numberOfPages}
               onChange={(e) =>
                 onEditFormChange({ numberOfPages: e.target.value })
               }
-              placeholder={t("books.pages_placeholder")}
-              min={1}
-              max={10000}
+              required
+              min="1"
             />
           ) : (
-            `${book.pagesRead}/${book.numberOfPages} ${t("books.pages_read")}`
+            book.numberOfPages
           )}
         </dd>
 
@@ -92,8 +83,7 @@ const BookInfo = ({
               type="text"
               value={editForm.isbn}
               onChange={(e) => onEditFormChange({ isbn: e.target.value })}
-              placeholder={t("books.isbn_placeholder")}
-              pattern="^(?:\d[-]?){9}[\d|X]$|^(?:\d[-]?){13}$"
+              placeholder={t("common.not_specified")}
             />
           ) : (
             book.isbn || (
@@ -171,27 +161,16 @@ const BookInfo = ({
       <Card.Body>
         <div className="d-flex justify-content-between align-items-center mb-3">
           <Card.Title className="mb-0">{t("books.book_info")}</Card.Title>
-          <div className="d-flex align-items-center gap-2">
-            <Button
-              variant="outline-secondary"
-              className="d-flex align-items-center"
-              onClick={onEditToggle}
-              title={t("books.edit_book")}
-            >
-              {t("books.edit_book")}
-            </Button>
-            <BookStatusToggle
-              finished={book.finished}
-              onStatusChange={async () => {
-                if (book.finished) {
-                  onShowUnfinishedModal();
-                } else {
-                  onShowFinishedModal();
-                }
-                return { ok: true };
-              }}
-            />
-          </div>
+          <Button
+            variant="outline-secondary"
+            size="sm"
+            className="d-flex align-items-center"
+            onClick={onEditToggle}
+            title={t("books.edit_book")}
+          >
+            <i className="bi bi-pencil me-2"></i>
+            {t("books.edit_book")}
+          </Button>
         </div>
         {renderBookInfo()}
       </Card.Body>

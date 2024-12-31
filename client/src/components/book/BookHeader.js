@@ -7,17 +7,15 @@ const BookHeader = ({ title, onBack }) => {
 
   return (
     <div className="mb-4">
-      <div className="d-flex flex-column gap-2">
-        <Button
-          variant="link"
-          className="text-secondary p-0 d-flex align-items-center gap-1 text-decoration-none"
-          onClick={onBack}
-        >
-          <i className="bi bi-arrow-left"></i>
-          {t("common.back")}
-        </Button>
-        <h1 className="mb-0">{title}</h1>
-      </div>
+      <Button
+        variant="link"
+        className="p-0 mb-2 text-secondary"
+        onClick={onBack}
+      >
+        <i className="bi bi-arrow-left me-2"></i>
+        {t("common.back")}
+      </Button>
+      <h1 className="mb-0">{title}</h1>
     </div>
   );
 };
