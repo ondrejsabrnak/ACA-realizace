@@ -51,7 +51,7 @@ const BookCard = ({ book, onToggleFinished }) => {
                     ? setShowUnfinishedModal(true)
                     : setShowFinishedModal(true)
                 }
-                showLabel={false}
+                compact={true}
               />
             </div>
             <div style={{ paddingRight: "40px" }}>
