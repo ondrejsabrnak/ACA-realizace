@@ -17,6 +17,7 @@ const BookInfo = ({
   validated,
   onShowFinishedModal,
   onShowUnfinishedModal,
+  onDelete,
 }) => {
   const { t } = useTranslation();
 
@@ -139,7 +140,7 @@ const BookInfo = ({
           </>
         )}
 
-        {isEditing && (
+        {isEditing ? (
           <dd className="col-12 mt-4">
             <div className="d-flex gap-2">
               <Button variant="primary" type="submit">
@@ -148,9 +149,13 @@ const BookInfo = ({
               <Button variant="secondary" onClick={onCancel}>
                 {t("common.cancel")}
               </Button>
+              <Button variant="outline-danger" onClick={onDelete}>
+                <i className="bi bi-trash me-2"></i>
+                {t("books.delete_book")}
+              </Button>
             </div>
           </dd>
-        )}
+        ) : null}
       </dl>
     </Form>
   );

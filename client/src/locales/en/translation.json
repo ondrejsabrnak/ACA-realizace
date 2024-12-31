@@ -68,7 +68,10 @@
     "book_info": "Book Information",
     "reading_records": "Reading Records",
     "reading_progress": "Reading Progress",
-    "status": "Status"
+    "status": "Status",
+    "delete_book": "Delete Book",
+    "confirm_delete": "Delete Book?",
+    "confirm_delete_message": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone."
   },
   "common": {
     "cancel": "Cancel",

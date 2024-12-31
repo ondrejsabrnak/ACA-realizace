@@ -79,7 +79,10 @@
     "book_info": "Informace o knize",
     "reading_records": "Záznamy čtení",
     "reading_progress": "Průběh čtení",
-    "status": "Stav"
+    "status": "Stav",
+    "delete_book": "Smazat knihu",
+    "confirm_delete": "Smazat knihu?",
+    "confirm_delete_message": "Opravdu chcete smazat knihu \"{{title}}\"? Tato akce je nevratná."
   },
   "common": {
     "cancel": "Zrušit",

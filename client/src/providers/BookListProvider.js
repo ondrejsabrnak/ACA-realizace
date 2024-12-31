@@ -147,12 +147,14 @@ function BookListProvider({ children }) {
             data: { ...current.data.data, items: newItems },
           },
           error: null,
+          pendingId: undefined,
         };
       } else {
         return {
           ...current,
           state: "error",
           error: result.data.error,
+          pendingId: undefined,
         };
       }
     });
