@@ -8,12 +8,14 @@ import Button from "react-bootstrap/Button";
 import { ReadingRecordListContext } from "../../providers/ReadingRecordListProvider";
 import AddReadingRecordModal from "./AddReadingRecordModal";
 import ConfirmModal from "../common/ConfirmModal";
+import { useToast } from "../../providers/ToastProvider";
 
-const BookReadingRecords = ({ bookId, totalPages = 0 }) => {
+const BookReadingRecords = ({ bookId, totalPages = 0, onRecordChange }) => {
   const { t } = useTranslation();
   const { state, data, error, currentBookId, handlerMap } = useContext(
     ReadingRecordListContext
   );
+  const { showToast, showError } = useToast();
   const [showAddModal, setShowAddModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [recordToDelete, setRecordToDelete] = useState(null);
@@ -42,6 +44,9 @@ const BookReadingRecords = ({ bookId, totalPages = 0 }) => {
 
     if (result.ok) {
       setShowAddModal(false);
+      if (onRecordChange) {
+        onRecordChange();
+      }
     } else {
       // Error is handled by the provider
     }
@@ -59,14 +64,24 @@ const BookReadingRecords = ({ bookId, totalPages = 0 }) => {
   const handleDeleteConfirm = async () => {
     if (!recordToDelete) return;
 
-    const result = await handlerMap.handleDelete({
-      bookId,
-      id: recordToDelete.id,
-    });
+    try {
+      const result = await handlerMap.handleDelete({
+        bookId,
+        id: recordToDelete.id,
+      });
 
-    if (result.ok) {
-      setShowDeleteModal(false);
-      setRecordToDelete(null);
+      if (result.ok) {
+        showToast("success", null, "reading_record_deleted");
+        setShowDeleteModal(false);
+        setRecordToDelete(null);
+        if (onRecordChange) {
+          onRecordChange();
+        }
+      } else {
+        showError(result.error.code, result.error.message);
+      }
+    } catch (error) {
+      showError("unexpectedError", error.message);
     }
   };
 

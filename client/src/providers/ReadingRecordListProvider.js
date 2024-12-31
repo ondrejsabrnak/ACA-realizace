@@ -103,12 +103,17 @@ function ReadingRecordListProvider({ children }) {
   const handleDelete = useCallback(
     async (dtoIn) => {
       try {
-        const result = await FetchHelper.readingRecord.delete(dtoIn);
+        const result = await FetchHelper.readingRecord.delete({ id: dtoIn.id });
         if (result.ok) {
           // Refresh the list after successful deletion
           await handleListByBookId({ bookId: dtoIn.bookId });
+          return result;
+        } else {
+          return {
+            ok: false,
+            error: result.data.error,
+          };
         }
-        return result;
       } catch (error) {
         return {
           ok: false,

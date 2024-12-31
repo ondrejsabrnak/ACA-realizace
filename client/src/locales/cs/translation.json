@@ -98,6 +98,7 @@
     "book_created": "Kniha byla úspěšně vytvořena",
     "book_deleted": "Kniha byla úspěšně smazána",
     "book_marked_finished": "Kniha byla označena jako přečtená",
-    "book_marked_unfinished": "Kniha byla označena jako rozečtená"
+    "book_marked_unfinished": "Kniha byla označena jako rozečtená",
+    "reading_record_deleted": "Záznam čtení byl úspěšně smazán"
   }
 }

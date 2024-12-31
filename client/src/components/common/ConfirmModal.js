@@ -9,7 +9,8 @@ const ConfirmModal = ({
   onConfirm,
   title,
   children,
-  confirmButtonText
+  confirmButtonText,
+  confirmButtonVariant = "primary",
 }) => {
   const { t } = useTranslation();
 
@@ -18,14 +19,12 @@ const ConfirmModal = ({
       <Modal.Header closeButton className="border-bottom">
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body className="py-3">
-        {children}
-      </Modal.Body>
+      <Modal.Body className="py-3">{children}</Modal.Body>
       <Modal.Footer className="border-0">
         <Button variant="secondary" onClick={onHide}>
           {t("common.cancel")}
         </Button>
-        <Button variant="primary" onClick={onConfirm}>
+        <Button variant={confirmButtonVariant} onClick={onConfirm}>
           {confirmButtonText || t("common.confirm")}
         </Button>
       </Modal.Footer>

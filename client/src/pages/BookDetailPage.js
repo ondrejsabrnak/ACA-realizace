@@ -67,34 +67,33 @@ const BookDetailPage = () => {
     }
   };
 
-  useEffect(() => {
-    const loadBookDetail = async () => {
-      if (isDeleting) return;
-
-      try {
-        const result = await handlerMap.handleGet({ id });
-        if (result.ok) {
-          setBook(result.data);
-          setEditForm({
-            title: result.data.title,
-            author: result.data.author,
-            numberOfPages: result.data.numberOfPages,
-            isbn: result.data.isbn || "",
-            rating: result.data.rating || 0,
-            review: result.data.review || "",
-          });
-        } else {
-          showError(result.error.code, result.error.message);
-          navigate("/");
-        }
-      } catch (error) {
-        showError("failedToLoad", "Failed to load book detail");
+  const loadBookDetail = async () => {
+    try {
+      const result = await handlerMap.handleGet({ id });
+      if (result.ok) {
+        setBook(result.data);
+        setEditForm({
+          title: result.data.title,
+          author: result.data.author,
+          numberOfPages: result.data.numberOfPages,
+          isbn: result.data.isbn || "",
+          rating: result.data.rating || 0,
+          review: result.data.review || "",
+        });
+      } else {
+        showError(result.error.code, result.error.message);
         navigate("/");
-      } finally {
-        setLoading(false);
       }
-    };
+    } catch (error) {
+      showError("failedToLoad", "Failed to load book detail");
+      navigate("/");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
+    if (isDeleting) return;
     loadBookDetail();
   }, [id, navigate, showError, handlerMap, isDeleting]);
 
@@ -223,6 +222,7 @@ const BookDetailPage = () => {
           <BookReadingRecords
             bookId={book.id}
             totalPages={book.numberOfPages}
+            onRecordChange={loadBookDetail}
           />
         </Col>
       </Row>

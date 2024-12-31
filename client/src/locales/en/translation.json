@@ -98,6 +98,7 @@
     "book_created": "Book was successfully created",
     "book_deleted": "Book was successfully deleted",
     "book_marked_finished": "Book was marked as finished",
-    "book_marked_unfinished": "Book was marked as unfinished"
+    "book_marked_unfinished": "Book was marked as unfinished",
+    "reading_record_deleted": "Reading record was successfully deleted"
   }
 }
