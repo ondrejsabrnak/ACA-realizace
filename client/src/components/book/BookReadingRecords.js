@@ -32,8 +32,16 @@ const BookReadingRecords = ({ bookId, totalPages = 0 }) => {
   };
 
   const handleAddConfirm = async (formData) => {
-    // TODO: Implement creating reading record
-    setShowAddModal(false);
+    const result = await handlerMap.handleCreate({
+      bookId,
+      ...formData,
+    });
+
+    if (result.ok) {
+      setShowAddModal(false);
+    } else {
+      // Error is handled by the provider
+    }
   };
 
   const handleEditRecord = (record) => {

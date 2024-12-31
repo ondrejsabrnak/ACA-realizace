@@ -60,6 +60,9 @@ const FetchHelper = {
     listByBookId: async (dtoIn) => {
       return await Call(baseUri, "readingRecord/listByBookId", dtoIn, "get");
     },
+    create: async (dtoIn) => {
+      return await Call(baseUri, "readingRecord/create", dtoIn, "post");
+    },
   },
 };
 

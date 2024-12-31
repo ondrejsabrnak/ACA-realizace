@@ -81,10 +81,30 @@ function ReadingRecordListProvider({ children }) {
     [readingRecordListDto.state, readingRecordListDto.currentBookId]
   );
 
+  const handleCreate = useCallback(
+    async (dtoIn) => {
+      try {
+        const result = await FetchHelper.readingRecord.create(dtoIn);
+        if (result.ok) {
+          // Refresh the list after successful creation
+          await handleListByBookId({ bookId: dtoIn.bookId });
+        }
+        return result;
+      } catch (error) {
+        return {
+          ok: false,
+          error: { code: "unexpectedError", message: error.message },
+        };
+      }
+    },
+    [handleListByBookId]
+  );
+
   const value = {
     ...readingRecordListDto,
     handlerMap: {
       handleListByBookId,
+      handleCreate,
     },
   };
 
