@@ -83,7 +83,8 @@
     "confirm": "Confirm",
     "back": "Back",
     "save": "Save",
-    "not_specified": "Not specified"
+    "not_specified": "Not specified",
+    "actions": "Actions"
   },
   "toast": {
     "success": "Success",

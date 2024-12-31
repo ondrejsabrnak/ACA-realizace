@@ -94,6 +94,7 @@
     "confirm": "Potvrdit",
     "back": "Zpět",
     "save": "Uložit",
-    "not_specified": "Nezadáno"
+    "not_specified": "Nezadáno",
+    "actions": "Akce"
   }
 }

@@ -24,6 +24,14 @@ const BookReadingRecords = ({ bookId }) => {
     // TODO: Implement adding new reading record
   };
 
+  const handleEditRecord = (record) => {
+    // TODO: Implement editing reading record
+  };
+
+  const handleDeleteRecord = (record) => {
+    // TODO: Implement deleting reading record
+  };
+
   const renderContent = () => {
     if (state === "pending") {
       return (
@@ -54,6 +62,7 @@ const BookReadingRecords = ({ bookId }) => {
             <th>{t("books.date")}</th>
             <th>{t("books.read_pages")}</th>
             <th>{t("books.reading_time")}</th>
+            <th className="text-end">{t("common.actions")}</th>
           </tr>
         </thead>
         <tbody>
@@ -62,6 +71,24 @@ const BookReadingRecords = ({ bookId }) => {
               <td>{record.date}</td>
               <td>{record.readPages}</td>
               <td>{record.readingTime}</td>
+              <td className="text-end">
+                <Button
+                  variant="link"
+                  size="sm"
+                  onClick={() => handleEditRecord(record)}
+                  className="p-0 me-2"
+                >
+                  <i className="bi bi-pencil"></i>
+                </Button>
+                <Button
+                  variant="link"
+                  size="sm"
+                  onClick={() => handleDeleteRecord(record)}
+                  className="p-0 text-danger"
+                >
+                  <i className="bi bi-trash"></i>
+                </Button>
+              </td>
             </tr>
           ))}
         </tbody>
