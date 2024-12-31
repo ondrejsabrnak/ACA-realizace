@@ -142,15 +142,21 @@ const BookInfo = ({
 
         {isEditing ? (
           <dd className="col-12 mt-4">
-            <div className="d-flex gap-2">
-              <Button variant="primary" type="submit">
-                {t("books.save_changes")}
-              </Button>
-              <Button variant="secondary" onClick={onCancel}>
-                {t("common.cancel")}
-              </Button>
-              <Button variant="outline-danger" onClick={onDelete}>
-                <i className="bi bi-trash me-2"></i>
+            <div className="d-flex gap-2 justify-content-between">
+              <div className="d-flex gap-2">
+                <Button variant="primary" type="submit">
+                  {t("books.save_changes")}
+                </Button>
+                <Button variant="outline-secondary" onClick={onCancel}>
+                  {t("common.cancel")}
+                </Button>
+              </div>
+              <Button
+                variant="outline-danger"
+                className="d-flex align-items-center gap-2"
+                onClick={onDelete}
+              >
+                <i className="bi bi-trash"></i>
                 {t("books.delete_book")}
               </Button>
             </div>
@@ -164,28 +170,28 @@ const BookInfo = ({
     <Card className="mb-4">
       <Card.Body>
         <div className="d-flex justify-content-between align-items-center mb-3">
+          <Card.Title className="mb-0">{t("books.book_info")}</Card.Title>
           <div className="d-flex align-items-center gap-2">
-            <Card.Title className="mb-0">{t("books.book_info")}</Card.Title>
             <Button
-              variant="link"
-              className="p-0 text-muted"
+              variant="outline-secondary"
+              className="d-flex align-items-center"
               onClick={onEditToggle}
               title={t("books.edit_book")}
             >
-              <i className="bi bi-pencil"></i>
+              {t("books.edit_book")}
             </Button>
+            <BookStatusToggle
+              finished={book.finished}
+              onStatusChange={async () => {
+                if (book.finished) {
+                  onShowUnfinishedModal();
+                } else {
+                  onShowFinishedModal();
+                }
+                return { ok: true };
+              }}
+            />
           </div>
-          <BookStatusToggle
-            finished={book.finished}
-            onStatusChange={async () => {
-              if (book.finished) {
-                onShowUnfinishedModal();
-              } else {
-                onShowFinishedModal();
-              }
-              return { ok: true };
-            }}
-          />
         </div>
         {renderBookInfo()}
       </Card.Body>
