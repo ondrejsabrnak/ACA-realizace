@@ -76,7 +76,11 @@
     "no_reading_records": "No reading records yet",
     "date": "Date",
     "reading_time": "Reading Time",
-    "add_reading_record": "Add Reading Record"
+    "add_reading_record": "Add Reading Record",
+    "read_pages_required": "Please enter number of pages read",
+    "reading_time_required": "Please enter reading time in format HH:MM",
+    "date_required": "Please enter date",
+    "note": "Note (optional)"
   },
   "common": {
     "cancel": "Cancel",

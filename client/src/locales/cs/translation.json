@@ -87,7 +87,11 @@
     "status": "Stav",
     "delete_book": "Smazat knihu",
     "confirm_delete": "Smazat knihu?",
-    "confirm_delete_message": "Opravdu chcete smazat knihu \"{{title}}\"? Tato akce je nevratná."
+    "confirm_delete_message": "Opravdu chcete smazat knihu \"{{title}}\"? Tato akce je nevratná.",
+    "read_pages_required": "Zadejte počet přečtených stran",
+    "reading_time_required": "Zadejte dobu čtení ve formátu HH:MM",
+    "date_required": "Zadejte datum",
+    "note": "Poznámka (volitelné)"
   },
   "common": {
     "cancel": "Zrušit",

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
@@ -6,12 +6,14 @@ import Spinner from "react-bootstrap/Spinner";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import { ReadingRecordListContext } from "../../providers/ReadingRecordListProvider";
+import AddReadingRecordModal from "./AddReadingRecordModal";
 
 const BookReadingRecords = ({ bookId }) => {
   const { t } = useTranslation();
   const { state, data, error, currentBookId, handlerMap } = useContext(
     ReadingRecordListContext
   );
+  const [showAddModal, setShowAddModal] = useState(false);
 
   useEffect(() => {
     // Only fetch if we have a bookId and it's different from the current one
@@ -21,7 +23,12 @@ const BookReadingRecords = ({ bookId }) => {
   }, [bookId, currentBookId, handlerMap]);
 
   const handleAddRecord = () => {
-    // TODO: Implement adding new reading record
+    setShowAddModal(true);
+  };
+
+  const handleAddConfirm = async (formData) => {
+    // TODO: Implement creating reading record
+    setShowAddModal(false);
   };
 
   const handleEditRecord = (record) => {
@@ -62,7 +69,7 @@ const BookReadingRecords = ({ bookId }) => {
             <th>{t("books.date")}</th>
             <th>{t("books.read_pages")}</th>
             <th>{t("books.reading_time")}</th>
-            <th className="text-end">{t("common.actions")}</th>
+            <th className="text-end w-1">{t("common.actions")}</th>
           </tr>
         </thead>
         <tbody>
@@ -74,6 +81,7 @@ const BookReadingRecords = ({ bookId }) => {
               <td className="text-end">
                 <Button
                   variant="link"
+                  size="sm"
                   onClick={() => handleEditRecord(record)}
                   className="p-0 me-2"
                 >
@@ -81,6 +89,7 @@ const BookReadingRecords = ({ bookId }) => {
                 </Button>
                 <Button
                   variant="link"
+                  size="sm"
                   onClick={() => handleDeleteRecord(record)}
                   className="p-0 text-danger"
                 >
@@ -95,18 +104,28 @@ const BookReadingRecords = ({ bookId }) => {
   };
 
   return (
-    <Card className="mt-3">
-      <Card.Body>
-        <div className="d-flex justify-content-between align-items-center mb-3">
-          <Card.Title className="mb-0">{t("books.reading_records")}</Card.Title>
-          <Button variant="primary" size="sm" onClick={handleAddRecord}>
-            <i className="bi bi-plus-lg me-1"></i>
-            {t("books.add_reading_record")}
-          </Button>
-        </div>
-        {renderContent()}
-      </Card.Body>
-    </Card>
+    <>
+      <Card className="mt-3">
+        <Card.Body>
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <Card.Title className="mb-0">
+              {t("books.reading_records")}
+            </Card.Title>
+            <Button variant="primary" size="sm" onClick={handleAddRecord}>
+              <i className="bi bi-plus-lg me-1"></i>
+              {t("books.add_reading_record")}
+            </Button>
+          </div>
+          {renderContent()}
+        </Card.Body>
+      </Card>
+
+      <AddReadingRecordModal
+        show={showAddModal}
+        onHide={() => setShowAddModal(false)}
+        onConfirm={handleAddConfirm}
+      />
+    </>
   );
 };
 
