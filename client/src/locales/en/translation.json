@@ -79,5 +79,16 @@
     "back": "Back",
     "save": "Save",
     "not_specified": "Not specified"
+  },
+  "toast": {
+    "success": "Success",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Information",
+    "book_updated": "Book was successfully updated",
+    "book_created": "Book was successfully created",
+    "book_deleted": "Book was successfully deleted",
+    "book_marked_finished": "Book was marked as finished",
+    "book_marked_unfinished": "Book was marked as unfinished"
   }
 }

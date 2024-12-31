@@ -2,12 +2,12 @@ import React, { useState, useContext } from "react";
 import BookList from "../components/book/BookList";
 import BookSearch from "../components/book/BookSearch";
 import { BookListContext } from "../providers/BookListProvider";
-import { useError } from "../providers/ErrorProvider";
+import { useToast } from "../providers/ToastProvider";
 
 const BookListPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const { data, error, state, handlerMap } = useContext(BookListContext);
-  const { showError } = useError();
+  const { showError } = useToast();
 
   // Default error handling for non-connection errors
   if (
