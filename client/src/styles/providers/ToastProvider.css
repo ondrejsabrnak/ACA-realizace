@@ -1,23 +1,6 @@
-.error-alert {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1050;
+.toast-notification {
   min-width: 300px;
   max-width: 500px;
-  animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translate(-50%, -100%);
-    opacity: 0;
-  }
-  to {
-    transform: translate(-50%, 0);
-    opacity: 1;
-  }
 }
 
 .progress-bar-container {
@@ -36,7 +19,7 @@
   height: 100%;
   width: 100%;
   background-color: rgba(255, 255, 255, 0.8);
-  animation: progress 5s linear;
+  animation: progress 3s linear;
 }
 
 @keyframes progress {

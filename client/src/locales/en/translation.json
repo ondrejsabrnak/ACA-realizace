@@ -33,12 +33,14 @@
     "failedToUpdateReadingRecord": "Failed to update reading record"
   },
   "books": {
-    "finished": "Finished Books",
+    "finished": "Finished",
     "unfinished": "Currently Reading",
     "pages_read": "pages read",
     "search_label": "Search books",
     "search_placeholder": "Enter book title or author...",
     "add_book": "Add Book",
+    "edit_book": "Edit Book",
+    "save_changes": "Save Changes",
     "mark_finished": "Mark as finished",
     "mark_unfinished": "Mark as unfinished",
     "confirm_status_change": "Change Book Status",
@@ -47,7 +49,7 @@
     "warning_lose_data": "Warning: This will remove the book's rating and review.",
     "rating": "Rating",
     "rating_required": "Please rate the book",
-    "review": "Review (optional)",
+    "review": "Review",
     "review_placeholder": "Write your thoughts about the book...",
     "title": "Book Title",
     "title_placeholder": "Enter book title",
@@ -71,6 +73,7 @@
   "common": {
     "cancel": "Cancel",
     "confirm": "Confirm",
-    "back": "Back"
+    "back": "Back",
+    "save": "Save"
   }
 }

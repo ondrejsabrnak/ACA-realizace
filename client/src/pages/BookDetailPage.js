@@ -1,23 +1,69 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { BookListContext } from "../providers/BookListProvider";
 import { useError } from "../providers/ErrorProvider";
+import { useToast } from "../providers/ToastProvider";
 import FetchHelper from "../helpers/FetchHelper";
-import StarRating from "../components/book/StarRating";
+import MarkFinishedModal from "../components/book/MarkFinishedModal";
+import MarkUnfinishedModal from "../components/book/MarkUnfinishedModal";
+import BookHeader from "../components/book/BookHeader";
+import BookInfo from "../components/book/BookInfo";
+import BookReadingRecords from "../components/book/BookReadingRecords";
 
 const BookDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { t } = useTranslation();
   const { showError } = useError();
+  const { showToast } = useToast();
   const [book, setBook] = useState(null);
   const [readingRecords, setReadingRecords] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [showFinishedModal, setShowFinishedModal] = useState(false);
+  const [showUnfinishedModal, setShowUnfinishedModal] = useState(false);
+  const [editForm, setEditForm] = useState({
+    title: "",
+    author: "",
+    numberOfPages: "",
+    isbn: "",
+    rating: 0,
+    review: "",
+  });
+  const [validated, setValidated] = useState(false);
+
+  const handleStatusChange = async (updatedBook) => {
+    try {
+      const result = await FetchHelper.book.update({
+        id: book.id,
+        ...updatedBook,
+      });
+
+      if (result.ok) {
+        setBook(result.data.data);
+        setEditForm({
+          title: result.data.data.title,
+          author: result.data.data.author,
+          numberOfPages: result.data.data.numberOfPages,
+          isbn: result.data.data.isbn || "",
+          rating: result.data.data.rating || 0,
+          review: result.data.data.review || "",
+        });
+        showToast(
+          "success",
+          null,
+          updatedBook.finished
+            ? "book_marked_finished"
+            : "book_marked_unfinished"
+        );
+        return result;
+      } else {
+        showError(result.data.error.code, result.data.error.message);
+      }
+    } catch (error) {
+      showError("failedToUpdateBook", "Failed to update book");
+    }
+  };
 
   useEffect(() => {
     const loadBookDetail = async () => {
@@ -25,6 +71,14 @@ const BookDetailPage = () => {
         const result = await FetchHelper.book.get({ id });
         if (result.ok) {
           setBook(result.data.data);
+          setEditForm({
+            title: result.data.data.title,
+            author: result.data.data.author,
+            numberOfPages: result.data.data.numberOfPages,
+            isbn: result.data.data.isbn || "",
+            rating: result.data.data.rating || 0,
+            review: result.data.data.review || "",
+          });
           // TODO: Načíst záznamy o čtení
         } else {
           showError(result.data.error.code, result.data.error.message);
@@ -41,82 +95,100 @@ const BookDetailPage = () => {
     loadBookDetail();
   }, [id, navigate, showError]);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+
+    if (!form.checkValidity()) {
+      setValidated(true);
+      return;
+    }
+
+    try {
+      const updateData = {
+        id: book.id,
+        ...editForm,
+        numberOfPages: parseInt(editForm.numberOfPages, 10),
+      };
+
+      if (!updateData.isbn) {
+        delete updateData.isbn;
+      }
+
+      const result = await FetchHelper.book.update(updateData);
+
+      if (result.ok) {
+        setBook(result.data.data);
+        setIsEditing(false);
+        setValidated(false);
+        showToast("success", null, "book_updated");
+      } else {
+        showError(
+          result.data.error.code,
+          result.data.error.message,
+          result.data.error.details
+        );
+      }
+    } catch (error) {
+      showError("failedToUpdateBook", "Failed to update book");
+    }
+  };
+
+  const handleCancel = () => {
+    setEditForm({
+      title: book.title,
+      author: book.author,
+      numberOfPages: book.numberOfPages,
+      isbn: book.isbn || "",
+      rating: book.rating || 0,
+      review: book.review || "",
+    });
+    setIsEditing(false);
+    setValidated(false);
+  };
+
   if (loading || !book) {
     return null; // TODO: Add loading spinner
   }
 
   return (
     <div>
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1>{book.title}</h1>
-        <Button variant="outline-primary" onClick={() => navigate("/")}>
-          {t("common.back")}
-        </Button>
-      </div>
+      <BookHeader title={book.title} onBack={() => navigate("/")} />
 
       <Row>
         <Col>
-          <Card className="mb-4">
-            <Card.Body>
-              <Card.Title>{t("books.book_info")}</Card.Title>
-              <dl className="row mb-0">
-                <dt className="col-sm-3 d-flex align-items-center">
-                  {t("books.author")}
-                </dt>
-                <dd className="col-sm-9">{book.author}</dd>
+          <BookInfo
+            book={book}
+            isEditing={isEditing}
+            editForm={editForm}
+            onEditToggle={() => setIsEditing(!isEditing)}
+            onEditFormChange={(changes) =>
+              setEditForm({ ...editForm, ...changes })
+            }
+            onSubmit={handleSubmit}
+            onCancel={handleCancel}
+            validated={validated}
+            onShowFinishedModal={() => setShowFinishedModal(true)}
+            onShowUnfinishedModal={() => setShowUnfinishedModal(true)}
+          />
 
-                <dt className="col-sm-3 d-flex align-items-center">
-                  {t("books.number_of_pages")}
-                </dt>
-                <dd className="col-sm-9">
-                  {book.pagesRead}/{book.numberOfPages} {t("books.pages_read")}
-                </dd>
-
-                <dt className="col-sm-3 d-flex align-items-center">
-                  {t("books.isbn")}
-                </dt>
-                <dd className="col-sm-9">
-                  {book.isbn || <span className="text-muted">Nezadáno</span>}
-                </dd>
-
-                <dt className="col-sm-3 d-flex align-items-center">
-                  {t("books.status")}
-                </dt>
-                <dd className="col-sm-9">
-                  {book.finished ? t("books.finished") : t("books.unfinished")}
-                </dd>
-
-                {book.finished && (
-                  <>
-                    <dt className="col-sm-3 d-flex align-items-center">
-                      {t("books.rating")}
-                    </dt>
-                    <dd className="col-sm-9">
-                      <StarRating rating={book.rating} readonly />
-                    </dd>
-
-                    {book.review && (
-                      <>
-                        <dt className="col-sm-3 d-flex align-items-center">
-                          {t("books.review")}
-                        </dt>
-                        <dd className="col-sm-9">{book.review}</dd>
-                      </>
-                    )}
-                  </>
-                )}
-              </dl>
-            </Card.Body>
-          </Card>
-
-          <Card>
-            <Card.Body>
-              <Card.Title>{t("books.reading_records")}</Card.Title>
-              {/* TODO: Add reading records list */}
-            </Card.Body>
-          </Card>
+          <BookReadingRecords records={readingRecords} />
         </Col>
       </Row>
+
+      <MarkFinishedModal
+        show={showFinishedModal}
+        onHide={() => setShowFinishedModal(false)}
+        onConfirm={handleStatusChange}
+        book={book}
+      />
+
+      <MarkUnfinishedModal
+        show={showUnfinishedModal}
+        onHide={() => setShowUnfinishedModal(false)}
+        onConfirm={handleStatusChange}
+        book={book}
+      />
     </div>
   );
 };

@@ -1,80 +1,67 @@
-import React, { createContext, useContext, useState } from "react";
-import Toast from "react-bootstrap/Toast";
-import ToastContainer from "react-bootstrap/ToastContainer";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import Alert from "react-bootstrap/Alert";
 import "../styles/providers/ErrorProvider.css";
 
 const ErrorContext = createContext();
+const TIMEOUT = 5000; // 5 seconds
 
 export const useError = () => {
   const context = useContext(ErrorContext);
   if (!context) {
-    throw new Error("useError must be used within ErrorProvider");
+    throw new Error("useError must be used within an ErrorProvider");
   }
   return context;
 };
 
 export const ErrorProvider = ({ children }) => {
-  const [error, setError] = useState(null);
   const { t } = useTranslation();
+  const [error, setError] = useState(null);
 
-  const TIMEOUT = 5000; // 5 seconds
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(null);
+      }, TIMEOUT);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
 
-  // Show error with optional validation details
   const showError = (code, message, details = []) => {
-    setError({ code, message, details });
-    setTimeout(() => {
-      setError(null);
-    }, TIMEOUT);
+    const translatedMessage = t(`server_errors.${code}`, {
+      defaultValue: message,
+    });
+    setError({ code, message: translatedMessage, details });
   };
 
-  // Hide error
   const hideError = () => {
     setError(null);
   };
 
-  // Render error message based on error type
-  const renderErrorMessage = () => {
-    if (!error) return null;
-
-    // For validation errors, show only the list of details
-    if (error.code === "validationError" && error.details?.length > 0) {
-      return (
-        <ul className="mb-0 ps-3">
-          {error.details.map((detail, index) => (
-            <li key={index}>{detail}</li>
-          ))}
-        </ul>
-      );
-    }
-
-    // For other errors, show just the message
-    return error.message;
-  };
-
   return (
-    <ErrorContext.Provider value={{ showError }}>
-      {children}
-      <ToastContainer position="top-center" className="p-3">
-        <Toast
-          show={!!error}
+    <ErrorContext.Provider value={{ showError, hideError }}>
+      {error && (
+        <Alert
+          variant="danger"
           onClose={hideError}
-          bg="danger"
-          style={{ minWidth: "300px" }}
+          dismissible
+          className="error-alert"
         >
-          <Toast.Header>
-            <strong className="me-auto">
-              {error?.code && t(`server_errors.${error.code}`)}
-            </strong>
-          </Toast.Header>
-          <Toast.Body className="text-white">
-            {renderErrorMessage()}
-            <div className="progress-bar-container">
-              <div className="progress-bar-animated" />
-            </div>
-          </Toast.Body>
-        </Toast>
-      </ToastContainer>
+          <Alert.Heading>{t(`server_errors.${error.code}`)}</Alert.Heading>
+          <p>{error.message}</p>
+          {error.details && error.details.length > 0 && (
+            <ul className="mb-0">
+              {error.details.map((detail, index) => (
+                <li key={index}>{detail}</li>
+              ))}
+            </ul>
+          )}
+          <div className="progress-bar-container">
+            <div className="progress-bar-animated" />
+          </div>
+        </Alert>
+      )}
+      {children}
     </ErrorContext.Provider>
   );
 };

@@ -11,6 +11,17 @@
     "copyright": "Ondřej Šabrňák | Čtenářův deník",
     "version": "Verze 1.0.0"
   },
+  "toast": {
+    "success": "Úspěch",
+    "error": "Chyba",
+    "warning": "Upozornění",
+    "info": "Informace",
+    "book_updated": "Kniha byla úspěšně aktualizována",
+    "book_created": "Kniha byla úspěšně vytvořena",
+    "book_deleted": "Kniha byla úspěšně smazána",
+    "book_marked_finished": "Kniha byla označena jako přečtená",
+    "book_marked_unfinished": "Kniha byla označena jako rozečtená"
+  },
   "errors": {
     "connection_error": "Chyba připojení",
     "server_unreachable": "Nepodařilo se připojit k serveru.",
@@ -33,12 +44,14 @@
     "failedToUpdateReadingRecord": "Nepodařilo se aktualizovat záznam o čtení"
   },
   "books": {
-    "finished": "Dočtené knihy",
-    "unfinished": "Rozečtené knihy",
+    "finished": "Přečteno",
+    "unfinished": "Rozečtené",
     "pages_read": "přečtených stran",
     "search_label": "Vyhledat knihu",
     "search_placeholder": "Zadejte název nebo autora knihy...",
     "add_book": "Přidat knihu",
+    "edit_book": "Upravit knihu",
+    "save_changes": "Uložit změny",
     "mark_finished": "Označit jako dočtené",
     "mark_unfinished": "Označit jako rozečtené",
     "confirm_status_change": "Změna stavu knihy",
@@ -47,7 +60,7 @@
     "warning_lose_data": "Upozornění: Tímto ztratíte hodnocení a recenzi knihy.",
     "rating": "Hodnocení",
     "rating_required": "Prosím ohodnoťte knihu",
-    "review": "Recenze (volitelné)",
+    "review": "Recenze",
     "review_placeholder": "Napište svůj názor na knihu...",
     "title": "Název knihy",
     "title_placeholder": "Zadejte název knihy",
@@ -71,6 +84,7 @@
   "common": {
     "cancel": "Zrušit",
     "confirm": "Potvrdit",
-    "back": "Zpět"
+    "back": "Zpět",
+    "save": "Uložit"
   }
 }
