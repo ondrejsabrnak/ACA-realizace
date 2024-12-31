@@ -74,7 +74,6 @@ const BookReadingRecords = ({ bookId }) => {
               <td className="text-end">
                 <Button
                   variant="link"
-                  size="sm"
                   onClick={() => handleEditRecord(record)}
                   className="p-0 me-2"
                 >
@@ -82,7 +81,6 @@ const BookReadingRecords = ({ bookId }) => {
                 </Button>
                 <Button
                   variant="link"
-                  size="sm"
                   onClick={() => handleDeleteRecord(record)}
                   className="p-0 text-danger"
                 >
