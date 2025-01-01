@@ -43,7 +43,7 @@ const AddBookModal = ({ show, onHide, onSubmit }) => {
       onHide={handleClose}
       onConfirm={handleSubmit}
       title={t("books.add_book")}
-      confirmButtonText={t("books.add_book")}
+      confirmButtonText={t("common.add")}
     >
       <Form id="addBookForm" noValidate validated={validated}>
         <Form.Group className="mb-3">

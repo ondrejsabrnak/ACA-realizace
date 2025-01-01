@@ -135,7 +135,7 @@ const BookInfo = ({
             <div className="d-flex gap-2 justify-content-between">
               <div className="d-flex gap-2">
                 <Button variant="primary" type="submit">
-                  {t("books.save_changes")}
+                  {t("common.edit")}
                 </Button>
                 <Button variant="outline-secondary" onClick={onCancel}>
                   {t("common.cancel")}
@@ -147,7 +147,7 @@ const BookInfo = ({
                 onClick={onDelete}
               >
                 <i className="bi bi-trash"></i>
-                {t("books.delete_book")}
+                {t("common.delete")}
               </Button>
             </div>
           </dd>

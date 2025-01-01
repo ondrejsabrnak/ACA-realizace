@@ -26,7 +26,7 @@ const MarkUnfinishedModal = ({ show, onHide, onConfirm, book }) => {
       onHide={onHide}
       onConfirm={handleSubmit}
       title={t("books.confirm_status_change")}
-      confirmButtonText={t("books.mark_unfinished")}
+      confirmButtonText={t("common.confirm")}
     >
       <Form id="unfinishBookForm">
         <p className="mb-4">

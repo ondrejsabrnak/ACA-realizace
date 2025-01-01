@@ -18,27 +18,27 @@
   "server_errors": {
     "validationError": "Neplatná data",
     "bookNotFound": "Kniha nebyla nalezena",
-    "readingRecordNotFound": "Záznam o čtení nebyl nalezen",
+    "readingRecordNotFound": "Záznam čtení nebyl nalezen",
     "isbnAlreadyExists": "Kniha s tímto ISBN již existuje",
     "readPagesExceedsLeftPages": "Počet přečtených stran nemůže být větší než celkový počet stran",
     "failedToCreateBook": "Nepodařilo se vytvořit knihu",
     "failedToUpdateBook": "Nepodařilo se aktualizovat knihu",
-    "failedToCreateReadingRecord": "Nepodařilo se vytvořit záznam o čtení",
-    "failedToUpdateReadingRecord": "Nepodařilo se aktualizovat záznam o čtení"
+    "failedToCreateReadingRecord": "Nepodařilo se vytvořit záznam čtení",
+    "failedToUpdateReadingRecord": "Nepodařilo se aktualizovat záznam čtení"
   },
   "books": {
-    "finished": "Přečteno",
-    "unfinished": "Rozečtené",
+    "finished": "Přečtené knihy",
+    "unfinished": "Rozečtené knihy",
     "pages_read": "přečtených stran",
     "search_label": "Vyhledat knihu",
     "search_placeholder": "Zadejte název nebo autora knihy...",
     "add_book": "Přidat knihu",
     "edit_book": "Upravit knihu",
     "save_changes": "Uložit změny",
-    "mark_finished": "Označit jako dočtené",
+    "mark_finished": "Označit jako přečtené",
     "mark_unfinished": "Označit jako rozečtené",
     "confirm_status_change": "Změna stavu knihy",
-    "confirm_mark_finished": "Chcete označit knihu \"{{title}}\" jako dočtenou?",
+    "confirm_mark_finished": "Chcete označit knihu \"{{title}}\" jako přečtenou?",
     "confirm_mark_unfinished": "Opravdu chcete označit knihu \"{{title}}\" jako rozečtenou?",
     "warning_lose_data": "Upozornění: Tímto ztratíte hodnocení a recenzi knihy.",
     "rating": "Hodnocení",
@@ -75,9 +75,9 @@
     "number_of_pages": "Počet stran"
   },
   "reading_records": {
-    "add": "Přidat záznam čtení",
-    "edit": "Upravit záznam čtení",
-    "delete": "Smazat záznam čtení",
+    "add": "Přidat záznam",
+    "edit": "Upravit záznam",
+    "delete": "Smazat záznam",
     "read_pages": "Přečtené strany",
     "reading_time": "Doba čtení",
     "date": "Datum",
@@ -97,7 +97,9 @@
     "actions": "Akce",
     "loading": "Načítání...",
     "delete": "Smazat",
-    "not_specified": "Neuvedeno"
+    "not_specified": "Neuvedeno",
+    "add": "Přidat",
+    "edit": "Upravit"
   },
   "toast": {
     "success": "Úspěch",

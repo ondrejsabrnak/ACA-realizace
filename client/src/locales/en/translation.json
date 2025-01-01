@@ -75,9 +75,9 @@
     "number_of_pages": "Number of Pages"
   },
   "reading_records": {
-    "add": "Add Reading Record",
-    "edit": "Edit Reading Record",
-    "delete": "Delete Reading Record",
+    "add": "Add Record",
+    "edit": "Edit Record",
+    "delete": "Delete Record",
     "read_pages": "Pages Read",
     "reading_time": "Reading Time",
     "date": "Date",
@@ -97,7 +97,9 @@
     "actions": "Actions",
     "loading": "Loading...",
     "delete": "Delete",
-    "not_specified": "Not specified"
+    "not_specified": "Not specified",
+    "add": "Add",
+    "edit": "Edit"
   },
   "toast": {
     "success": "Success",

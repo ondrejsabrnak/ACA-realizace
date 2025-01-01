@@ -125,7 +125,7 @@ const ReadingRecordModal = ({
       onHide={handleClose}
       onConfirm={handleSubmit}
       title={t(mode === "add" ? "reading_records.add" : "reading_records.edit")}
-      confirmButtonText={t("common.save")}
+      confirmButtonText={t(mode === "add" ? "common.add" : "common.edit")}
     >
       <ReadingRecordForm
         formId={

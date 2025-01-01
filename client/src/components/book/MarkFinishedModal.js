@@ -38,7 +38,7 @@ const MarkFinishedModal = ({ show, onHide, onConfirm, book }) => {
       onHide={handleClose}
       onConfirm={handleSubmit}
       title={t("books.confirm_status_change")}
-      confirmButtonText={t("books.mark_finished")}
+      confirmButtonText={t("common.confirm")}
     >
       <Form id="finishBookForm">
         <p className="mb-4">
