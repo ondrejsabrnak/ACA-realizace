@@ -70,7 +70,8 @@
     "no_reading_records": "No reading records yet",
     "info_delete_records": "Note: This will also delete all related reading records.",
     "state": "State",
-    "currently_reading": "Currently reading",
+    "state_currently_reading": "Currently reading",
+    "state_finished": "Finished",
     "progress": "Progress",
     "pages_read_label": "Pages Read",
     "number_of_pages": "Number of Pages"

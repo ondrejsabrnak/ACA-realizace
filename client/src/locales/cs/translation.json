@@ -70,7 +70,8 @@
     "no_reading_records": "Zatím žádné záznamy čtení",
     "info_delete_records": "Poznámka: Tímto budou smazány i všechny související záznamy čtení.",
     "state": "Stav",
-    "currently_reading": "Právě čtu",
+    "state_currently_reading": "Právě čtu",
+    "state_finished": "Přečtené",
     "progress": "Průběh",
     "pages_read_label": "Přečtené strany",
     "number_of_pages": "Počet stran"

@@ -35,8 +35,8 @@ const BookProgress = ({ book, onShowFinishedModal, onShowUnfinishedModal }) => {
               className={`badge ${book.finished ? "bg-success" : "bg-primary"}`}
             >
               {book.finished
-                ? t("books.finished")
-                : t("books.currently_reading")}
+                ? t("books.state_finished")
+                : t("books.state_currently_reading")}
             </span>
           </dd>
 
