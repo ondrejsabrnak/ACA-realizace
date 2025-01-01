@@ -34,21 +34,29 @@ The application serves as an electronic reader's diary. Users can:
 
 ```
 ├── server/             # Backend application
-│   ├── abl/           # Application Business Logic
-│   ├── controllers/   # Express controllers
-│   ├── dao/           # Data Access Objects
-│   ├── services/      # Shared services
-│   └── app.js         # Main application file
-├── client/            # Frontend application
+│   ├── abl/            # Application Business Logic
+│   ├── controllers/    # Express controllers
+│   ├── dao/            # Data Access Objects
+│   ├── services/       # Shared services
+│   ├── constants/      # Constants and configuration
+│   └── app.js          # Main application file
+├── client/             # Frontend application
 │   ├── src/
 │   │   ├── components/  # React components
-│   │   ├── pages/      # Application pages
-│   │   ├── providers/  # Context providers
-│   │   ├── utils/      # Helper functions
-│   │   ├── styles/     # CSS styles
-│   │   └── locales/    # Translations
-│   └── public/       # Static files
-└── README.md         # Project documentation
+│   │   ├── config/      # Application configuration
+│   │   ├── helpers/     # Helper functions
+│   │   ├── layout/      # Layout components
+│   │   ├── locales/     # Translation files
+│   │   ├── pages/       # Application pages
+│   │   ├── providers/   # Context providers
+│   │   ├── styles/      # CSS styles
+│   │   ├── utils/       # Utility functions
+│   │   ├── App.js       # Main App component
+│   │   ├── Router.js    # Application routing
+│   │   ├── i18n.js      # Internationalization setup
+│   │   └── index.js     # Application entry point
+│   └── public/          # Static files
+└── README.md            # Project documentation
 ```
 
 ## Installation and Running
@@ -147,6 +155,8 @@ POST /readingRecord/create
 - Book management (CRUD operations)
 - Reading progress tracking
 - Input data validation
+  - ISBN validation (format and checksum for both ISBN-10 and ISBN-13)
+  - ISBN uniqueness check across all books
 - Atomic operations with rollback support
 - Standardized error responses
 
@@ -156,6 +166,9 @@ POST /readingRecord/create
 - Clear book list display with search functionality
 - Detailed book pages with graphical progress display
 - Forms for adding and editing books and reading records
+  - Real-time ISBN validation (format, checksum, and uniqueness)
+  - Support for both ISBN-10 and ISBN-13 formats
+  - Validation feedback in form controls
 - Multi-language support (Czech, English)
 - Visual indicators for reading status and progress
 - Toast notifications for user feedback
