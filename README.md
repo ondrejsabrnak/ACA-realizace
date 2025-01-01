@@ -1,85 +1,112 @@
-# Čtenářův deník
+# The Reader's Diary
 
-Semestrální práce pro předmět Architektura cloudových aplikací.
+Semester project for Cloud Application Architecture course.
 
-## Autor
+## Author
 
 Ondřej Šabrňák
 
-## Popis projektu
+## Project Description
 
-Aplikace slouží jako elektronický čtenářský deník. Uživatelé mohou:
+The application serves as an electronic reader's diary. Users can:
 
-- Spravovat seznam knih
-- Zaznamenávat pokrok ve čtení
-- Přidávat poznámky k jednotlivým čtenářským záznamům
+- Manage their book list
+- Track reading progress
+- Add notes to individual reading records
 
-## Technologie
+## Technologies
 
 ### Backend
 
 - Node.js, Express.js
-- Ukládání dat: JSON soubory
-- Validace: AJV
+- Data storage: JSON files
+- Validation: AJV
 
-### Frontend (plánováno)
+### Frontend
 
 - React.js
-- React Bootstrap pro komponenty uživatelského rozhraní
-- React Router pro správu routování
+- React Bootstrap for UI components
+- React Router for routing management
+- React i18next for internationalization
+- Context API for state management
 
-## Struktura projektu
+## Project Structure
 
 ```
-├── server/             # Backend aplikace
-│   ├── abl/            # Application Business Logic
-│   ├── controllers/    # Express kontrolery
-│   ├── dao/            # Data Access Objects
-│   ├── services/       # Sdílené služby
-│   └── app.js          # Hlavní soubor aplikace
-└── README.md           # Dokumentace projektu
+├── server/             # Backend application
+│   ├── abl/           # Application Business Logic
+│   ├── controllers/   # Express controllers
+│   ├── dao/           # Data Access Objects
+│   ├── services/      # Shared services
+│   └── app.js         # Main application file
+├── client/            # Frontend application
+│   ├── src/
+│   │   ├── components/  # React components
+│   │   ├── pages/      # Application pages
+│   │   ├── providers/  # Context providers
+│   │   ├── utils/      # Helper functions
+│   │   ├── styles/     # CSS styles
+│   │   └── locales/    # Translations
+│   └── public/       # Static files
+└── README.md         # Project documentation
 ```
 
-## Instalace a spuštění
+## Installation and Running
 
 ### Backend
 
 ```bash
-# Přejít do složky serveru
+# Navigate to server directory
 cd server
 
-# Instalace závislostí
+# Install dependencies
 npm install
 
-# Spuštění serveru v produkčním módu
+# Run server in production mode
 npm start
 
-# Spuštění serveru ve vývojovém módu (automatický restart při změnách)
+# Run server in development mode (auto-restart on changes)
 npm run dev
 ```
 
-## API Dokumentace
+### Frontend
 
-### Knihy
+```bash
+# Navigate to client directory
+cd client
 
-- `POST /book/list` - Seznam všech knih
-- `POST /book/get` - Detail knihy (body: `{ "id": "..." }`)
-- `POST /book/create` - Vytvoření nové knihy (body: data knihy)
-- `POST /book/update` - Úprava knihy (body: data knihy včetně ID)
-- `POST /book/delete` - Smazání knihy (body: `{ "id": "..." }`)
+# Install dependencies
+npm install
 
-### Čtenářské záznamy
+# Run development server
+npm start
 
-- `POST /readingRecord/list` - Seznam záznamů
-- `POST /readingRecord/get` - Detail záznamu (body: `{ "id": "..." }`)
-- `POST /readingRecord/create` - Vytvoření záznamu (body: data záznamu)
-- `POST /readingRecord/update` - Úprava záznamu (body: data záznamu včetně ID)
-- `POST /readingRecord/delete` - Smazání záznamu (body: `{ "id": "..." }`)
-- `POST /readingRecord/listByBookId` - Seznam záznamů pro konkrétní knihu (body: `{ "bookId": "..." }`)
+# Create production build
+npm run build
+```
 
-### Příklady požadavků
+## API Documentation
 
-#### Získání detailu knihy
+### Books
+
+- `POST /book/list` - List all books
+- `POST /book/get` - Book detail (body: `{ "id": "..." }`)
+- `POST /book/create` - Create new book (body: book data)
+- `POST /book/update` - Update book (body: book data including ID)
+- `POST /book/delete` - Delete book (body: `{ "id": "..." }`)
+
+### Reading Records
+
+- `POST /readingRecord/list` - List records
+- `POST /readingRecord/get` - Record detail (body: `{ "id": "..." }`)
+- `POST /readingRecord/create` - Create record (body: record data)
+- `POST /readingRecord/update` - Update record (body: record data including ID)
+- `POST /readingRecord/delete` - Delete record (body: `{ "id": "..." }`)
+- `POST /readingRecord/listByBookId` - List records for specific book (body: `{ "bookId": "..." }`)
+
+### Request Examples
+
+#### Get Book Detail
 
 ```json
 POST /book/get
@@ -88,7 +115,7 @@ POST /book/get
 }
 ```
 
-#### Vytvoření nové knihy
+#### Create New Book
 
 ```json
 POST /book/create
@@ -100,7 +127,7 @@ POST /book/create
 }
 ```
 
-#### Vytvoření čtenářského záznamu
+#### Create Reading Record
 
 ```json
 POST /readingRecord/create
@@ -109,24 +136,26 @@ POST /readingRecord/create
     "readPages": 50,
     "readingTime": "01:30",
     "date": "14/01/2024",
-    "note": "Zajímavá první kapitola"
+    "note": "Interesting first chapter"
 }
 ```
 
-## Funkce
+## Features
 
 ### Backend
 
-- Správa knih (CRUD operace)
-- Sledování čtenářského pokroku
-- Validace vstupních dat
-- Atomické operace s rollback podporou
-- Standardizované chybové odpovědi
+- Book management (CRUD operations)
+- Reading progress tracking
+- Input data validation
+- Atomic operations with rollback support
+- Standardized error responses
 
-### Frontend (plánováno)
+### Frontend
 
-- Responzivní design pro mobilní i desktopová zařízení
-- Přehledné zobrazení seznamu knih
-- Detailní stránky jednotlivých knih
-- Formuláře pro přidávání a úpravu záznamů
-- Intuitivní uživatelské rozhraní
+- Responsive design for mobile and desktop devices
+- Clear book list display with search functionality
+- Detailed book pages with graphical progress display
+- Forms for adding and editing books and reading records
+- Multi-language support (Czech, English)
+- Visual indicators for reading status and progress
+- Toast notifications for user feedback
