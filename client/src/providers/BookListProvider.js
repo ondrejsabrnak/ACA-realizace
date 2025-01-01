@@ -192,6 +192,10 @@ function BookListProvider({ children }) {
       handleUpdate,
       handleDelete,
       handleGet,
+      checkIsbnUnique: (isbn) => {
+        if (!isbn || !bookListDto.data?.data?.items) return true;
+        return !bookListDto.data.data.items.some((book) => book.isbn === isbn);
+      },
     },
   };
 

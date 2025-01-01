@@ -57,6 +57,7 @@
     "isbn": "ISBN",
     "isbn_placeholder": "Zadejte ISBN knihy (volitelné)",
     "isbn_invalid": "Neplatný formát ISBN (ISBN-10 nebo ISBN-13)",
+    "isbn_exists": "Kniha s tímto ISBN již existuje",
     "description": "Popis",
     "description_placeholder": "Zadejte popis nebo anotaci knihy (volitelné)",
     "book_info": "Informace o knize",

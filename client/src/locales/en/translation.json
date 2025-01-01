@@ -57,6 +57,7 @@
     "isbn": "ISBN",
     "isbn_placeholder": "Enter book's ISBN (optional)",
     "isbn_invalid": "Invalid ISBN format (ISBN-10 or ISBN-13)",
+    "isbn_exists": "A book with this ISBN already exists",
     "description": "Description",
     "description_placeholder": "Enter book description or annotation (optional)",
     "book_info": "Book Information",
