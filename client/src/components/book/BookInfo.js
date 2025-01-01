@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import StarRating from "./StarRating";
+import { BookListContext } from "../../providers/BookListProvider";
+import { validateIsbn } from "../../utils/isbnValidation";
 
 const BookInfo = ({
   book,
@@ -19,9 +21,58 @@ const BookInfo = ({
   onDelete,
 }) => {
   const { t } = useTranslation();
+  const { handlerMap } = useContext(BookListContext);
+  const [isbnError, setIsbnError] = useState("");
+
+  const handleIsbnChange = (e) => {
+    const isbn = e.target.value;
+    onEditFormChange({ isbn: isbn });
+
+    if (isbn) {
+      if (!validateIsbn(isbn)) {
+        setIsbnError(t("books.isbn_invalid"));
+        return;
+      }
+      // Check uniqueness only if ISBN changed
+      if (isbn !== book.isbn) {
+        const isUnique = handlerMap.checkIsbnUnique(isbn);
+        if (!isUnique) {
+          setIsbnError(t("books.isbn_exists"));
+          return;
+        }
+      }
+    }
+    setIsbnError("");
+  };
+
+  const handleSubmitWithValidation = (e) => {
+    e.preventDefault();
+
+    // Validate ISBN if provided
+    if (editForm.isbn) {
+      if (!validateIsbn(editForm.isbn)) {
+        setIsbnError(t("books.isbn_invalid"));
+        return;
+      }
+      // Check uniqueness only if ISBN changed
+      if (editForm.isbn !== book.isbn) {
+        const isUnique = handlerMap.checkIsbnUnique(editForm.isbn);
+        if (!isUnique) {
+          setIsbnError(t("books.isbn_exists"));
+          return;
+        }
+      }
+    }
+
+    onSubmit(e);
+  };
 
   const renderBookInfo = () => (
-    <Form noValidate validated={validated} onSubmit={onSubmit}>
+    <Form
+      noValidate
+      validated={validated}
+      onSubmit={handleSubmitWithValidation}
+    >
       <dl className="row mb-0">
         <dt className="col-sm-3 d-flex align-items-center">
           {t("books.title")} <span className="text-danger ms-1">*</span>
@@ -33,6 +84,8 @@ const BookInfo = ({
               value={editForm.title}
               onChange={(e) => onEditFormChange({ title: e.target.value })}
               required
+              maxLength={100}
+              minLength={1}
             />
           ) : (
             book.title
@@ -49,6 +102,8 @@ const BookInfo = ({
               value={editForm.author}
               onChange={(e) => onEditFormChange({ author: e.target.value })}
               required
+              maxLength={100}
+              minLength={1}
             />
           ) : (
             book.author
@@ -67,7 +122,8 @@ const BookInfo = ({
                 onEditFormChange({ numberOfPages: e.target.value })
               }
               required
-              min="1"
+              min={1}
+              max={10000}
             />
           ) : (
             book.numberOfPages
@@ -79,12 +135,18 @@ const BookInfo = ({
         </dt>
         <dd className="col-sm-9">
           {isEditing ? (
-            <Form.Control
-              type="text"
-              value={editForm.isbn}
-              onChange={(e) => onEditFormChange({ isbn: e.target.value })}
-              placeholder={t("common.not_specified")}
-            />
+            <>
+              <Form.Control
+                type="text"
+                value={editForm.isbn}
+                onChange={handleIsbnChange}
+                placeholder={t("common.not_specified")}
+                isInvalid={!!isbnError}
+              />
+              <Form.Control.Feedback type="invalid">
+                {isbnError}
+              </Form.Control.Feedback>
+            </>
           ) : (
             book.isbn || (
               <span className="text-muted">{t("common.not_specified")}</span>
