@@ -16,8 +16,6 @@ const BookInfo = ({
   onSubmit,
   onCancel,
   validated,
-  onShowFinishedModal,
-  onShowUnfinishedModal,
   onDelete,
 }) => {
   const { t } = useTranslation();

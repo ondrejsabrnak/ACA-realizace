@@ -1,8 +1,6 @@
-import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import ToastProvider from "./providers/ToastProvider";
 import BookListProvider from "./providers/BookListProvider";
-import ReadingRecordListProvider from "./providers/ReadingRecordListProvider";
 import AppRouter from "./Router";
 
 function App() {
@@ -10,9 +8,7 @@ function App() {
     <BrowserRouter>
       <ToastProvider>
         <BookListProvider>
-          <ReadingRecordListProvider>
-            <AppRouter />
-          </ReadingRecordListProvider>
+          <AppRouter />
         </BookListProvider>
       </ToastProvider>
     </BrowserRouter>

@@ -213,8 +213,6 @@ const BookDetailPage = () => {
             onSubmit={handleSubmit}
             onCancel={handleCancel}
             validated={validated}
-            onShowFinishedModal={() => setShowFinishedModal(true)}
-            onShowUnfinishedModal={() => setShowUnfinishedModal(true)}
             onDelete={() => setShowDeleteModal(true)}
           />
           <BookProgress

@@ -6,18 +6,8 @@ import { useToast } from "../providers/ToastProvider";
 
 const BookListPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const { data, error, state, handlerMap } = useContext(BookListContext);
+  const { data, handlerMap } = useContext(BookListContext);
   const { showError } = useToast();
-
-  // Default error handling for non-connection errors
-  if (
-    state === "error" &&
-    error &&
-    error.code !== "Failed to fetch" &&
-    !error.message?.includes("net::ERR_CONNECTION_REFUSED")
-  ) {
-    showError(error.code, error.message);
-  }
 
   if (!data || !data.data) return null;
 
