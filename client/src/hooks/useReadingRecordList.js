@@ -1,11 +1,9 @@
 import { useState, useContext, useEffect, useMemo } from "react";
-import { useTranslation } from "react-i18next";
 import { ReadingRecordListContext } from "../providers/ReadingRecordListProvider";
 import { BookListContext } from "../providers/BookListProvider";
 import { useErrorHandling } from "./useErrorHandling";
 
 export const useReadingRecordList = ({ bookId, onRecordChange }) => {
-  const { t } = useTranslation();
   const { state, data, error, currentBookId, handlerMap } = useContext(
     ReadingRecordListContext
   );
