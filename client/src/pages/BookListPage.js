@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
-import BookList from "../components/book/list/BookList";
-import BookSearch from "../components/book/list/BookSearch";
+import { BookList, BookSearch } from "../components/book";
 import { BookListContext } from "../providers/BookListProvider";
 import { useToast } from "../providers/ToastProvider";
 

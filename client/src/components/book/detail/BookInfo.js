@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import StarRating from "../shared/StarRating";
+import { StarRating } from "..";
 import { BookListContext } from "../../../providers/BookListProvider";
 import { validateIsbn } from "../../../utils/isbnValidation";
 

@@ -6,7 +6,7 @@ import { useToast } from "../../../providers/ToastProvider";
 import { BookListContext } from "../../../providers/BookListProvider";
 import { validateIsbn } from "../../../utils/isbnValidation";
 
-const AddBookModal = ({ show, onHide, onSubmit }) => {
+const BookAddModal = ({ show, onHide, onSubmit }) => {
   const { t } = useTranslation();
   const { showToast } = useToast();
   const { handlerMap } = useContext(BookListContext);
@@ -151,4 +151,4 @@ const AddBookModal = ({ show, onHide, onSubmit }) => {
   );
 };
 
-export default AddBookModal;
+export default BookAddModal;

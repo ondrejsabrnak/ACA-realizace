@@ -4,7 +4,7 @@ import ConfirmModal from "../../common/ConfirmModal";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
 
-const MarkUnfinishedModal = ({ show, onHide, onConfirm, book }) => {
+const BookUnfinishedModal = ({ show, onHide, onConfirm, book }) => {
   const { t } = useTranslation();
 
   const handleSubmit = async () => {
@@ -40,4 +40,4 @@ const MarkUnfinishedModal = ({ show, onHide, onConfirm, book }) => {
   );
 };
 
-export default MarkUnfinishedModal;
+export default BookUnfinishedModal;

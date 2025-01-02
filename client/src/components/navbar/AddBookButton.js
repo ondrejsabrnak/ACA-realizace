@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import { useTranslation } from "react-i18next";
-import AddBookModal from "../book/modals/AddBookModal";
+import BookAddModal from "../book/modals/BookAddModal";
 
 const AddBookButton = ({ onAddBook }) => {
   const { t } = useTranslation();
@@ -19,7 +19,7 @@ const AddBookButton = ({ onAddBook }) => {
         <span>{t("books.add_book")}</span>
       </Button>
 
-      <AddBookModal
+      <BookAddModal
         show={showModal}
         onHide={() => setShowModal(false)}
         onSubmit={onAddBook}

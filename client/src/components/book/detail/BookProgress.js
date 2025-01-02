@@ -1,8 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import Card from "react-bootstrap/Card";
-import BookStatusToggle from "../shared/BookStatusToggle";
-import BookProgressBar from "../shared/BookProgressBar";
+import { BookStatusToggle, BookProgressBar } from "..";
 import "../../../styles/components/book/BookProgress.css";
 
 const BookProgress = ({ book, onShowFinishedModal, onShowUnfinishedModal }) => {

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import { useTranslation } from "react-i18next";
-import StarRating from "../shared/StarRating";
+import { StarRating } from "..";
 import ConfirmModal from "../../common/ConfirmModal";
 
-const MarkFinishedModal = ({ show, onHide, onConfirm, book }) => {
+const BookFinishedModal = ({ show, onHide, onConfirm, book }) => {
   const { t } = useTranslation();
   const [rating, setRating] = useState(0);
 
@@ -70,4 +70,4 @@ const MarkFinishedModal = ({ show, onHide, onConfirm, book }) => {
   );
 };
 
-export default MarkFinishedModal;
+export default BookFinishedModal;

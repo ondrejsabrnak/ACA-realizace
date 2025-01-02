@@ -5,14 +5,16 @@ import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
 import { useToast } from "../providers/ToastProvider";
 import { BookListContext } from "../providers/BookListProvider";
-import MarkFinishedModal from "../components/book/modals/MarkFinishedModal";
-import MarkUnfinishedModal from "../components/book/modals/MarkUnfinishedModal";
-import BookHeader from "../components/book/detail/BookHeader";
-import BookInfo from "../components/book/detail/BookInfo";
-import BookReadingRecords from "../components/book/detail/BookReadingRecords";
+import {
+  BookHeader,
+  BookInfo,
+  BookProgress,
+  BookRecords,
+  BookFinishedModal,
+  BookUnfinishedModal,
+} from "../components/book";
 import ConfirmModal from "../components/common/ConfirmModal";
 import { useTranslation } from "react-i18next";
-import BookProgress from "../components/book/detail/BookProgress";
 
 const BookDetailPage = () => {
   const { t } = useTranslation();
@@ -220,7 +222,7 @@ const BookDetailPage = () => {
             onShowFinishedModal={() => setShowFinishedModal(true)}
             onShowUnfinishedModal={() => setShowUnfinishedModal(true)}
           />
-          <BookReadingRecords
+          <BookRecords
             bookId={book.id}
             totalPages={book.numberOfPages}
             onRecordChange={loadBookDetail}
@@ -228,14 +230,14 @@ const BookDetailPage = () => {
         </Col>
       </Row>
 
-      <MarkFinishedModal
+      <BookFinishedModal
         show={showFinishedModal}
         onHide={() => setShowFinishedModal(false)}
         onConfirm={handleMarkFinished}
         book={book}
       />
 
-      <MarkUnfinishedModal
+      <BookUnfinishedModal
         show={showUnfinishedModal}
         onHide={() => setShowUnfinishedModal(false)}
         onConfirm={handleMarkUnfinished}

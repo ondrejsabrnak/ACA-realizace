@@ -1,6 +1,6 @@
 import React from "react";
 import Row from "react-bootstrap/Row";
-import BookCard from "./BookCard";
+import { BookCard } from "..";
 import { useTranslation } from "react-i18next";
 
 const BookList = ({ type, books, onToggleFinished }) => {

@@ -3,10 +3,12 @@ import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import MarkFinishedModal from "../modals/MarkFinishedModal";
-import MarkUnfinishedModal from "../modals/MarkUnfinishedModal";
-import BookStatusToggle from "../shared/BookStatusToggle";
-import BookProgressBar from "../shared/BookProgressBar";
+import {
+  BookStatusToggle,
+  BookProgressBar,
+  BookFinishedModal,
+  BookUnfinishedModal,
+} from "..";
 import "../../../styles/components/book/BookCard.css";
 
 const BookCard = ({ book, onToggleFinished }) => {
@@ -97,14 +99,14 @@ const BookCard = ({ book, onToggleFinished }) => {
         </Card>
       </Col>
 
-      <MarkFinishedModal
+      <BookFinishedModal
         show={showFinishedModal}
         onHide={() => setShowFinishedModal(false)}
         onConfirm={handleStatusChange}
         book={book}
       />
 
-      <MarkUnfinishedModal
+      <BookUnfinishedModal
         show={showUnfinishedModal}
         onHide={() => setShowUnfinishedModal(false)}
         onConfirm={handleStatusChange}

@@ -2,15 +2,17 @@ import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Card from "react-bootstrap/Card";
 import Alert from "react-bootstrap/Alert";
-import { ReadingRecordListContext } from "../../providers/ReadingRecordListProvider";
-import { BookListContext } from "../../providers/BookListProvider";
-import ReadingRecordList from "./ReadingRecordList";
-import ReadingRecordModal from "./ReadingRecordModal";
-import ReadingRecordLoading from "./ReadingRecordLoading";
-import ReadingRecordError from "./ReadingRecordError";
-import ReadingRecordHeader from "./ReadingRecordHeader";
-import ConfirmModal from "../common/ConfirmModal";
-import { useToast } from "../../providers/ToastProvider";
+import { ReadingRecordListContext } from "../../../providers/ReadingRecordListProvider";
+import { BookListContext } from "../../../providers/BookListProvider";
+import {
+  ReadingRecordList,
+  ReadingRecordModal,
+  ReadingRecordLoading,
+  ReadingRecordError,
+  ReadingRecordHeader,
+} from "..";
+import ConfirmModal from "../../common/ConfirmModal";
+import { useToast } from "../../../providers/ToastProvider";
 
 const ReadingRecordContainer = ({ bookId, totalPages = 0, onRecordChange }) => {
   const { t } = useTranslation();

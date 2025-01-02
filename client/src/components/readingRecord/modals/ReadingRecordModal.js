@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import ConfirmModal from "../common/ConfirmModal";
-import ReadingRecordForm from "./ReadingRecordForm";
+import ConfirmModal from "../../common/ConfirmModal";
+import { ReadingRecordForm } from "..";
 
 const ReadingRecordModal = ({
   show,
