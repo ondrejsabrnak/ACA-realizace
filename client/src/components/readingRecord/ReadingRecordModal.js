@@ -51,8 +51,6 @@ const ReadingRecordModal = ({
     const values = Object.fromEntries(formData);
     const readPages = parseInt(values.readPages, 10);
 
-    console.log("Modal - Raw Form Values:", values);
-
     if (!readPages || readPages < 1) {
       setValidated(true);
       return;
@@ -84,9 +82,6 @@ const ReadingRecordModal = ({
       formattedData.id = record.id;
     }
 
-    console.log("Modal - Record:", record);
-    console.log("Modal - Mode:", mode);
-    console.log("Modal - Formatted Data:", formattedData);
     onConfirm(formattedData);
   };
 
