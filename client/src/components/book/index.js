@@ -8,6 +8,7 @@ export { default as BookRecords } from "./detail/BookRecords";
 export { default as BookList } from "./list/BookList";
 export { default as BookCard } from "./list/BookCard";
 export { default as BookSearch } from "./list/BookSearch";
+export { default as EmptyBookList } from "./list/EmptyBookList";
 
 // Shared Components
 export { default as BookProgressBar } from "./shared/BookProgressBar";

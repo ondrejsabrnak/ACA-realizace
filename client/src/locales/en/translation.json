@@ -27,6 +27,7 @@
     "failedToUpdateReadingRecord": "Failed to update reading record"
   },
   "books": {
+    "no_books": "You haven't added any books yet",
     "finished": "Finished",
     "unfinished": "Currently Reading",
     "pages_read": "pages read",

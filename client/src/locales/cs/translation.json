@@ -27,6 +27,7 @@
     "failedToUpdateReadingRecord": "Nepodařilo se aktualizovat záznam čtení"
   },
   "books": {
+    "no_books": "Zatím jste nepřidali žádné knihy",
     "finished": "Přečtené knihy",
     "unfinished": "Rozečtené knihy",
     "pages_read": "přečtených stran",
