@@ -3,11 +3,11 @@ import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import MarkFinishedModal from "./MarkFinishedModal";
-import MarkUnfinishedModal from "./MarkUnfinishedModal";
-import BookStatusToggle from "./BookStatusToggle";
-import BookProgressBar from "./BookProgressBar";
-import "../../styles/components/book/BookCard.css";
+import MarkFinishedModal from "../modals/MarkFinishedModal";
+import MarkUnfinishedModal from "../modals/MarkUnfinishedModal";
+import BookStatusToggle from "../shared/BookStatusToggle";
+import BookProgressBar from "../shared/BookProgressBar";
+import "../../../styles/components/book/BookCard.css";
 
 const BookCard = ({ book, onToggleFinished }) => {
   const { t } = useTranslation();

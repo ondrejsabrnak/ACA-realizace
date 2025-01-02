@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react";
 import Form from "react-bootstrap/Form";
 import { useTranslation } from "react-i18next";
-import ConfirmModal from "../common/ConfirmModal";
-import { useToast } from "../../providers/ToastProvider";
-import { BookListContext } from "../../providers/BookListProvider";
-import { validateIsbn } from "../../utils/isbnValidation";
+import ConfirmModal from "../../common/ConfirmModal";
+import { useToast } from "../../../providers/ToastProvider";
+import { BookListContext } from "../../../providers/BookListProvider";
+import { validateIsbn } from "../../../utils/isbnValidation";
 
 const AddBookModal = ({ show, onHide, onSubmit }) => {
   const { t } = useTranslation();

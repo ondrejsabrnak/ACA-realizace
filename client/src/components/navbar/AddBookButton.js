@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import { useTranslation } from "react-i18next";
-import AddBookModal from "../book/AddBookModal";
+import AddBookModal from "../book/modals/AddBookModal";
 
 const AddBookButton = ({ onAddBook }) => {
   const { t } = useTranslation();

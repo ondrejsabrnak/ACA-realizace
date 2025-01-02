@@ -3,9 +3,9 @@ import { useTranslation } from "react-i18next";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import StarRating from "./StarRating";
-import { BookListContext } from "../../providers/BookListProvider";
-import { validateIsbn } from "../../utils/isbnValidation";
+import StarRating from "../shared/StarRating";
+import { BookListContext } from "../../../providers/BookListProvider";
+import { validateIsbn } from "../../../utils/isbnValidation";
 
 const BookInfo = ({
   book,

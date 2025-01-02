@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-import "../../styles/components/book/BookProgress.css";
+import "../../../styles/components/book/BookProgress.css";
 
 const BookProgressBar = ({ pagesRead, numberOfPages, showLabel = true }) => {
   const { t } = useTranslation();

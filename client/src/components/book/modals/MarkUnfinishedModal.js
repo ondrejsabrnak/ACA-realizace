@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import ConfirmModal from "../common/ConfirmModal";
+import ConfirmModal from "../../common/ConfirmModal";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
 

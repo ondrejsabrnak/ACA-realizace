@@ -1,9 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import Card from "react-bootstrap/Card";
-import BookStatusToggle from "./BookStatusToggle";
-import BookProgressBar from "./BookProgressBar";
-import "../../styles/components/book/BookProgress.css";
+import BookStatusToggle from "../shared/BookStatusToggle";
+import BookProgressBar from "../shared/BookProgressBar";
+import "../../../styles/components/book/BookProgress.css";
 
 const BookProgress = ({ book, onShowFinishedModal, onShowUnfinishedModal }) => {
   const { t } = useTranslation();

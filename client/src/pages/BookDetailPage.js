@@ -5,14 +5,14 @@ import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
 import { useToast } from "../providers/ToastProvider";
 import { BookListContext } from "../providers/BookListProvider";
-import MarkFinishedModal from "../components/book/MarkFinishedModal";
-import MarkUnfinishedModal from "../components/book/MarkUnfinishedModal";
-import BookHeader from "../components/book/BookHeader";
-import BookInfo from "../components/book/BookInfo";
-import BookReadingRecords from "../components/book/BookReadingRecords";
+import MarkFinishedModal from "../components/book/modals/MarkFinishedModal";
+import MarkUnfinishedModal from "../components/book/modals/MarkUnfinishedModal";
+import BookHeader from "../components/book/detail/BookHeader";
+import BookInfo from "../components/book/detail/BookInfo";
+import BookReadingRecords from "../components/book/detail/BookReadingRecords";
 import ConfirmModal from "../components/common/ConfirmModal";
 import { useTranslation } from "react-i18next";
-import BookProgress from "../components/book/BookProgress";
+import BookProgress from "../components/book/detail/BookProgress";
 
 const BookDetailPage = () => {
   const { t } = useTranslation();
