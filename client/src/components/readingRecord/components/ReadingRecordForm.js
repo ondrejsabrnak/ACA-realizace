@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -11,6 +11,8 @@ const ReadingRecordForm = ({
   onReadPagesChange,
 }) => {
   const { t } = useTranslation();
+  const today = new Date().toISOString().split("T")[0];
+  const [selectedDate, setSelectedDate] = useState(defaultValues.date || "");
 
   return (
     <Form id={formId} noValidate validated={validated}>
@@ -63,10 +65,14 @@ const ReadingRecordForm = ({
           type="date"
           name="date"
           required
+          max={today}
           defaultValue={defaultValues.date}
+          onChange={(e) => setSelectedDate(e.target.value)}
         />
         <Form.Control.Feedback type="invalid">
-          {t("reading_records.date_required")}
+          {selectedDate && new Date(selectedDate) > new Date(today)
+            ? t("reading_records.date_future")
+            : t("reading_records.date_required")}
         </Form.Control.Feedback>
       </Form.Group>
 

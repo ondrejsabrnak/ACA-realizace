@@ -88,6 +88,7 @@
     "read_pages_required": "Please enter number of pages read",
     "reading_time_required": "Please enter reading time in format HH:MM",
     "date_required": "Please enter date",
+    "date_future": "Date cannot be in the future",
     "read_pages_max_exceeded": "Do not exceed the maximum number of pages ({{max}} pages)",
     "pages": "pages",
     "confirm_delete": "Are you sure you want to delete the reading record from {{date}} ({{pages}} pages)?"
