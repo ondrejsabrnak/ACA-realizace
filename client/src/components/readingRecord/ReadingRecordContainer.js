@@ -61,11 +61,6 @@ const ReadingRecordContainer = ({ bookId, totalPages = 0, onRecordChange }) => {
         modalMode === "add" ? handlerMap.handleCreate : handlerMap.handleUpdate;
       let payload;
 
-      console.log("Container - Initial FormData:", formData);
-      console.log("Container - RecordToEdit:", recordToEdit);
-      console.log("Container - BookId:", bookId);
-      console.log("Container - Mode:", modalMode);
-
       if (modalMode === "add") {
         payload = {
           bookId,
@@ -82,11 +77,7 @@ const ReadingRecordContainer = ({ bookId, totalPages = 0, onRecordChange }) => {
         };
       }
 
-      console.log("Container - Final Payload:", payload);
-      console.log("Container - Handler:", handler.name);
-
       const result = await handler(payload);
-      console.log("Container - API Response:", result);
 
       if (result?.ok) {
         handleModalClose();
@@ -104,12 +95,6 @@ const ReadingRecordContainer = ({ bookId, totalPages = 0, onRecordChange }) => {
         // Refresh the reading records list
         await handlerMap.handleListByBookId({ bookId });
       } else {
-        console.error("Container - API Error:", result);
-        console.error("Container - Error Details:", {
-          code: result?.error?.code,
-          message: result?.error?.message,
-          fullError: result?.error,
-        });
         const errorCode = result?.error?.code || "unexpectedError";
         const errorMessage =
           result?.error?.message ||
@@ -119,8 +104,6 @@ const ReadingRecordContainer = ({ bookId, totalPages = 0, onRecordChange }) => {
         showError(errorCode, errorMessage);
       }
     } catch (error) {
-      console.error("Container - Exception:", error);
-      console.error("Container - Exception Stack:", error?.stack);
       showError(
         "unexpectedError",
         error?.message || "An unexpected error occurred"
