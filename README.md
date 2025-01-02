@@ -29,6 +29,7 @@ The application serves as an electronic reader's diary. Users can:
 - React Router for routing management
 - React i18next for internationalization
 - Context API for state management
+- Custom React Hooks for reusable logic
 
 ## Project Structure
 
@@ -45,6 +46,7 @@ The application serves as an electronic reader's diary. Users can:
 │   │   ├── components/  # React components
 │   │   ├── config/      # Application configuration
 │   │   ├── helpers/     # Helper functions
+│   │   ├── hooks/       # Custom React hooks
 │   │   ├── layout/      # Layout components
 │   │   ├── locales/     # Translation files
 │   │   ├── pages/       # Application pages
