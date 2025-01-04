@@ -4,11 +4,12 @@ export { default as ReadingRecordContent } from "./components/ReadingRecordConte
 export { default as ReadingRecordForm } from "./components/ReadingRecordForm";
 export { default as ReadingRecordHeader } from "./components/ReadingRecordHeader";
 export { default as ReadingRecordList } from "./components/ReadingRecordList";
+export { default as ReadingRecordEmptyList } from "./components/ReadingRecordEmptyList";
 
 // Modal Components
 export { default as ReadingRecordModal } from "./modals/ReadingRecordModal";
 
 // State Components
-export { default as ReadingRecordLoading } from "./states/ReadingRecordLoading";
+export { default as ReadingRecordPending } from "./states/ReadingRecordPending";
 export { default as ReadingRecordError } from "./states/ReadingRecordError";
-export { default as ReadingRecordEmptyList } from "./states/ReadingRecordEmptyList";
+export { default as ReadingRecordSuccess } from "./states/ReadingRecordSuccess";

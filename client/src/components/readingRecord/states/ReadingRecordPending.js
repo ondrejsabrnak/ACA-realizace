@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import Spinner from "react-bootstrap/Spinner";
 
-const ReadingRecordLoading = () => {
+const ReadingRecordPending = () => {
   const { t } = useTranslation();
 
   return (
@@ -14,4 +14,4 @@ const ReadingRecordLoading = () => {
   );
 };
 
-export default ReadingRecordLoading;
+export default ReadingRecordPending;

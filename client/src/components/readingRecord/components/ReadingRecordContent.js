@@ -1,25 +1,17 @@
 import React from "react";
 import {
-  ReadingRecordList,
-  ReadingRecordLoading,
+  ReadingRecordPending,
   ReadingRecordError,
-  ReadingRecordEmptyList,
-} from "..";
+  ReadingRecordSuccess,
+} from "../states";
 
 const ReadingRecordContent = ({ state, error, data, onEdit, onDelete }) => {
   const contentMap = {
-    pending: () => <ReadingRecordLoading />,
+    pending: () => <ReadingRecordPending />,
     error: () => <ReadingRecordError error={error} />,
-    success: () =>
-      !data?.data?.items?.length ? (
-        <ReadingRecordEmptyList />
-      ) : (
-        <ReadingRecordList
-          records={data.data.items}
-          onEdit={onEdit}
-          onDelete={onDelete}
-        />
-      ),
+    success: () => (
+      <ReadingRecordSuccess data={data} onEdit={onEdit} onDelete={onDelete} />
+    ),
   };
 
   const renderContent = contentMap[state] || contentMap.success;
