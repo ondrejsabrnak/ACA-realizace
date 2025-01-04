@@ -1,13 +1,10 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
-import Alert from "react-bootstrap/Alert";
 import { useTranslation } from "react-i18next";
 import {
-  ReadingRecordList,
   ReadingRecordModal,
-  ReadingRecordLoading,
-  ReadingRecordError,
   ReadingRecordHeader,
+  ReadingRecordContent,
 } from "..";
 import ConfirmModal from "../../common/ConfirmModal";
 import { useReadingRecordList } from "../../../hooks/useReadingRecordList";
@@ -36,34 +33,18 @@ const ReadingRecordContainer = ({ bookId, totalPages = 0, onRecordChange }) => {
     onRecordChange,
   });
 
-  const renderContent = () => {
-    if (state === "pending") {
-      return <ReadingRecordLoading />;
-    }
-
-    if (state === "error") {
-      return <ReadingRecordError error={error} />;
-    }
-
-    if (!data?.data?.items?.length) {
-      return <Alert variant="info">{t("books.no_reading_records")}</Alert>;
-    }
-
-    return (
-      <ReadingRecordList
-        records={data.data.items}
-        onEdit={handleEditRecord}
-        onDelete={handleDeleteRecord}
-      />
-    );
-  };
-
   return (
     <>
       <Card className="mt-3">
         <Card.Body>
           <ReadingRecordHeader onAddRecord={handleAddRecord} />
-          {renderContent()}
+          <ReadingRecordContent
+            state={state}
+            data={data}
+            error={error}
+            onEdit={handleEditRecord}
+            onDelete={handleDeleteRecord}
+          />
         </Card.Body>
       </Card>
 
