@@ -11,4 +11,4 @@ export { default as ReadingRecordModal } from "./modals/ReadingRecordModal";
 // State Components
 export { default as ReadingRecordLoading } from "./states/ReadingRecordLoading";
 export { default as ReadingRecordError } from "./states/ReadingRecordError";
-export { default as EmptyReadingRecordList } from "./states/EmptyReadingRecordList";
+export { default as ReadingRecordEmptyList } from "./states/ReadingRecordEmptyList";

@@ -3,7 +3,7 @@ import Alert from "react-bootstrap/Alert";
 import { useTranslation } from "react-i18next";
 import { AddBookButton } from "../../navbar";
 
-const EmptyBookList = () => {
+const BookEmptyList = () => {
   const { t } = useTranslation();
 
   return (
@@ -17,4 +17,4 @@ const EmptyBookList = () => {
   );
 };
 
-export default EmptyBookList;
+export default BookEmptyList;

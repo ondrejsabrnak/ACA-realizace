@@ -3,7 +3,7 @@ import {
   ReadingRecordList,
   ReadingRecordLoading,
   ReadingRecordError,
-  EmptyReadingRecordList,
+  ReadingRecordEmptyList,
 } from "..";
 
 const ReadingRecordContent = ({ state, error, data, onEdit, onDelete }) => {
@@ -12,7 +12,7 @@ const ReadingRecordContent = ({ state, error, data, onEdit, onDelete }) => {
     error: () => <ReadingRecordError error={error} />,
     success: () =>
       !data?.data?.items?.length ? (
-        <EmptyReadingRecordList />
+        <ReadingRecordEmptyList />
       ) : (
         <ReadingRecordList
           records={data.data.items}

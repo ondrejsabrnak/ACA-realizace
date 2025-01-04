@@ -1,13 +1,13 @@
 import React from "react";
 import Row from "react-bootstrap/Row";
-import { BookCard, EmptyBookList } from "..";
+import { BookCard, BookEmptyList } from "..";
 import { useTranslation } from "react-i18next";
 
 const BookList = ({ type, books, onToggleFinished }) => {
   const { t } = useTranslation();
 
   if (books.length === 0) {
-    return type === "unfinished" ? <EmptyBookList /> : null;
+    return type === "unfinished" ? <BookEmptyList /> : null;
   }
 
   const title =
