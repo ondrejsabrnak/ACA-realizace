@@ -86,6 +86,7 @@
     "date": "Datum",
     "note": "Poznámka",
     "read_pages_required": "Zadejte počet přečtených stran",
+    "max_pages": "max {{max}} stran",
     "reading_time_required": "Zadejte dobu čtení ve formátu HH:MM",
     "date_required": "Zadejte datum",
     "date_future": "Datum nemůže být v budoucnosti",

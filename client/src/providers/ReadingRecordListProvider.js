@@ -12,7 +12,7 @@ function ReadingRecordListProvider({ children }) {
   });
 
   const handleListByBookId = useCallback(
-    async (dtoIn) => {
+    async (dtoIn, { showLoading = true } = {}) => {
       // If we're already loading records for this book, don't start another request
       if (
         readingRecordListDto.state === "pending" &&
@@ -21,12 +21,15 @@ function ReadingRecordListProvider({ children }) {
         return;
       }
 
-      setReadingRecordListDto((current) => ({
-        ...current,
-        state: "pending",
-        currentBookId: dtoIn.bookId,
-        error: null,
-      }));
+      // Nastavíme pending state pouze pokud je showLoading true
+      if (showLoading) {
+        setReadingRecordListDto((current) => ({
+          ...current,
+          state: "pending",
+          currentBookId: dtoIn.bookId,
+          error: null,
+        }));
+      }
 
       try {
         const result = await FetchHelper.readingRecord.listByBookId(dtoIn);
@@ -81,24 +84,17 @@ function ReadingRecordListProvider({ children }) {
     [readingRecordListDto.state, readingRecordListDto.currentBookId]
   );
 
-  const handleCreate = useCallback(
-    async (dtoIn) => {
-      try {
-        const result = await FetchHelper.readingRecord.create(dtoIn);
-        if (result.ok) {
-          // Refresh the list after successful creation
-          await handleListByBookId({ bookId: dtoIn.bookId });
-        }
-        return result;
-      } catch (error) {
-        return {
-          ok: false,
-          error: { code: "unexpectedError", message: error.message },
-        };
-      }
-    },
-    [handleListByBookId]
-  );
+  const handleCreate = useCallback(async (dtoIn) => {
+    try {
+      const result = await FetchHelper.readingRecord.create(dtoIn);
+      return result;
+    } catch (error) {
+      return {
+        ok: false,
+        error: { code: "unexpectedError", message: error.message },
+      };
+    }
+  }, []);
 
   const handleDelete = useCallback(
     async (dtoIn) => {

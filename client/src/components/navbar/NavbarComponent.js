@@ -3,6 +3,7 @@ import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import { BookAddButton } from "../book";
 import { BookListContext } from "../../providers/BookListProvider";
+import NavbarBrand from "./NavbarBrand";
 
 const NavbarComponent = () => {
   const { handlerMap } = useContext(BookListContext);
@@ -10,7 +11,7 @@ const NavbarComponent = () => {
   return (
     <Navbar bg="light" expand="lg" className="mb-4">
       <Container>
-        <Navbar.Brand>ACA</Navbar.Brand>
+        <NavbarBrand />
         <BookAddButton onAddBook={handlerMap.handleCreate} />
       </Container>
     </Navbar>

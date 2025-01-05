@@ -12,3 +12,35 @@
   border-radius: 4px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
+
+.toast-progress {
+  position: relative;
+  width: 50px;
+  height: 3px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.toast-progress .progress-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  animation: progress 5s linear;
+}
+
+@keyframes progress {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0;
+  }
+}
+
+.bi-x-lg {
+  font-size: 1.2rem;
+  line-height: 1;
+}

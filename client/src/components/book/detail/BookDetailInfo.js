@@ -128,6 +128,11 @@ const BookDetailInfo = ({ book }) => {
           ) : (
             book.title
           )}
+          {isEditing && (
+            <Form.Control.Feedback type="invalid">
+              {t("books.title_required")}
+            </Form.Control.Feedback>
+          )}
         </dd>
 
         <dt className="col-sm-3 d-flex align-items-center">
@@ -148,6 +153,11 @@ const BookDetailInfo = ({ book }) => {
           ) : (
             book.author
           )}
+          {isEditing && (
+            <Form.Control.Feedback type="invalid">
+              {t("books.author_required")}
+            </Form.Control.Feedback>
+          )}
         </dd>
 
         <dt className="col-sm-3 d-flex align-items-center">
@@ -167,6 +177,11 @@ const BookDetailInfo = ({ book }) => {
             />
           ) : (
             book.numberOfPages
+          )}
+          {isEditing && (
+            <Form.Control.Feedback type="invalid">
+              {t("books.pages_required")}
+            </Form.Control.Feedback>
           )}
         </dd>
 

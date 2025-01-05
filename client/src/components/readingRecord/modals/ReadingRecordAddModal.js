@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { ReadingRecordModal } from "..";
 import { ReadingRecordListContext } from "../../../providers/ReadingRecordListProvider";
 import { useErrorHandling } from "../../../hooks/useErrorHandling";
+import { useToast } from "../../../providers/ToastProvider";
 
 const ReadingRecordAddModal = ({
   show,
@@ -13,16 +14,38 @@ const ReadingRecordAddModal = ({
 }) => {
   const { t } = useTranslation();
   const { handlerMap } = useContext(ReadingRecordListContext);
-  const { handleApiResponse } = useErrorHandling();
+  const { handleError } = useErrorHandling();
+  const { showToast } = useToast();
+
+  const updateData = useCallback(async () => {
+    await handlerMap.handleListByBookId({ bookId }, { showLoading: false });
+  }, [handlerMap, bookId]);
 
   const handleSubmit = async (formData) => {
-    await handleApiResponse(handlerMap.handleCreate({ bookId, ...formData }), {
-      successMessage: "reading_record_created",
-      successCallback: async () => {
+    const data = {
+      bookId,
+      readPages: parseInt(formData.readPages, 10),
+      readingTime: formData.readingTime,
+      date: formData.formattedDate,
+      ...(formData.note && { note: formData.note }),
+    };
+
+    try {
+      const result = await handlerMap.handleCreate(data);
+
+      if (result?.ok) {
+        // Nejdřív aktualizujeme data
+        await updateData();
+        // Pak zavřeme modal
         onHide();
-        await handlerMap.handleListByBookId({ bookId });
-      },
-    });
+        // A nakonec zobrazíme toast
+        showToast("success", null, "reading_record_created");
+      } else {
+        handleError(result?.error, "errors.unexpectedError");
+      }
+    } catch (error) {
+      handleError(error, "errors.unexpectedError");
+    }
   };
 
   return (

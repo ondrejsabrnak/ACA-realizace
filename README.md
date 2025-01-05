@@ -44,6 +44,11 @@ The application serves as an electronic reader's diary. Users can:
 ├── client/             # Frontend application
 │   ├── src/
 │   │   ├── components/  # React components
+│   │   │   ├── book/          # Book-related components
+│   │   │   ├── readingRecord/ # Reading record components
+│   │   │   ├── common/        # Shared/common components
+│   │   │   ├── navbar/        # Navigation components
+│   │   │   └── footer/        # Footer components
 │   │   ├── config/      # Application configuration
 │   │   ├── helpers/     # Helper functions
 │   │   ├── hooks/       # Custom React hooks
@@ -51,7 +56,6 @@ The application serves as an electronic reader's diary. Users can:
 │   │   ├── locales/     # Translation files
 │   │   ├── pages/       # Application pages
 │   │   ├── providers/   # Context providers
-│   │   ├── styles/      # CSS styles
 │   │   ├── utils/       # Utility functions
 │   │   ├── App.js       # Main App component
 │   │   ├── Router.js    # Application routing

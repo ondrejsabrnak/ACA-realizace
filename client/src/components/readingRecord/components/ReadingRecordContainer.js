@@ -6,8 +6,17 @@ const ReadingRecordContainer = ({ bookId, totalPages = 0 }) => {
   return (
     <Card className="mt-3">
       <Card.Body>
-        <ReadingRecordHeader bookId={bookId} totalPages={totalPages} />
-        <ReadingRecordContent bookId={bookId} totalPages={totalPages} />
+        <ReadingRecordContent
+          bookId={bookId}
+          totalPages={totalPages}
+          renderHeader={(currentReadPages) => (
+            <ReadingRecordHeader
+              bookId={bookId}
+              totalPages={totalPages}
+              currentReadPages={currentReadPages}
+            />
+          )}
+        />
       </Card.Body>
     </Card>
   );

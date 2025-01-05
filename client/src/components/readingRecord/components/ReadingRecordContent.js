@@ -3,34 +3,45 @@ import {
   ReadingRecordPending,
   ReadingRecordError,
   ReadingRecordSuccess,
+  ReadingRecordEmptyList,
 } from "..";
 import { ReadingRecordListContext } from "../../../providers/ReadingRecordListProvider";
 
-const ReadingRecordContent = ({ bookId, totalPages }) => {
+const ReadingRecordContent = ({ bookId, totalPages, renderHeader }) => {
   const { state, data, error, currentBookId, handlerMap } = useContext(
     ReadingRecordListContext
   );
 
   useEffect(() => {
+    // Načteme data pouze pokud se změnil bookId
     if (bookId && bookId !== currentBookId) {
       handlerMap.handleListByBookId({ bookId });
     }
   }, [bookId, currentBookId, handlerMap]);
 
-  if (state === "pending") {
-    return <ReadingRecordPending />;
-  }
+  const currentReadPages =
+    data?.data?.items?.reduce((sum, record) => sum + record.readPages, 0) || 0;
 
-  if (state === "error") {
-    return <ReadingRecordError error={error} />;
-  }
+  const renderContent = () => {
+    if (state === "pending") return <ReadingRecordPending />;
+    if (state === "error") return <ReadingRecordError error={error} />;
+    if (!data?.data?.items?.length) return <ReadingRecordEmptyList />;
+
+    return (
+      <ReadingRecordSuccess
+        data={data?.data}
+        bookId={bookId}
+        totalPages={totalPages}
+        currentReadPages={currentReadPages}
+      />
+    );
+  };
 
   return (
-    <ReadingRecordSuccess
-      data={data?.data}
-      bookId={bookId}
-      totalPages={totalPages}
-    />
+    <>
+      {renderHeader(currentReadPages)}
+      {renderContent()}
+    </>
   );
 };
 

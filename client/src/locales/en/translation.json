@@ -86,6 +86,7 @@
     "date": "Date",
     "note": "Note",
     "read_pages_required": "Please enter number of pages read",
+    "max_pages": "max {{max}} pages",
     "reading_time_required": "Please enter reading time in format HH:MM",
     "date_required": "Please enter date",
     "date_future": "Date cannot be in the future",

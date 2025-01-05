@@ -1,34 +1,101 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
+import "./css/ReadingRecordForm.css";
 
 const ReadingRecordForm = ({
-  formId,
   validated,
   readPagesError,
   defaultValues = {},
   onReadPagesChange,
+  totalPages,
+  currentReadPages,
 }) => {
   const { t } = useTranslation();
   const today = new Date().toISOString().split("T")[0];
-  const [selectedDate, setSelectedDate] = useState(defaultValues.date || "");
+  const [selectedDate, setSelectedDate] = useState("");
+  const [displayDate, setDisplayDate] = useState("");
+  const [dateError, setDateError] = useState("");
+  const maxPagesToRead = totalPages - currentReadPages;
+
+  useEffect(() => {
+    if (defaultValues.date) {
+      const [day, month, year] = defaultValues.date.split("/");
+      setSelectedDate(`${year}-${month}-${day}`);
+      setDisplayDate(`${day}.${month}.${year}`);
+    }
+  }, [defaultValues.date]);
+
+  const formatDateForApi = (dateStr) => {
+    if (!dateStr) return "";
+    const [year, month, day] = dateStr.split("-");
+    return `${day}/${month}/${year}`;
+  };
+
+  const formatDateForDisplay = (dateStr) => {
+    if (!dateStr) return "";
+    const [year, month, day] = dateStr.split("-");
+    return `${day}.${month}.${year}`;
+  };
+
+  const validateDate = (dateStr) => {
+    const date = new Date(dateStr);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return date <= today;
+  };
+
+  // Validate initial value
+  useEffect(() => {
+    if (defaultValues.readPages) {
+      onReadPagesChange({ target: { value: defaultValues.readPages } });
+    }
+  }, [defaultValues.readPages, onReadPagesChange]);
+
+  const handleDateChange = (e) => {
+    const value = e.target.value;
+    setSelectedDate(value);
+
+    if (!validateDate(value)) {
+      setDateError(t("reading_records.date_future"));
+      setDisplayDate("");
+    } else {
+      setDateError("");
+      setDisplayDate(formatDateForDisplay(value));
+      const formattedDate = formatDateForApi(value);
+      const hiddenInput = document.getElementById("formattedDate");
+      if (hiddenInput) {
+        hiddenInput.value = formattedDate;
+      }
+    }
+  };
 
   return (
-    <Form id={formId} noValidate validated={validated}>
+    <>
       <Form.Group className="mb-3">
         <Form.Label>
           {t("reading_records.read_pages")}{" "}
           <span className="text-danger">*</span>
+          <span className="text-muted ms-1">
+            ({t("reading_records.max_pages", { max: maxPagesToRead })})
+          </span>
         </Form.Label>
         <InputGroup hasValidation>
           <Form.Control
             type="number"
             name="readPages"
             min="1"
+            max={maxPagesToRead}
             required
             defaultValue={defaultValues.readPages}
             onChange={onReadPagesChange}
+            onInput={(e) => {
+              if (e.target.value > maxPagesToRead) {
+                e.target.value = maxPagesToRead;
+                onReadPagesChange(e);
+              }
+            }}
             isInvalid={!!readPagesError}
           />
           <Form.Control.Feedback type="invalid">
@@ -61,19 +128,34 @@ const ReadingRecordForm = ({
         <Form.Label>
           {t("reading_records.date")} <span className="text-danger">*</span>
         </Form.Label>
+        <InputGroup hasValidation>
+          <Form.Control
+            type="date"
+            name="date"
+            required
+            max={today}
+            value={selectedDate}
+            onChange={handleDateChange}
+            className="date-input"
+            isInvalid={!!dateError}
+          />
+          <Form.Control.Feedback type="invalid">
+            {dateError || t("reading_records.date_required")}
+          </Form.Control.Feedback>
+        </InputGroup>
         <Form.Control
-          type="date"
-          name="date"
-          required
-          max={today}
-          defaultValue={defaultValues.date}
-          onChange={(e) => setSelectedDate(e.target.value)}
+          type="text"
+          className="date-display"
+          value={displayDate}
+          readOnly
+          plaintext
         />
-        <Form.Control.Feedback type="invalid">
-          {selectedDate && new Date(selectedDate) > new Date(today)
-            ? t("reading_records.date_future")
-            : t("reading_records.date_required")}
-        </Form.Control.Feedback>
+        <Form.Control
+          type="hidden"
+          id="formattedDate"
+          name="formattedDate"
+          value={formatDateForApi(selectedDate)}
+        />
       </Form.Group>
 
       <Form.Group className="mb-3">
@@ -85,7 +167,7 @@ const ReadingRecordForm = ({
           defaultValue={defaultValues.note}
         />
       </Form.Group>
-    </Form>
+    </>
   );
 };
 

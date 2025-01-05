@@ -17,22 +17,21 @@ const ReadingRecordEditModal = ({
   const { handleApiResponse } = useErrorHandling();
 
   const handleSubmit = async (formData) => {
-    await handleApiResponse(
-      handlerMap.handleUpdate({
-        id: record.id,
-        readPages: parseInt(formData.readPages, 10),
-        readingTime: formData.readingTime,
-        date: formData.date,
-        note: formData.note,
-      }),
-      {
-        successMessage: "reading_record_updated",
-        successCallback: async () => {
-          onHide();
-          await handlerMap.handleListByBookId({ bookId });
-        },
-      }
-    );
+    const data = {
+      id: record.id,
+      readPages: parseInt(formData.readPages, 10),
+      readingTime: formData.readingTime,
+      date: formData.formattedDate,
+      ...(formData.note && { note: formData.note }),
+    };
+
+    await handleApiResponse(handlerMap.handleUpdate(data), {
+      successMessage: "reading_record_updated",
+      successCallback: async () => {
+        onHide();
+        await handlerMap.handleListByBookId({ bookId });
+      },
+    });
   };
 
   return (

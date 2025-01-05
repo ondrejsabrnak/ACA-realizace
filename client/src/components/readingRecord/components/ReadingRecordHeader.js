@@ -21,7 +21,7 @@ const ReadingRecordHeader = ({ bookId, totalPages, currentReadPages }) => {
         show={showModal}
         onHide={() => setShowModal(false)}
         totalPages={parseInt(totalPages, 10) || 0}
-        currentReadPages={currentReadPages}
+        currentReadPages={currentReadPages || 0}
         bookId={bookId}
       />
     </>

@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Alert from "react-bootstrap/Alert";
+import Button from "react-bootstrap/Button";
 import "./css/ToastProvider.css";
 
 const ToastContext = createContext();
@@ -57,13 +58,22 @@ const ToastProvider = ({ children }) => {
           <Alert
             key={Date.now()}
             variant={toast.variant}
-            onClose={hideToast}
-            dismissible
             className="d-flex align-items-center justify-content-between py-2 px-3 mb-0"
+            show={!!toast}
           >
             <span className="me-4">{toast.message}</span>
-            <div className="toast-progress">
-              <div className={`progress-bar bg-${toast.variant}`} />
+            <div className="d-flex align-items-center">
+              <div className="toast-progress me-2">
+                <div className={`progress-bar bg-${toast.variant}`} />
+              </div>
+              <Button
+                variant="link"
+                className="p-0 text-decoration-none"
+                onClick={() => hideToast()}
+                style={{ color: "inherit" }}
+              >
+                <i className="bi bi-x-lg"></i>
+              </Button>
             </div>
           </Alert>
         )}
