@@ -1,22 +1,34 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../common/ConfirmModal";
-import Form from "react-bootstrap/Form";
-import Alert from "react-bootstrap/Alert";
+import { BookListContext } from "../../../providers/BookListProvider";
+import { useToast } from "../../../providers/ToastProvider";
 
-const BookUnfinishedModal = ({ show, onHide, onConfirm, book }) => {
+const BookUnfinishedModal = ({ show, onHide, book }) => {
   const { t } = useTranslation();
+  const { handlerMap } = useContext(BookListContext);
+  const { showToast, showError } = useToast();
 
   const handleSubmit = async () => {
-    const result = await onConfirm({
-      id: book.id,
-      finished: false,
-      rating: 0,
-      review: "",
-    });
+    try {
+      const result = await handlerMap.handleUpdate({
+        id: book.id,
+        finished: false,
+        rating: undefined,
+        review: undefined,
+      });
 
-    if (result?.ok) {
-      onHide();
+      if (result.ok) {
+        const bookResult = await handlerMap.handleGet({ id: book.id });
+        if (bookResult.ok) {
+          showToast("success", null, "book_marked_unfinished");
+          onHide();
+        }
+      } else {
+        showError(result.error.code, result.error.message);
+      }
+    } catch (error) {
+      showError("failedToUpdateBook", "Failed to update book");
     }
   };
 
@@ -28,14 +40,7 @@ const BookUnfinishedModal = ({ show, onHide, onConfirm, book }) => {
       title={t("books.confirm_status_change")}
       confirmButtonText={t("common.confirm")}
     >
-      <Form id="unfinishBookForm">
-        <p className="mb-4">
-          {t("books.confirm_mark_unfinished", { title: book.title })}
-        </p>
-        <Alert variant="warning" className="mb-0">
-          {t("books.warning_lose_data")}
-        </Alert>
-      </Form>
+      {t("books.confirm_mark_unfinished", { title: book.title })}
     </ConfirmModal>
   );
 };

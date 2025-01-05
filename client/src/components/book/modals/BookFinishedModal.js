@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Form from "react-bootstrap/Form";
 import { useTranslation } from "react-i18next";
 import { BookStarRating } from "..";
 import ConfirmModal from "../../common/ConfirmModal";
+import { BookListContext } from "../../../providers/BookListProvider";
+import { useToast } from "../../../providers/ToastProvider";
 
-const BookFinishedModal = ({ show, onHide, onConfirm, book }) => {
+const BookFinishedModal = ({ show, onHide, book }) => {
   const { t } = useTranslation();
   const [rating, setRating] = useState(0);
+  const { handlerMap } = useContext(BookListContext);
+  const { showToast, showError } = useToast();
 
   const handleSubmit = async () => {
     if (rating === 0) return;
@@ -15,15 +19,25 @@ const BookFinishedModal = ({ show, onHide, onConfirm, book }) => {
     const formData = new FormData(form);
     const values = Object.fromEntries(formData);
 
-    const result = await onConfirm({
-      id: book.id,
-      finished: true,
-      rating: rating,
-      ...(values.review && { review: values.review }),
-    });
+    try {
+      const result = await handlerMap.handleUpdate({
+        id: book.id,
+        finished: true,
+        rating: rating,
+        ...(values.review && { review: values.review }),
+      });
 
-    if (result?.ok) {
-      handleClose();
+      if (result.ok) {
+        const bookResult = await handlerMap.handleGet({ id: book.id });
+        if (bookResult.ok) {
+          showToast("success", null, "book_marked_finished");
+          handleClose();
+        }
+      } else {
+        showError(result.error.code, result.error.message);
+      }
+    } catch (error) {
+      showError("failedToUpdateBook", "Failed to update book");
     }
   };
 

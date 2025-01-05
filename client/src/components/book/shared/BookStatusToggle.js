@@ -1,44 +1,68 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import { useTranslation } from "react-i18next";
+import { BookFinishedModal, BookUnfinishedModal } from "..";
 
-const BookStatusToggle = ({
-  finished,
-  onStatusChange,
-  compact = false,
-  size,
-}) => {
+const BookStatusToggle = ({ book, compact = false, size }) => {
   const { t } = useTranslation();
+  const [showFinishedModal, setShowFinishedModal] = useState(false);
+  const [showUnfinishedModal, setShowUnfinishedModal] = useState(false);
 
-  if (compact) {
-    return (
-      <Button
-        variant="link"
-        className={`p-0 ${finished ? "text-success" : "text-muted"}`}
-        onClick={onStatusChange}
-        title={finished ? t("books.mark_unfinished") : t("books.mark_finished")}
-      >
-        <i
-          className={`bi ${
-            finished ? "bi-check-circle-fill" : "bi-circle"
-          } fs-5`}
-        ></i>
-      </Button>
-    );
-  }
+  const handleStatusToggle = () => {
+    if (book.finished) {
+      setShowUnfinishedModal(true);
+    } else {
+      setShowFinishedModal(true);
+    }
+  };
 
-  return (
+  const icon = (
+    <i
+      className={`bi ${book.finished ? "bi-check-circle-fill" : "bi-circle"}${
+        compact ? " fs-5" : ""
+      }`}
+    />
+  );
+
+  const button = compact ? (
     <Button
-      variant={finished ? "outline-success" : "outline-primary"}
-      onClick={onStatusChange}
+      variant="link"
+      className={`p-0 ${book.finished ? "text-success" : "text-muted"}`}
+      onClick={handleStatusToggle}
+      title={
+        book.finished ? t("books.mark_unfinished") : t("books.mark_finished")
+      }
+    >
+      {icon}
+    </Button>
+  ) : (
+    <Button
+      variant={book.finished ? "outline-success" : "outline-primary"}
+      onClick={handleStatusToggle}
       className="d-flex align-items-center gap-2"
       size={size}
     >
-      <i
-        className={`bi ${finished ? "bi-check-circle-fill" : "bi-circle"}`}
-      ></i>
-      {finished ? t("books.mark_unfinished") : t("books.mark_finished")}
+      {icon}
+      {book.finished ? t("books.mark_unfinished") : t("books.mark_finished")}
     </Button>
+  );
+
+  return (
+    <>
+      {button}
+
+      <BookFinishedModal
+        show={showFinishedModal}
+        onHide={() => setShowFinishedModal(false)}
+        book={book}
+      />
+
+      <BookUnfinishedModal
+        show={showUnfinishedModal}
+        onHide={() => setShowUnfinishedModal(false)}
+        book={book}
+      />
+    </>
   );
 };
 

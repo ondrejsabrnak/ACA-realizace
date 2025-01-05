@@ -4,11 +4,7 @@ import { useTranslation } from "react-i18next";
 import { BookProgressBar, BookStatusToggle } from "..";
 import "../css/detail/BookDetailProgress.css";
 
-const BookDetailProgress = ({
-  book,
-  onShowFinishedModal,
-  onShowUnfinishedModal,
-}) => {
+const BookDetailProgress = ({ book }) => {
   const { t } = useTranslation();
 
   return (
@@ -18,18 +14,7 @@ const BookDetailProgress = ({
           <Card.Title className="mb-0">
             {t("books.reading_progress")}
           </Card.Title>
-          <BookStatusToggle
-            finished={book.finished}
-            onStatusChange={async () => {
-              if (book.finished) {
-                onShowUnfinishedModal();
-              } else {
-                onShowFinishedModal();
-              }
-              return { ok: true };
-            }}
-            size="sm"
-          />
+          <BookStatusToggle book={book} size="sm" />
         </div>
         <dl className="row mb-0">
           <dt className="col-sm-3">{t("books.state")}</dt>
