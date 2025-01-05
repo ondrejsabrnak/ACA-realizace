@@ -1,52 +1,54 @@
-import React, { useState, useContext } from "react";
-import { BookList, BookListSearch } from "../components/book";
-import { BookListContext } from "../providers/BookListProvider";
+import React, { useContext, useState, useEffect } from "react";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import { useToast } from "../providers/ToastProvider";
+import { BookListContext } from "../providers/BookListProvider";
+import {
+  BookListPending,
+  BookListError,
+  BookListSuccess,
+} from "../components/book/list/states";
 
 const BookListPage = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const { data, handlerMap } = useContext(BookListContext);
   const { showError } = useToast();
+  const { data } = useContext(BookListContext);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  if (!data || !data.data) return null;
+  useEffect(() => {
+    if (!data) {
+      setLoading(true);
+      return;
+    }
 
-  const books = data.data.items || [];
+    setLoading(false);
 
-  const filteredBooks = books.filter((book) => {
-    const query = searchQuery.toLowerCase();
-    return (
-      book.title.toLowerCase().includes(query) ||
-      book.author.toLowerCase().includes(query)
-    );
-  });
+    if (!data.ok && data.error) {
+      setError(data.error);
+      showError(data.error.code || "unexpectedError", data.error.message);
+    } else {
+      setError(null);
+    }
+  }, [data, showError]);
 
-  const unfinishedBooks = filteredBooks.filter((book) => !book.finished);
-  const finishedBooks = filteredBooks.filter((book) => book.finished);
+  const contentMap = {
+    loading: () => <BookListPending />,
+    error: () => <BookListError error={error} />,
+    success: () => <BookListSuccess books={data?.data?.items || []} />,
+  };
+
+  const getState = () => {
+    if (loading) return "loading";
+    if (error) return "error";
+    return "success";
+  };
+
+  const renderContent = contentMap[getState()];
 
   return (
-    <>
-      <BookListSearch onSearch={setSearchQuery} />
-      <BookList
-        type="unfinished"
-        books={unfinishedBooks}
-        onToggleFinished={async (book) => {
-          const result = await handlerMap.handleUpdate(book);
-          if (!result.ok && result.error) {
-            showError(result.error.code, result.error.message);
-          }
-        }}
-      />
-      <BookList
-        type="finished"
-        books={finishedBooks}
-        onToggleFinished={async (book) => {
-          const result = await handlerMap.handleUpdate(book);
-          if (!result.ok && result.error) {
-            showError(result.error.code, result.error.message);
-          }
-        }}
-      />
-    </>
+    <Row>
+      <Col>{renderContent()}</Col>
+    </Row>
   );
 };
 
