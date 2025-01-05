@@ -7,7 +7,7 @@ import {
   BookListPending,
   BookListError,
   BookListSuccess,
-} from "../components/book/list/states";
+} from "../components/book";
 
 const BookListPage = () => {
   const { showError } = useToast();

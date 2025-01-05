@@ -152,27 +152,6 @@ const BookDetailInfo = ({
           )}
         </dd>
 
-        <dt className="col-sm-3 d-flex align-items-center">
-          {t("books.description")}
-        </dt>
-        <dd className="col-sm-9">
-          {isEditing ? (
-            <Form.Control
-              as="textarea"
-              rows={3}
-              value={editForm.description}
-              onChange={(e) =>
-                onEditFormChange({ description: e.target.value })
-              }
-              placeholder={t("books.description_placeholder")}
-            />
-          ) : book.description ? (
-            book.description
-          ) : (
-            <span className="text-muted">{t("common.not_specified")}</span>
-          )}
-        </dd>
-
         {book.finished && (
           <>
             <dt className="col-sm-3 d-flex align-items-center">

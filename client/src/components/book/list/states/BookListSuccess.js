@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { BookList } from "../../../book";
-import { BookListSearch } from "../../../book";
+import { BookList, BookListSearch } from "../../../book";
 
 const BookListSuccess = ({ books }) => {
   const [filter, setFilter] = useState("");
@@ -11,14 +10,10 @@ const BookListSuccess = ({ books }) => {
       book.author.toLowerCase().includes(filter.toLowerCase())
   );
 
-  const currentlyReading = filteredBooks.filter((book) => !book.finished);
-  const finished = filteredBooks.filter((book) => book.finished);
-
   return (
     <>
       <BookListSearch onSearch={setFilter} />
-      <BookList books={currentlyReading} type="unfinished" />
-      <BookList books={finished} type="finished" />
+      <BookList books={filteredBooks} />
     </>
   );
 };

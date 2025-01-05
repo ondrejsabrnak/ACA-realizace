@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -8,7 +8,7 @@ import {
   BookDetailPending,
   BookDetailError,
   BookDetailSuccess,
-} from "../components/book/detail/states";
+} from "../components/book";
 
 const BookDetailPage = () => {
   const { id } = useParams();

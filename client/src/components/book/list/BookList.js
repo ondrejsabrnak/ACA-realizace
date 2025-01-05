@@ -3,30 +3,42 @@ import Row from "react-bootstrap/Row";
 import { BookListCard, BookEmptyList } from "..";
 import { useTranslation } from "react-i18next";
 
-const BookList = ({ type, books, onToggleFinished }) => {
+const BookList = ({ books, onToggleFinished }) => {
   const { t } = useTranslation();
 
-  if (books.length === 0) {
-    return type === "unfinished" ? <BookEmptyList /> : null;
-  }
+  const currentlyReading = books.filter((book) => !book.finished);
+  const finished = books.filter((book) => book.finished);
 
-  const title =
-    type === "finished" ? t("books.finished") : t("books.unfinished");
+  const renderSection = (books, type) => {
+    if (books.length === 0) {
+      return type === "unfinished" ? <BookEmptyList /> : null;
+    }
+
+    const title =
+      type === "finished" ? t("books.finished") : t("books.currently_reading");
+
+    return (
+      <>
+        <div className="d-flex align-items-center mb-4">
+          <h2 className="h5 mb-0">{title}</h2>
+        </div>
+        <Row xs={1} md={2} lg={3} className="g-4 mb-5">
+          {books.map((book) => (
+            <BookListCard
+              key={book.id}
+              book={book}
+              onToggleFinished={onToggleFinished}
+            />
+          ))}
+        </Row>
+      </>
+    );
+  };
 
   return (
     <>
-      <div className="d-flex align-items-center mb-4">
-        <h2 className="h5 mb-0">{title}</h2>
-      </div>
-      <Row xs={1} md={2} lg={3} className="g-4 mb-5">
-        {books.map((book) => (
-          <BookListCard
-            key={book.id}
-            book={book}
-            onToggleFinished={onToggleFinished}
-          />
-        ))}
-      </Row>
+      {renderSection(currentlyReading, "unfinished")}
+      {renderSection(finished, "finished")}
     </>
   );
 };
