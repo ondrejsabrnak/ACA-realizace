@@ -1,21 +1,12 @@
-import React, { useState } from "react";
-import { BookList, BookListSearch } from "../../../book";
+import React from "react";
+import { BookList, BookEmptyList } from "../../../book";
 
 const BookListSuccess = ({ books }) => {
-  const [filter, setFilter] = useState("");
+  if (!books.length) {
+    return <BookEmptyList />;
+  }
 
-  const filteredBooks = books.filter(
-    (book) =>
-      book.title.toLowerCase().includes(filter.toLowerCase()) ||
-      book.author.toLowerCase().includes(filter.toLowerCase())
-  );
-
-  return (
-    <>
-      <BookListSearch onSearch={setFilter} />
-      <BookList books={filteredBooks} />
-    </>
-  );
+  return <BookList books={books} />;
 };
 
 export default BookListSuccess;

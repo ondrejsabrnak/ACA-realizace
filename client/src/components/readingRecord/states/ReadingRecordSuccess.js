@@ -1,16 +1,20 @@
 import React from "react";
 import { ReadingRecordList, ReadingRecordEmptyList } from "..";
 
-const ReadingRecordSuccess = ({ data, onEdit, onDelete }) => {
-  if (!data?.data?.items?.length) {
+const ReadingRecordSuccess = ({ data, bookId, totalPages }) => {
+  const currentReadPages =
+    data?.items?.reduce((sum, record) => sum + record.readPages, 0) || 0;
+
+  if (!data?.items?.length) {
     return <ReadingRecordEmptyList />;
   }
 
   return (
     <ReadingRecordList
-      records={data.data.items}
-      onEdit={onEdit}
-      onDelete={onDelete}
+      records={data.items}
+      bookId={bookId}
+      totalPages={totalPages}
+      currentReadPages={currentReadPages}
     />
   );
 };

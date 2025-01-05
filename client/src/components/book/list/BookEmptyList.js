@@ -1,19 +1,16 @@
 import React from "react";
-import Alert from "react-bootstrap/Alert";
 import { useTranslation } from "react-i18next";
-import { AddBookButton } from "../../navbar";
+import { BookAddButton } from "..";
 
 const BookEmptyList = () => {
   const { t } = useTranslation();
 
   return (
-    <Alert
-      variant="info"
-      className="d-flex flex-column align-items-center gap-3 py-4"
-    >
-      <p className="mb-0">{t("books.no_books")}</p>
-      <AddBookButton />
-    </Alert>
+    <div className="text-center py-5">
+      <h3 className="h5 mb-3">{t("books.empty_list")}</h3>
+      <p className="text-muted mb-4">{t("books.empty_list_description")}</p>
+      <BookAddButton />
+    </div>
   );
 };
 

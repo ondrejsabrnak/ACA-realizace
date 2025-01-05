@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import { useTranslation } from "react-i18next";
-import BookAddModal from "../book/modals/BookAddModal";
+import { BookAddModal } from "..";
 
-const AddBookButton = ({ onAddBook }) => {
+const BookAddButton = ({ onAddBook }) => {
   const { t } = useTranslation();
   const [showModal, setShowModal] = useState(false);
 
@@ -28,4 +28,4 @@ const AddBookButton = ({ onAddBook }) => {
   );
 };
 
-export default AddBookButton;
+export default BookAddButton;

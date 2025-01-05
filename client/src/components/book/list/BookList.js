@@ -1,17 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import Row from "react-bootstrap/Row";
-import { BookListCard, BookEmptyList } from "..";
+import { BookListCard, BookListSearch } from "..";
 import { useTranslation } from "react-i18next";
 
 const BookList = ({ books, onToggleFinished }) => {
   const { t } = useTranslation();
+  const [filter, setFilter] = useState("");
 
-  const currentlyReading = books.filter((book) => !book.finished);
-  const finished = books.filter((book) => book.finished);
+  const filteredBooks = books.filter(
+    (book) =>
+      book.title.toLowerCase().includes(filter.toLowerCase()) ||
+      book.author.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  const currentlyReading = filteredBooks.filter((book) => !book.finished);
+  const finished = filteredBooks.filter((book) => book.finished);
 
   const renderSection = (books, type) => {
     if (books.length === 0) {
-      return type === "unfinished" ? <BookEmptyList /> : null;
+      return null;
     }
 
     const title =
@@ -37,6 +44,7 @@ const BookList = ({ books, onToggleFinished }) => {
 
   return (
     <>
+      <BookListSearch onSearch={setFilter} />
       {renderSection(currentlyReading, "unfinished")}
       {renderSection(finished, "finished")}
     </>

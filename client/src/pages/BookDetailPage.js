@@ -15,13 +15,13 @@ const BookDetailPage = () => {
   const { showError } = useToast();
   const { handlerMap } = useContext(BookListContext);
   const [book, setBook] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [pending, setPending] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        setLoading(true);
+        setPending(true);
         setError(null);
         const result = await handlerMap.handleGet({ id });
         if (result.ok) {
@@ -34,7 +34,7 @@ const BookDetailPage = () => {
         setError({ code: "unexpectedError", message: error.message });
         showError("unexpectedError", error.message);
       } finally {
-        setLoading(false);
+        setPending(false);
       }
     };
 
@@ -45,7 +45,7 @@ const BookDetailPage = () => {
     <>
       <Row>
         <Col>
-          {loading ? (
+          {pending ? (
             <BookDetailPending />
           ) : error ? (
             <BookDetailError error={error} />

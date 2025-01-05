@@ -1,21 +1,37 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import {
   ReadingRecordPending,
   ReadingRecordError,
   ReadingRecordSuccess,
 } from "..";
+import { ReadingRecordListContext } from "../../../providers/ReadingRecordListProvider";
 
-const ReadingRecordContent = ({ state, error, data, onEdit, onDelete }) => {
-  const contentMap = {
-    pending: () => <ReadingRecordPending />,
-    error: () => <ReadingRecordError error={error} />,
-    success: () => (
-      <ReadingRecordSuccess data={data} onEdit={onEdit} onDelete={onDelete} />
-    ),
-  };
+const ReadingRecordContent = ({ bookId, totalPages }) => {
+  const { state, data, error, currentBookId, handlerMap } = useContext(
+    ReadingRecordListContext
+  );
 
-  const renderContent = contentMap[state] || contentMap.success;
-  return renderContent();
+  useEffect(() => {
+    if (bookId && bookId !== currentBookId) {
+      handlerMap.handleListByBookId({ bookId });
+    }
+  }, [bookId, currentBookId, handlerMap]);
+
+  if (state === "pending") {
+    return <ReadingRecordPending />;
+  }
+
+  if (state === "error") {
+    return <ReadingRecordError error={error} />;
+  }
+
+  return (
+    <ReadingRecordSuccess
+      data={data?.data}
+      bookId={bookId}
+      totalPages={totalPages}
+    />
+  );
 };
 
 export default ReadingRecordContent;
