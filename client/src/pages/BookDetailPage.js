@@ -5,15 +5,7 @@ import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
 import { useToast } from "../providers/ToastProvider";
 import { BookListContext } from "../providers/BookListProvider";
-import {
-  BookDetailHeader,
-  BookDetailInfo,
-  BookDetailProgress,
-  BookDetailRecords,
-  BookFinishedModal,
-  BookUnfinishedModal,
-} from "../components/book";
-import ConfirmModal from "../components/common/ConfirmModal";
+import { BookDetailHeader, BookDetailContent } from "../components/book";
 import { useTranslation } from "react-i18next";
 
 const BookDetailPage = () => {
@@ -189,76 +181,57 @@ const BookDetailPage = () => {
     }
   };
 
-  if (loading || !book) {
-    return (
-      <div className="text-center p-5">
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">{t("common.loading")}</span>
-        </Spinner>
-      </div>
-    );
-  }
-
   return (
     <>
-      <BookDetailHeader title={book.title} onBack={() => navigate("/")} />
       <Row>
         <Col>
-          <BookDetailInfo
-            book={book}
-            isEditing={isEditing}
-            editForm={editForm}
-            onEditToggle={() => setIsEditing(!isEditing)}
-            onEditFormChange={(changes) =>
-              setEditForm({ ...editForm, ...changes })
-            }
-            onSubmit={handleSubmit}
-            onCancel={handleCancel}
-            validated={validated}
-            onDelete={() => setShowDeleteModal(true)}
-          />
-          <BookDetailProgress
-            book={book}
-            onShowFinishedModal={() => setShowFinishedModal(true)}
-            onShowUnfinishedModal={() => setShowUnfinishedModal(true)}
-          />
-          <BookDetailRecords
-            bookId={book.id}
-            totalPages={book.numberOfPages}
-            onRecordChange={loadBookDetail}
-          />
+          {loading ? (
+            <div className="text-center p-5">
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">{t("common.loading")}</span>
+              </Spinner>
+            </div>
+          ) : (
+            <>
+              <BookDetailHeader
+                title={book.title}
+                onBack={() => navigate(-1)}
+              />
+              <BookDetailContent
+                book={book}
+                isEditing={isEditing}
+                editForm={editForm}
+                onEditToggle={() => setIsEditing(true)}
+                onEditFormChange={(changes) =>
+                  setEditForm((prev) => ({ ...prev, ...changes }))
+                }
+                onEditSubmit={handleSubmit}
+                onEditCancel={handleCancel}
+                validated={validated}
+                onDelete={handleDelete}
+                onShowFinishedModal={() => setShowFinishedModal(true)}
+                onShowUnfinishedModal={() => setShowUnfinishedModal(true)}
+                totalPages={book.numberOfPages}
+                onRecordChange={async () => {
+                  const result = await handlerMap.handleGet({ id: book.id });
+                  if (result.ok) {
+                    setBook(result.data);
+                  }
+                }}
+                showFinishedModal={showFinishedModal}
+                showUnfinishedModal={showUnfinishedModal}
+                showDeleteModal={showDeleteModal}
+                onHideFinishedModal={() => setShowFinishedModal(false)}
+                onHideUnfinishedModal={() => setShowUnfinishedModal(false)}
+                onHideDeleteModal={() => setShowDeleteModal(false)}
+                onMarkFinished={handleMarkFinished}
+                onMarkUnfinished={handleMarkUnfinished}
+                isDeleting={isDeleting}
+              />
+            </>
+          )}
         </Col>
       </Row>
-
-      <BookFinishedModal
-        show={showFinishedModal}
-        onHide={() => setShowFinishedModal(false)}
-        onConfirm={handleMarkFinished}
-        book={book}
-      />
-
-      <BookUnfinishedModal
-        show={showUnfinishedModal}
-        onHide={() => setShowUnfinishedModal(false)}
-        onConfirm={handleMarkUnfinished}
-        book={book}
-      />
-
-      <ConfirmModal
-        show={showDeleteModal}
-        onHide={() => setShowDeleteModal(false)}
-        onConfirm={handleDelete}
-        title={t("books.confirm_delete")}
-        confirmButtonVariant="danger"
-        confirmButtonText={t("books.delete_book")}
-      >
-        <p className="mb-3">
-          {t("books.confirm_delete_message", { title: book?.title })}
-        </p>
-        <div className="alert alert-info mb-0">
-          {t("books.info_delete_records")}
-        </div>
-      </ConfirmModal>
     </>
   );
 };

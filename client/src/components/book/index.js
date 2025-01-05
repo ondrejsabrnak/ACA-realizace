@@ -3,6 +3,7 @@ export { default as BookDetailHeader } from "./detail/BookDetailHeader";
 export { default as BookDetailInfo } from "./detail/BookDetailInfo";
 export { default as BookDetailProgress } from "./detail/BookDetailProgress";
 export { default as BookDetailRecords } from "./detail/BookDetailRecords";
+export { default as BookDetailContent } from "./detail/BookDetailContent";
 
 // List Components
 export { default as BookList } from "./list/BookList";
