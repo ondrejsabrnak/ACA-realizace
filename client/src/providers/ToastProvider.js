@@ -40,6 +40,7 @@ const ToastProvider = ({ children }) => {
   };
 
   const showError = (code, message, details = []) => {
+    if (code === "bookNotFound") return;
     showToast("error", message, code);
   };
 
