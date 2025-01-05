@@ -133,22 +133,43 @@ const BookDetailInfo = ({
         </dt>
         <dd className="col-sm-9">
           {isEditing ? (
-            <>
+            <Form.Group>
               <Form.Control
                 type="text"
                 value={editForm.isbn}
                 onChange={handleIsbnChange}
-                placeholder={t("common.not_specified")}
                 isInvalid={!!isbnError}
+                placeholder={t("books.isbn_placeholder")}
               />
               <Form.Control.Feedback type="invalid">
                 {isbnError}
               </Form.Control.Feedback>
-            </>
+            </Form.Group>
+          ) : book.isbn ? (
+            book.isbn
           ) : (
-            book.isbn || (
-              <span className="text-muted">{t("common.not_specified")}</span>
-            )
+            <span className="text-muted">{t("common.not_specified")}</span>
+          )}
+        </dd>
+
+        <dt className="col-sm-3 d-flex align-items-center">
+          {t("books.description")}
+        </dt>
+        <dd className="col-sm-9">
+          {isEditing ? (
+            <Form.Control
+              as="textarea"
+              rows={3}
+              value={editForm.description}
+              onChange={(e) =>
+                onEditFormChange({ description: e.target.value })
+              }
+              placeholder={t("books.description_placeholder")}
+            />
+          ) : book.description ? (
+            book.description
+          ) : (
+            <span className="text-muted">{t("common.not_specified")}</span>
           )}
         </dd>
 
@@ -193,14 +214,6 @@ const BookDetailInfo = ({
         {isEditing ? (
           <dd className="col-12 mt-4">
             <div className="d-flex gap-2 justify-content-between">
-              <div className="d-flex gap-2">
-                <Button variant="primary" type="submit">
-                  {t("common.edit")}
-                </Button>
-                <Button variant="outline-secondary" onClick={onCancel}>
-                  {t("common.cancel")}
-                </Button>
-              </div>
               <Button
                 variant="outline-danger"
                 className="d-flex align-items-center gap-2"
@@ -209,6 +222,14 @@ const BookDetailInfo = ({
                 <i className="bi bi-trash"></i>
                 {t("common.delete")}
               </Button>
+              <div className="d-flex gap-2">
+                <Button variant="outline-secondary" onClick={onCancel}>
+                  {t("common.cancel")}
+                </Button>
+                <Button variant="primary" type="submit">
+                  {t("common.save")}
+                </Button>
+              </div>
             </div>
           </dd>
         ) : null}
