@@ -32,13 +32,13 @@ const BookListPage = () => {
   }, [data, showError]);
 
   const contentMap = {
-    loading: () => <BookListPending />,
+    pending: () => <BookListPending />,
     error: () => <BookListError error={error} />,
     success: () => <BookListSuccess books={data?.data?.items || []} />,
   };
 
   const getState = () => {
-    if (loading) return "loading";
+    if (loading) return "pending";
     if (error) return "error";
     return "success";
   };
