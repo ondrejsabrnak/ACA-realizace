@@ -43,7 +43,7 @@ const BookProgressBar = ({ pagesRead, numberOfPages, showLabel = true }) => {
           >
             {showLabel && (
               <span className="progress-label">
-                {progress}% {t("books.finished")}
+                {progress}%
               </span>
             )}
           </div>
