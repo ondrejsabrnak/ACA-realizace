@@ -3,7 +3,7 @@ import {
   ReadingRecordPending,
   ReadingRecordError,
   ReadingRecordSuccess,
-} from "../states";
+} from "..";
 
 const ReadingRecordContent = ({ state, error, data, onEdit, onDelete }) => {
   const contentMap = {
