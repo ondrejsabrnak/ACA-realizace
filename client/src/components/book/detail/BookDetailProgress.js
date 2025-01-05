@@ -2,9 +2,13 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import Card from "react-bootstrap/Card";
 import { BookStatusToggle, BookProgressBar } from "..";
-import "../../../styles/components/book/BookProgress.css";
+import "../../../styles/components/book/BookDetailProgress.css";
 
-const BookProgress = ({ book, onShowFinishedModal, onShowUnfinishedModal }) => {
+const BookDetailProgress = ({
+  book,
+  onShowFinishedModal,
+  onShowUnfinishedModal,
+}) => {
   const { t } = useTranslation();
 
   return (
@@ -59,4 +63,4 @@ const BookProgress = ({ book, onShowFinishedModal, onShowUnfinishedModal }) => {
   );
 };
 
-export default BookProgress;
+export default BookDetailProgress;

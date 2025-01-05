@@ -2,7 +2,7 @@ import React from "react";
 import { ReadingRecordContainer } from "../../readingRecord";
 import ReadingRecordListProvider from "../../../providers/ReadingRecordListProvider";
 
-const BookRecords = ({ bookId, totalPages = 0, onRecordChange }) => {
+const BookDetailRecords = ({ bookId, totalPages = 0, onRecordChange }) => {
   return (
     <ReadingRecordListProvider>
       <ReadingRecordContainer
@@ -14,4 +14,4 @@ const BookRecords = ({ bookId, totalPages = 0, onRecordChange }) => {
   );
 };
 
-export default BookRecords;
+export default BookDetailRecords;

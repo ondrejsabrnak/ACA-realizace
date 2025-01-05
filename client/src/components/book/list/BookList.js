@@ -1,6 +1,6 @@
 import React from "react";
 import Row from "react-bootstrap/Row";
-import { BookCard, BookEmptyList } from "..";
+import { BookListCard, BookEmptyList } from "..";
 import { useTranslation } from "react-i18next";
 
 const BookList = ({ type, books, onToggleFinished }) => {
@@ -20,7 +20,7 @@ const BookList = ({ type, books, onToggleFinished }) => {
       </div>
       <Row xs={1} md={2} lg={3} className="g-4 mb-5">
         {books.map((book) => (
-          <BookCard
+          <BookListCard
             key={book.id}
             book={book}
             onToggleFinished={onToggleFinished}

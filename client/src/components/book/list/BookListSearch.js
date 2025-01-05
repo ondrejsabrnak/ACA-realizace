@@ -3,7 +3,7 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useTranslation } from "react-i18next";
 
-const BookSearch = ({ onSearch }) => {
+const BookListSearch = ({ onSearch }) => {
   const { t } = useTranslation();
 
   return (
@@ -25,4 +25,4 @@ const BookSearch = ({ onSearch }) => {
   );
 };
 
-export default BookSearch;
+export default BookListSearch;

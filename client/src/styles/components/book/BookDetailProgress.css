@@ -1,0 +1,8 @@
+.progress-wrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.progress-wrapper:hover .progress-bar {
+  transform: scaleY(1.1);
+}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import { useTranslation } from "react-i18next";
-import { StarRating } from "..";
+import { BookStarRating } from "..";
 import ConfirmModal from "../../common/ConfirmModal";
 
 const BookFinishedModal = ({ show, onHide, onConfirm, book }) => {
@@ -48,7 +48,7 @@ const BookFinishedModal = ({ show, onHide, onConfirm, book }) => {
           <p className="fw-bold mb-2">
             {t("books.rating")} <span className="text-danger">*</span>
           </p>
-          <StarRating rating={rating} onRatingChange={setRating} />
+          <BookStarRating rating={rating} onRatingChange={setRating} />
           {rating === 0 && (
             <Form.Control.Feedback type="invalid" className="d-block">
               {t("books.rating_required")}

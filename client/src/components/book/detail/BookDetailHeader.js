@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import Button from "react-bootstrap/Button";
 
-const BookHeader = ({ title, onBack }) => {
+const BookDetailHeader = ({ title, onBack }) => {
   const { t } = useTranslation();
 
   return (
@@ -20,4 +20,4 @@ const BookHeader = ({ title, onBack }) => {
   );
 };
 
-export default BookHeader;
+export default BookDetailHeader;

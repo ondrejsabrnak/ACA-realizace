@@ -9,9 +9,9 @@ import {
   BookFinishedModal,
   BookUnfinishedModal,
 } from "..";
-import "../../../styles/components/book/BookCard.css";
+import "../../../styles/components/book/BookListCard.css";
 
-const BookCard = ({ book, onToggleFinished }) => {
+const BookListCard = ({ book, onToggleFinished }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [showFinishedModal, setShowFinishedModal] = useState(false);
@@ -116,4 +116,4 @@ const BookCard = ({ book, onToggleFinished }) => {
   );
 };
 
-export default BookCard;
+export default BookListCard;

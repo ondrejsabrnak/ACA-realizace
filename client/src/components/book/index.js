@@ -1,19 +1,19 @@
 // Detail Components
-export { default as BookHeader } from "./detail/BookHeader";
-export { default as BookInfo } from "./detail/BookInfo";
-export { default as BookProgress } from "./detail/BookProgress";
-export { default as BookRecords } from "./detail/BookRecords";
+export { default as BookDetailHeader } from "./detail/BookDetailHeader";
+export { default as BookDetailInfo } from "./detail/BookDetailInfo";
+export { default as BookDetailProgress } from "./detail/BookDetailProgress";
+export { default as BookDetailRecords } from "./detail/BookDetailRecords";
 
 // List Components
 export { default as BookList } from "./list/BookList";
-export { default as BookCard } from "./list/BookCard";
-export { default as BookSearch } from "./list/BookSearch";
+export { default as BookListCard } from "./list/BookListCard";
+export { default as BookListSearch } from "./list/BookListSearch";
 export { default as BookEmptyList } from "./list/BookEmptyList";
 
 // Shared Components
 export { default as BookProgressBar } from "./shared/BookProgressBar";
 export { default as BookStatusToggle } from "./shared/BookStatusToggle";
-export { default as StarRating } from "./shared/StarRating";
+export { default as BookStarRating } from "./shared/BookStarRating";
 
 // Modal Components
 export { default as BookAddModal } from "./modals/BookAddModal";

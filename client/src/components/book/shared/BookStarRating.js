@@ -1,7 +1,7 @@
 import React from "react";
 import Rating from "react-rating";
 
-const StarRating = ({ rating, onRatingChange, readonly = false }) => {
+const BookStarRating = ({ rating, onRatingChange, readonly = false }) => {
   return (
     <Rating
       initialRating={rating}
@@ -14,4 +14,4 @@ const StarRating = ({ rating, onRatingChange, readonly = false }) => {
   );
 };
 
-export default StarRating;
+export default BookStarRating;

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { BookList, BookSearch } from "../components/book";
+import { BookList, BookListSearch } from "../components/book";
 import { BookListContext } from "../providers/BookListProvider";
 import { useToast } from "../providers/ToastProvider";
 
@@ -25,7 +25,7 @@ const BookListPage = () => {
 
   return (
     <>
-      <BookSearch onSearch={setSearchQuery} />
+      <BookListSearch onSearch={setSearchQuery} />
       <BookList
         type="unfinished"
         books={unfinishedBooks}

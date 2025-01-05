@@ -6,10 +6,10 @@ import Spinner from "react-bootstrap/Spinner";
 import { useToast } from "../providers/ToastProvider";
 import { BookListContext } from "../providers/BookListProvider";
 import {
-  BookHeader,
-  BookInfo,
-  BookProgress,
-  BookRecords,
+  BookDetailHeader,
+  BookDetailInfo,
+  BookDetailProgress,
+  BookDetailRecords,
   BookFinishedModal,
   BookUnfinishedModal,
 } from "../components/book";
@@ -201,10 +201,10 @@ const BookDetailPage = () => {
 
   return (
     <>
-      <BookHeader title={book.title} onBack={() => navigate("/")} />
+      <BookDetailHeader title={book.title} onBack={() => navigate("/")} />
       <Row>
         <Col>
-          <BookInfo
+          <BookDetailInfo
             book={book}
             isEditing={isEditing}
             editForm={editForm}
@@ -217,12 +217,12 @@ const BookDetailPage = () => {
             validated={validated}
             onDelete={() => setShowDeleteModal(true)}
           />
-          <BookProgress
+          <BookDetailProgress
             book={book}
             onShowFinishedModal={() => setShowFinishedModal(true)}
             onShowUnfinishedModal={() => setShowUnfinishedModal(true)}
           />
-          <BookRecords
+          <BookDetailRecords
             bookId={book.id}
             totalPages={book.numberOfPages}
             onRecordChange={loadBookDetail}

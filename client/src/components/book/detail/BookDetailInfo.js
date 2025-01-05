@@ -3,11 +3,11 @@ import { useTranslation } from "react-i18next";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { StarRating } from "..";
+import { BookStarRating } from "..";
 import { BookListContext } from "../../../providers/BookListProvider";
 import { validateIsbn } from "../../../utils/isbnValidation";
 
-const BookInfo = ({
+const BookDetailInfo = ({
   book,
   isEditing,
   editForm,
@@ -65,7 +65,7 @@ const BookInfo = ({
     onSubmit(e);
   };
 
-  const renderBookInfo = () => (
+  const renderBookDetailInfo = () => (
     <Form
       noValidate
       validated={validated}
@@ -159,7 +159,7 @@ const BookInfo = ({
             </dt>
             <dd className="col-sm-9">
               <div className={isEditing ? "rating-edit-mode" : ""}>
-                <StarRating
+                <BookStarRating
                   rating={isEditing ? editForm.rating : book.rating}
                   readonly={!isEditing}
                   onRatingChange={
@@ -232,10 +232,10 @@ const BookInfo = ({
             {t("books.edit_book")}
           </Button>
         </div>
-        {renderBookInfo()}
+        {renderBookDetailInfo()}
       </Card.Body>
     </Card>
   );
 };
 
-export default BookInfo;
+export default BookDetailInfo;
