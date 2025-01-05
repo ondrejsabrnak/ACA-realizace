@@ -1,17 +1,8 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
-import Spinner from "react-bootstrap/Spinner";
+import LoadingSpinner from "../../common/LoadingSpinner";
 
 const ReadingRecordPending = () => {
-  const { t } = useTranslation();
-
-  return (
-    <div className="text-center p-3">
-      <Spinner animation="border" role="status">
-        <span className="visually-hidden">{t("common.loading")}</span>
-      </Spinner>
-    </div>
-  );
+  return <LoadingSpinner />;
 };
 
 export default ReadingRecordPending;

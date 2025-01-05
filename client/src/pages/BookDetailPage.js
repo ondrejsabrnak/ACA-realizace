@@ -2,14 +2,12 @@ import React, { useEffect, useState, useContext, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Spinner from "react-bootstrap/Spinner";
 import { useToast } from "../providers/ToastProvider";
 import { BookListContext } from "../providers/BookListProvider";
 import { BookDetailHeader, BookDetailContent } from "../components/book";
-import { useTranslation } from "react-i18next";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 const BookDetailPage = () => {
-  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const { showError, showToast } = useToast();
@@ -186,11 +184,7 @@ const BookDetailPage = () => {
       <Row>
         <Col>
           {loading ? (
-            <div className="text-center p-5">
-              <Spinner animation="border" role="status">
-                <span className="visually-hidden">{t("common.loading")}</span>
-              </Spinner>
-            </div>
+            <LoadingSpinner />
           ) : (
             <>
               <BookDetailHeader
