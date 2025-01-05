@@ -19,6 +19,7 @@ export { default as BookStarRating } from "./shared/BookStarRating";
 // Modals
 export { default as BookFinishedModal } from "./modals/BookFinishedModal";
 export { default as BookUnfinishedModal } from "./modals/BookUnfinishedModal";
+export { default as BookDeleteModal } from "./modals/BookDeleteModal";
 
 // States
 export { default as BookDetailPending } from "./detail/states/BookDetailPending";
