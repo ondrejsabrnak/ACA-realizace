@@ -20,9 +20,6 @@ const BookProgressBar = ({ pagesRead, numberOfPages, showLabel = true }) => {
 
   const tooltipContent = (
     <div className="text-center">
-      <div>
-        {t("books.pages_read_label")}: {pagesRead}/{numberOfPages}
-      </div>
       <strong>
         {progress}% {t("books.finished")}
       </strong>

@@ -37,8 +37,7 @@ const BookListCard = ({ book, onToggleFinished }) => {
     <>
       <Col>
         <Card
-          className={`${book.finished ? "bg-light" : ""} hover-pointer`}
-          style={{ height: "100%" }}
+          className={`book-card ${book.finished ? "bg-light" : ""}`}
           onClick={() => navigate(`/book/${book.id}`)}
         >
           <Card.Body className="position-relative">
