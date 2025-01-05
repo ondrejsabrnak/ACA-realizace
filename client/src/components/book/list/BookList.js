@@ -15,7 +15,7 @@ const BookList = ({ books, onToggleFinished }) => {
     }
 
     const title =
-      type === "finished" ? t("books.finished") : t("books.currently_reading");
+      type === "finished" ? t("books.finished") : t("books.unfinished");
 
     return (
       <>
