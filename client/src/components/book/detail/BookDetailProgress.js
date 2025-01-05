@@ -1,8 +1,8 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
 import Card from "react-bootstrap/Card";
-import { BookStatusToggle, BookProgressBar } from "..";
-import "../../../styles/components/book/BookDetailProgress.css";
+import { useTranslation } from "react-i18next";
+import { BookProgressBar, BookStatusToggle } from "..";
+import "../css/detail/BookDetailProgress.css";
 
 const BookDetailProgress = ({
   book,

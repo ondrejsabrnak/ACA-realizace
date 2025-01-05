@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Alert from "react-bootstrap/Alert";
-import "../styles/providers/ToastProvider.css";
+import "./css/ToastProvider.css";
 
 const ToastContext = createContext();
 const TIMEOUT = 5000; // 5 seconds

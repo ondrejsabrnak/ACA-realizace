@@ -1,0 +1,12 @@
+.book-card {
+  height: 100%;
+}
+
+.book-card .card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.book-card .card-text {
+  flex-grow: 1;
+}

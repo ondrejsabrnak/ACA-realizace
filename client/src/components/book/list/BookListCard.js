@@ -1,15 +1,15 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import {
-  BookStatusToggle,
   BookProgressBar,
+  BookStatusToggle,
   BookFinishedModal,
   BookUnfinishedModal,
 } from "..";
-import "../../../styles/components/book/BookListCard.css";
+import "../css/list/BookListCard.css";
 
 const BookListCard = ({ book, onToggleFinished }) => {
   const { t } = useTranslation();
