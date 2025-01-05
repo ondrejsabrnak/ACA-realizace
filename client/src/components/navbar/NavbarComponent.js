@@ -4,6 +4,7 @@ import Navbar from "react-bootstrap/Navbar";
 import { BookAddButton } from "../book";
 import { BookListContext } from "../../providers/BookListProvider";
 import NavbarBrand from "./NavbarBrand";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const NavbarComponent = () => {
   const { handlerMap } = useContext(BookListContext);
@@ -12,7 +13,10 @@ const NavbarComponent = () => {
     <Navbar bg="light" expand="lg" className="mb-4">
       <Container>
         <NavbarBrand />
-        <BookAddButton onAddBook={handlerMap.handleCreate} />
+        <div className="d-flex gap-2">
+          <BookAddButton onAddBook={handlerMap.handleCreate} />
+          <LanguageSwitcher />
+        </div>
       </Container>
     </Navbar>
   );
