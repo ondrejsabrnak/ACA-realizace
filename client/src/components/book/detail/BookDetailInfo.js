@@ -23,24 +23,13 @@ const BookDetailInfo = ({
   const [isbnError, setIsbnError] = useState("");
 
   const handleIsbnChange = (e) => {
-    const isbn = e.target.value;
-    onEditFormChange({ isbn: isbn });
-
-    if (isbn) {
-      if (!validateIsbn(isbn)) {
-        setIsbnError(t("books.isbn_invalid"));
-        return;
-      }
-      // Check uniqueness only if ISBN changed
-      if (isbn !== book.isbn) {
-        const isUnique = handlerMap.checkIsbnUnique(isbn);
-        if (!isUnique) {
-          setIsbnError(t("books.isbn_exists"));
-          return;
-        }
-      }
+    const value = e.target.value;
+    if (value && !validateIsbn(value)) {
+      setIsbnError(t("books.isbn_invalid"));
+    } else {
+      setIsbnError("");
     }
-    setIsbnError("");
+    onEditFormChange(e);
   };
 
   const handleSubmitWithValidation = (e) => {
@@ -73,14 +62,16 @@ const BookDetailInfo = ({
     >
       <dl className="row mb-0">
         <dt className="col-sm-3 d-flex align-items-center">
-          {t("books.title")} <span className="text-danger ms-1">*</span>
+          {t("books.title")}{" "}
+          {isEditing && <span className="text-danger ms-1">*</span>}
         </dt>
         <dd className="col-sm-9">
           {isEditing ? (
             <Form.Control
               type="text"
+              name="title"
               value={editForm.title}
-              onChange={(e) => onEditFormChange({ title: e.target.value })}
+              onChange={(e) => onEditFormChange(e)}
               required
               maxLength={100}
               minLength={1}
@@ -91,14 +82,16 @@ const BookDetailInfo = ({
         </dd>
 
         <dt className="col-sm-3 d-flex align-items-center">
-          {t("books.author")} <span className="text-danger ms-1">*</span>
+          {t("books.author")}{" "}
+          {isEditing && <span className="text-danger ms-1">*</span>}
         </dt>
         <dd className="col-sm-9">
           {isEditing ? (
             <Form.Control
               type="text"
+              name="author"
               value={editForm.author}
-              onChange={(e) => onEditFormChange({ author: e.target.value })}
+              onChange={(e) => onEditFormChange(e)}
               required
               maxLength={100}
               minLength={1}
@@ -109,16 +102,16 @@ const BookDetailInfo = ({
         </dd>
 
         <dt className="col-sm-3 d-flex align-items-center">
-          {t("books.total_pages")} <span className="text-danger ms-1">*</span>
+          {t("books.total_pages")}{" "}
+          {isEditing && <span className="text-danger ms-1">*</span>}
         </dt>
         <dd className="col-sm-9">
           {isEditing ? (
             <Form.Control
               type="number"
+              name="numberOfPages"
               value={editForm.numberOfPages}
-              onChange={(e) =>
-                onEditFormChange({ numberOfPages: e.target.value })
-              }
+              onChange={(e) => onEditFormChange(e)}
               required
               min={1}
               max={10000}
@@ -136,6 +129,7 @@ const BookDetailInfo = ({
             <Form.Group>
               <Form.Control
                 type="text"
+                name="isbn"
                 value={editForm.isbn}
                 onChange={handleIsbnChange}
                 isInvalid={!!isbnError}
@@ -164,7 +158,10 @@ const BookDetailInfo = ({
                   readonly={!isEditing}
                   onRatingChange={
                     isEditing
-                      ? (value) => onEditFormChange({ rating: value })
+                      ? (value) =>
+                          onEditFormChange({
+                            target: { name: "rating", value },
+                          })
                       : undefined
                   }
                 />
@@ -178,19 +175,24 @@ const BookDetailInfo = ({
               {isEditing ? (
                 <Form.Control
                   as="textarea"
+                  name="review"
                   rows={3}
                   value={editForm.review}
-                  onChange={(e) => onEditFormChange({ review: e.target.value })}
+                  onChange={(e) => onEditFormChange(e)}
                   placeholder={t("books.review_placeholder")}
                 />
               ) : (
-                book.review || <span className="text-muted">Nezadáno</span>
+                book.review || (
+                  <span className="text-muted">
+                    {t("common.not_specified")}
+                  </span>
+                )
               )}
             </dd>
           </>
         )}
 
-        {isEditing ? (
+        {isEditing && (
           <dd className="col-12 mt-4">
             <div className="d-flex gap-2 justify-content-between">
               <Button
@@ -211,7 +213,7 @@ const BookDetailInfo = ({
               </div>
             </div>
           </dd>
-        ) : null}
+        )}
       </dl>
     </Form>
   );
