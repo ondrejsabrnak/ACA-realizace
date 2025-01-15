@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
+import { Alert } from "react-bootstrap";
 import ConfirmModal from "../../common/ConfirmModal";
 import { BookListContext } from "../../../providers/BookListProvider";
 import { useToast } from "../../../providers/ToastProvider";
@@ -41,6 +42,9 @@ const BookUnfinishedModal = ({ show, onHide, book }) => {
       confirmButtonText={t("common.confirm")}
     >
       {t("books.confirm_mark_unfinished", { title: book.title })}
+      <Alert variant="warning" className="mt-3">
+        {t("books.warning_lose_data")}
+      </Alert>
     </ConfirmModal>
   );
 };
